@@ -1,0 +1,250 @@
+[
+  {
+    "id": 4,
+    "name_fa": "آذربايجان شرقي",
+    "name_en": "East Azarbaijan",
+    "slug": "East-Azarbaijan",
+    "latitude": 37.9035733,
+    "longitude": 46.2682109
+  },
+  {
+    "id": 5,
+    "name_fa": "آذربايجان غربي",
+    "name_en": "West Azerbaijan",
+    "slug": "West-Azerbaijan",
+    "latitude": 37.9035733,
+    "longitude": 46.2682109
+  },
+  {
+    "id": 25,
+    "name_fa": "اردبيل",
+    "name_en": "Ardabil",
+    "slug": "Ardabil",
+    "latitude": 38.4853276,
+    "longitude": 47.8911209
+  },
+  {
+    "id": 11,
+    "name_fa": "اصفهان",
+    "name_en": "Esfahan",
+    "slug": "Esfahan",
+    "latitude": 32.6546275,
+    "longitude": 51.6679826
+  },
+  {
+    "id": 31,
+    "name_fa": "البرز",
+    "name_en": "Alborz",
+    "slug": "Alborz",
+    "latitude": 35.9960467,
+    "longitude": 50.9289246
+  },
+  {
+    "id": 17,
+    "name_fa": "ايلام",
+    "name_en": "Ilam",
+    "slug": "Ilam",
+    "latitude": 33.2957618,
+    "longitude": 46.670534
+  },
+  {
+    "id": 19,
+    "name_fa": "بوشهر",
+    "name_en": "Bushehr",
+    "slug": "Bushehr",
+    "latitude": 28.9233837,
+    "longitude": 50.820314
+  },
+  {
+    "id": 24,
+    "name_fa": "تهران",
+    "name_en": "Tehran",
+    "slug": "Tehran",
+    "latitude": 35.696111,
+    "longitude": 51.423056
+  },
+  {
+    "id": 30,
+    "name_fa": "خراسان جنوبي",
+    "name_en": "South Khorasan",
+    "slug": "South-Khorasan",
+    "latitude": 32.5175643,
+    "longitude": 59.1041758
+  },
+  {
+    "id": 10,
+    "name_fa": "خراسان رضوئ",
+    "name_en": "Khorasan Razavi",
+    "slug": "Khorasan-Razavi",
+    "latitude": 32.5175643,
+    "longitude": 59.1041758
+  },
+  {
+    "id": 29,
+    "name_fa": "خراسان شمالي",
+    "name_en": "North Khorasan",
+    "slug": "North-Khorasan",
+    "latitude": 37.4710353,
+    "longitude": 57.1013188
+  },
+  {
+    "id": 7,
+    "name_fa": "خوزستان",
+    "name_en": "Khuzestan",
+    "slug": "Khuzestan",
+    "latitude": 31.4360149,
+    "longitude": 49.041312
+  },
+  {
+    "id": 20,
+    "name_fa": "زنجان",
+    "name_en": "Zanjan",
+    "slug": "Zanjan",
+    "latitude": 36.5018185,
+    "longitude": 48.3988186
+  },
+  {
+    "id": 21,
+    "name_fa": "سمنان",
+    "name_en": "Semnan",
+    "slug": "Semnan",
+    "latitude": 35.2255585,
+    "longitude": 54.4342138
+  },
+  {
+    "id": 12,
+    "name_fa": "سيستان وبلوچستان",
+    "name_en": "Sistan and Baluchistan",
+    "slug": "Sistan-and-Baluchistan",
+    "latitude": 27.5299906,
+    "longitude": 60.5820676
+  },
+  {
+    "id": 8,
+    "name_fa": "فارس",
+    "name_en": "Fars",
+    "slug": "Fars",
+    "latitude": 29.1043813,
+    "longitude": 53.045893
+  },
+  {
+    "id": 27,
+    "name_fa": "قزوين",
+    "name_en": "Qazvin",
+    "slug": "Qazvin",
+    "latitude": 36.0881317,
+    "longitude": 49.8547266
+  },
+  {
+    "id": 26,
+    "name_fa": "قم",
+    "name_en": "Qom",
+    "slug": "Qom",
+    "latitude": 34.6399443,
+    "longitude": 50.8759419
+  },
+  {
+    "id": 13,
+    "name_fa": "كردستان",
+    "name_en": "Kurdistan",
+    "slug": "Kurdistan",
+    "latitude": 31.4360149,
+    "longitude": 49.041312
+  },
+  {
+    "id": 9,
+    "name_fa": "كرمان",
+    "name_en": "Kerman",
+    "slug": "Kerman",
+    "latitude": 30.2839379,
+    "longitude": 57.0833628
+  },
+  {
+    "id": 6,
+    "name_fa": "کرمانشاه",
+    "name_en": "Kermanshah",
+    "slug": "Kermanshah",
+    "latitude": 34.314167,
+    "longitude": 47.065
+  },
+  {
+    "id": 18,
+    "name_fa": "كهگيلويه وبويراحمد",
+    "name_en": "Kohgiloyeh Boyerahmad",
+    "slug": "Kohgiloyeh-Boyerahmad",
+    "latitude": 30.6509479,
+    "longitude": 51.60525
+  },
+  {
+    "id": 28,
+    "name_fa": "گلستان",
+    "name_en": "Golestan",
+    "slug": "Golestan",
+    "latitude": 37.2898123,
+    "longitude": 55.1375834
+  },
+  {
+    "id": 2,
+    "name_fa": "گيلان",
+    "name_en": "Gilan",
+    "slug": "Gilan",
+    "latitude": 37.2809,
+    "longitude": 49.5924
+  },
+  {
+    "id": 16,
+    "name_fa": "لرستان",
+    "name_en": "Lorestan",
+    "slug": "Lorestan",
+    "latitude": 31.4360149,
+    "longitude": 49.041312
+  },
+  {
+    "id": 3,
+    "name_fa": "مازندران",
+    "name_en": "Mazandaran",
+    "slug": "Mazandaran",
+    "latitude": 36.2262393,
+    "longitude": 52.5318604
+  },
+  {
+    "id": 1,
+    "name_fa": "مرکزی",
+    "name_en": "Markazi",
+    "slug": "Markazi",
+    "latitude": 34.6123,
+    "longitude": 49.8547
+  },
+  {
+    "id": 23,
+    "name_fa": "هرمزگان",
+    "name_en": "Hormozgan",
+    "slug": "Hormozgan",
+    "latitude": 30.2839379,
+    "longitude": 57.0833628
+  },
+  {
+    "id": 14,
+    "name_fa": "همدان",
+    "name_en": "Hamedan",
+    "slug": "Hamedan",
+    "latitude": 27.138723,
+    "longitude": 55.1375834
+  },
+  {
+    "id": 15,
+    "name_fa": "چهارمحال وبختياری",
+    "name_en": "Chaharmahal and Bakhtiari ",
+    "slug": "Chaharmahal-and-Bakhtiari ",
+    "latitude": 31.9614348,
+    "longitude": 50.8456323
+  },
+  {
+    "id": 22,
+    "name_fa": "یزد",
+    "name_en": "Yazd",
+    "slug": "Yazd",
+    "latitude": 31.8794521,
+    "longitude": 54.171953
+  }
+]
