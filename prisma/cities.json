@@ -20,8 +20,8 @@
   {
     "id": 296,
     "name_fa": "آبدانان",
-    "name_en": "ABDANAN",
-    "slug": "ABDANAN",
+    "name_en": "Abdanan",
+    "slug": "Abdanan",
     "province_id": 17,
     "latitude": 32.9925,
     "longitude": 47.419722
@@ -47,8 +47,8 @@
   {
     "id": 226,
     "name_fa": "آران وبيدگل",
-    "name_en": "Aran va Bidgol",
-    "slug": "Aran va Bidgol",
+    "name_en": "Aran and Bidgol",
+    "slug": "Aran-and-Bidgol",
     "province_id": 11,
     "latitude": 34.057778,
     "longitude": 51.484167
@@ -129,7 +129,7 @@
     "id": 345,
     "name_fa": "ابوموسي",
     "name_en": "Abu Musa",
-    "slug": "Abu Musa",
+    "slug": "Abu-Musa",
     "province_id": 23,
     "latitude": 25.8797106,
     "longitude": 55.0328017
@@ -2234,8 +2234,8 @@
   {
     "id": 140,
     "name_fa": "مرودشت",
-    "name_en": "MARVDASHT",
-    "slug": "MARVDASHT",
+    "name_en": "Marvdasht",
+    "slug": "Marvdasht",
     "province_id": 8,
     "latitude": 29.874167,
     "longitude": 52.8025
@@ -2253,7 +2253,7 @@
     "id": 114,
     "name_fa": "مسجدسليمان",
     "name_en": "Masjed Soleiman",
-    "slug": "Masjed Soleiman",
+    "slug": "Masjed-Soleiman",
     "province_id": 7,
     "latitude": 31.936389,
     "longitude": 49.303889
@@ -2586,7 +2586,7 @@
     "id": 379,
     "name_fa": "پارس آباد",
     "name_en": "Pars Abad",
-    "slug": "Pars Abad",
+    "slug": "Pars-Abad",
     "province_id": 25,
     "latitude": 39.648333,
     "longitude": 47.9175

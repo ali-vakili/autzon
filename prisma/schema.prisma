@@ -22,10 +22,10 @@ model Image {
   updatedAt DateTime @updatedAt
 
   //relations
-  agent     AutoGalleryAgent? @relation(fields: [agentId], references: [id], onDelete: Cascade)
-  agentId   String?           @unique
-  gallery   AutoGallery?      @relation(fields: [galleryId], references: [id], onDelete: Cascade)
-  galleryId String?           @unique
+  agent      AutoGalleryAgent? @relation(fields: [agent_id], references: [id], onDelete: Cascade)
+  agent_id   String?           @unique
+  gallery    AutoGallery?      @relation(fields: [gallery_id], references: [id], onDelete: Cascade)
+  gallery_id String?           @unique
 }
 
 model Province {
@@ -39,26 +39,29 @@ model Province {
 }
 
 model City {
-  id          Int      @id
+  id          Int           @id
   name_fa     String
   name_en     String
   slug        String
   latitude    Float
   longitude   Float
-  province    Province @relation(fields: [province_id], references: [id])
+  province    Province      @relation(fields: [province_id], references: [id])
   province_id Int
+  gallery     AutoGallery[]
 }
 
 model AutoGallery {
   id           String           @id @default(uuid())
   name         String           @db.VarChar(30)
   image_id     Image?
+  city         City             @relation(fields: [city_id], references: [id])
+  city_id      Int
   address      String
   phone_number String           @db.VarChar(11)
-  agent        AutoGalleryAgent @relation(fields: [agentId], references: [id], onDelete: Cascade)
-  agentId      String
+  agent        AutoGalleryAgent @relation(fields: [agent_id], references: [id], onDelete: Cascade)
+  agent_id     String
   is_verified  Boolean          @default(false)
-  created_at   DateTime         @default(now())
+  createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
 
