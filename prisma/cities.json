@@ -191,8 +191,8 @@
   {
     "id": 71,
     "name_fa": "اروميه",
-    "name_en": "Address:",
-    "slug": "Address:",
+    "name_en": "Urmia",
+    "slug": "Urmia",
     "province_id": 5,
     "latitude": 37.555278,
     "longitude": 45.0725
@@ -218,8 +218,8 @@
   {
     "id": 88,
     "name_fa": "اسلام آبادغرب",
-    "name_en": "Islamic garb",
-    "slug": "Islamic garb",
+    "name_en": "Eslamabad-e-Gharb",
+    "slug": "Eslamabad-e-Gharb",
     "province_id": 6,
     "latitude": 33.7293882,
     "longitude": 73.0931461
@@ -506,8 +506,8 @@
   {
     "id": 347,
     "name_fa": "بندرلنگه",
-    "name_en": "Bandare Lenge",
-    "slug": "Bandare-Lenge",
+    "name_en": "Bandar-e Lengeh",
+    "slug": "Bandar-e-Lengeh",
     "province_id": 23,
     "latitude": 26.558056,
     "longitude": 54.880556
@@ -515,8 +515,8 @@
   {
     "id": 106,
     "name_fa": "بندرماهشهر",
-    "name_en": "Bandare Mahshahr",
-    "slug": "Bandare-Mahshahr",
+    "name_en": "Bandar-e Mahshahr",
+    "slug": "Bandar-e-Mahshahr",
     "province_id": 7,
     "latitude": 33.139722,
     "longitude": 47.376111
@@ -524,8 +524,8 @@
   {
     "id": 391,
     "name_fa": "بندرگز",
-    "name_en": "Bandargaz",
-    "slug": "Bandargaz",
+    "name_en": "Bandar Gaz",
+    "slug": "BandarGaz",
     "province_id": 28,
     "latitude": 37.444444,
     "longitude": 59.108056
@@ -659,8 +659,8 @@
   {
     "id": 183,
     "name_fa": "تربت جام",
-    "name_en": "Torbate Jam",
-    "slug": "Torbate-Jam",
+    "name_en": "Torbat-e-Jam",
+    "slug": "Torbat-e-Jam",
     "province_id": 10,
     "latitude": 35.243889,
     "longitude": 60.6225
@@ -781,15 +781,6 @@
     "province_id": 3,
     "latitude": 36.8241289,
     "longitude": 49.4237274
-  },
-  {
-    "id": 352,
-    "name_fa": "حاجي اباد",
-    "name_en": "Hajiabadi",
-    "slug": "Hajiabadi",
-    "province_id": 23,
-    "latitude": 28.309167,
-    "longitude": 55.901667
   },
   {
     "id": 343,
@@ -965,8 +956,8 @@
   {
     "id": 110,
     "name_fa": "دشت آزادگان",
-    "name_en": "DashteAzadegan",
-    "slug": "DashteAzadegan",
+    "name_en": "Dasht-e-Azadegan",
+    "slug": "Dasht-e-Azadegan",
     "province_id": 7,
     "latitude": 30.347296,
     "longitude": 48.2934004
@@ -1098,15 +1089,6 @@
     "longitude": 48.1891185
   },
   {
-    "id": 111,
-    "name_fa": "رامهرمز",
-    "name_en": "Ramhormoz",
-    "slug": "Ramhormoz",
-    "province_id": 7,
-    "latitude": 31.28,
-    "longitude": 49.603611
-  },
-  {
     "id": 401,
     "name_fa": "راميان",
     "name_en": "Ramian",
@@ -1172,8 +1154,8 @@
   {
     "id": 26,
     "name_fa": "رضوانشهر",
-    "name_en": "Rezvan shahr",
-    "slug": "Rezvan-shahr",
+    "name_en": "Rezvan Shahr",
+    "slug": "Rezvan-Shahr",
     "province_id": 2,
     "latitude": 36.694444,
     "longitude": 45.141667
@@ -1233,15 +1215,6 @@
     "longitude": 46.208889
   },
   {
-    "id": 174,
-    "name_fa": "ريگان",
-    "name_en": "Reagan",
-    "slug": "Reagan",
-    "province_id": 9,
-    "latitude": 27.6077357,
-    "longitude": 59.4720904
-  },
-  {
     "id": 236,
     "name_fa": "زابل",
     "name_en": "Zabul",
@@ -1285,15 +1258,6 @@
     "province_id": 1,
     "latitude": 30.812778,
     "longitude": 56.563889
-  },
-  {
-    "id": 147,
-    "name_fa": "زرين دشت",
-    "name_en": "Zarrin dasht",
-    "slug": "Zarrindasht",
-    "province_id": 8,
-    "latitude": 28.3545047,
-    "longitude": 54.4178006
   },
   {
     "id": 321,
@@ -1550,20 +1514,11 @@
   {
     "id": 81,
     "name_fa": "شاهين دژ",
-    "name_en": "Shahindezh",
-    "slug": "Shahindezh",
+    "name_en": "Shahin Dej",
+    "slug": "Shahin-Dej",
     "province_id": 5,
     "latitude": 36.679167,
     "longitude": 46.566944
-  },
-  {
-    "id": 224,
-    "name_fa": "شاهين شهروميمه",
-    "name_en": "Shahin Shhrvmymh",
-    "slug": "Shahin-Shhrvmymh",
-    "province_id": 11,
-    "latitude": 33.1271852,
-    "longitude": 51.5150077
   },
   {
     "id": 60,
@@ -1656,19 +1611,10 @@
     "longitude": 57.9276184
   },
   {
-    "id": 97,
-    "name_fa": "صحنه",
-    "name_en": "Scene",
-    "slug": "Scene",
-    "province_id": 6,
-    "latitude": 35.9985999,
-    "longitude": 45.8823428
-  },
-  {
     "id": 20,
     "name_fa": "صومعه سرا",
-    "name_en": "Somesara",
-    "slug": "Somesara",
+    "name_en": "Someh Sara",
+    "slug": "Someh-Sara",
     "province_id": 2,
     "latitude": 37.311667,
     "longitude": 49.321944
@@ -1937,8 +1883,8 @@
   {
     "id": 93,
     "name_fa": "قصرشيرين",
-    "name_en": "Qasre Shirin",
-    "slug": "Qasre-Shirin",
+    "name_en": "Qasr-e Shirin",
+    "slug": "Qasr-e-Shirin",
     "province_id": 6,
     "latitude": 34.5159031,
     "longitude": 45.5776859
@@ -1946,8 +1892,8 @@
   {
     "id": 173,
     "name_fa": "قلعه گنج",
-    "name_en": "Gale Ganj",
-    "slug": "Gale-Ganj",
+    "name_en": "Qalehganj",
+    "slug": "Qalehganj",
     "province_id": 9,
     "latitude": 27.523611,
     "longitude": 57.881111
@@ -2178,15 +2124,6 @@
     "longitude": 44.516667
   },
   {
-    "id": 325,
-    "name_fa": "ماهنشان",
-    "name_en": "Mahneshan",
-    "slug": "Mahneshan",
-    "province_id": 20,
-    "latitude": 33.122222,
-    "longitude": 46.164722
-  },
-  {
     "id": 225,
     "name_fa": "مبارکه",
     "name_en": "Mobarakeh",
@@ -2342,8 +2279,8 @@
   {
     "id": 245,
     "name_fa": "مهرستان",
-    "name_en": "Your spouse",
-    "slug": "Your spouse",
+    "name_en": "Mehrestan",
+    "slug": "Mehrestan",
     "province_id": 12,
     "latitude": 33.122222,
     "longitude": 46.164722
@@ -2412,24 +2349,6 @@
     "longitude": 51.3679914
   },
   {
-    "id": 178,
-    "name_fa": "نرماشير",
-    "name_en": "Narmashir",
-    "slug": "Narmashir",
-    "province_id": 9,
-    "latitude": 30.558889,
-    "longitude": 49.198056
-  },
-  {
-    "id": 223,
-    "name_fa": "نطنز",
-    "name_en": "Natanz",
-    "slug": "Natanz",
-    "province_id": 11,
-    "latitude": 33.513333,
-    "longitude": 51.916389
-  },
-  {
     "id": 426,
     "name_fa": "نظرآباد",
     "name_en": "Nazarabad",
@@ -2437,24 +2356,6 @@
     "province_id": 31,
     "latitude": 39.648333,
     "longitude": 47.9175
-  },
-  {
-    "id": 79,
-    "name_fa": "نقده",
-    "name_en": "Tinsel",
-    "slug": "Tinsel",
-    "province_id": 5,
-    "latitude": 36.955278,
-    "longitude": 45.388056
-  },
-  {
-    "id": 381,
-    "name_fa": "نمين",
-    "name_en": "Namin",
-    "slug": "Namin",
-    "province_id": 25,
-    "latitude": 38.426944,
-    "longitude": 48.483889
   },
   {
     "id": 264,
@@ -2491,15 +2392,6 @@
     "province_id": 3,
     "latitude": 36.648889,
     "longitude": 51.496111
-  },
-  {
-    "id": 382,
-    "name_fa": "نير",
-    "name_en": "Nir",
-    "slug": "Nir",
-    "province_id": 25,
-    "latitude": 50.3851246,
-    "longitude": 3.2642436
   },
   {
     "id": 190,
