@@ -1,0 +1,43 @@
+[
+  {
+    "category": "Classic"
+  },
+  {
+    "category": "Antique"
+  },
+  {
+    "category": "Exotic"
+  },
+  {
+    "category": "Muscle"
+  },
+  {
+    "category": "Sports"
+  },
+  {
+    "category": "Luxury"
+  },
+  {
+    "category": "SUVs",
+    "abbreviation": "Sport Utility Vehicles"
+  },
+  {
+    "category": "Trucks"
+  },
+  {
+    "category": "Sedans"
+  },
+  {
+    "category": "Convertibles"
+  },
+  {
+    "category": "EVs",
+    "abbreviation": "Electric Vehicles"
+  },
+  {
+    "category": "Hybrid"
+  },
+  {
+    "category": "Racing"
+  }
+]

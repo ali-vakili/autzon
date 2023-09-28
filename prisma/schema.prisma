@@ -20,6 +20,14 @@ enum Role {
   AGENT
 }
 
+model AutoGalleryCategory {
+  id           Int          @id @default(autoincrement())
+  category     String
+  abbreviation String?
+  gallery      AutoGallery? @relation(fields: [gallery_id], references: [id])
+  gallery_id   String?
+}
+
 model Image {
   id        String   @id @default(uuid())
   url       String
@@ -31,6 +39,8 @@ model Image {
   agent_id   String?           @unique
   gallery    AutoGallery?      @relation(fields: [gallery_id], references: [id], onDelete: Cascade)
   gallery_id String?           @unique
+  Car        Car?              @relation(fields: [car_id], references: [id], onDelete: Cascade)
+  car_id     String?           @unique
 }
 
 model Province {
@@ -55,19 +65,53 @@ model City {
   gallery     AutoGallery[]
 }
 
+model Car {
+  id           String      @id @default(uuid())
+  title        String      @db.VarChar(30)
+  brand        String      @db.VarChar(10)
+  model        String      @db.VarChar(15)
+  buid_year    Int
+  images       Image[]
+  gallery      AutoGallery @relation(fields: [gallery_id], references: [id], onDelete: Cascade)
+  gallery_id   String
+  for_rent     RentCar?
+  for_sale     SaleCar?
+  description  String      @db.VarChar(400)
+  is_published Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model RentCar {
+  id             String @id @default(uuid())
+  price_per_day  Float?
+  price_per_hour Float?
+  Car            Car    @relation(fields: [car_id], references: [id])
+  car_id         String @unique
+}
+
+model SaleCar {
+  id     String @id @default(uuid())
+  price  Float
+  Car    Car    @relation(fields: [car_id], references: [id])
+  car_id String @unique
+}
+
 model AutoGallery {
-  id           String           @id @default(uuid())
-  name         String           @db.VarChar(30)
+  id           String                @id @default(uuid())
+  name         String                @db.VarChar(30)
   image_id     Image?
-  city         City             @relation(fields: [city_id], references: [id])
+  cars         Car[]
+  categorys    AutoGalleryCategory[]
+  city         City                  @relation(fields: [city_id], references: [id])
   city_id      Int
   address      String
-  phone_number String           @db.VarChar(11)
-  agent        AutoGalleryAgent @relation(fields: [agent_id], references: [id], onDelete: Cascade)
+  phone_number String                @db.VarChar(11)
+  agent        AutoGalleryAgent      @relation(fields: [agent_id], references: [id], onDelete: Cascade)
   agent_id     String
-  is_verified  Boolean          @default(false)
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
+  is_verified  Boolean               @default(false)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
 }
 
 model AutoGalleryAgent {
