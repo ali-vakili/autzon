@@ -1,23 +1,36 @@
 import { NextResponse } from "next/server"
 import connectDB from "@/lib/connectDB"
 import prisma from "@/lib/prisma"
+import { fromZodError } from "zod-validation-error";
 import { hashPassword } from "@/lib/hash";
+import { AgentSchema, AgentType } from "@/validation/validations";
+
 
 export const POST = async (req: Request) => {
   try {
     connectDB();
 
     const body = await req.json();
-    const { email, password, confirmationPassword } = body;
+    const validData = AgentSchema.safeParse(body);
+    
+    if (!validData.success) {
+      const errorMessages = fromZodError(validData.error);
+      const messages = [...errorMessages.details];
+      const message = messages.map(message => ({ message: message.message, path: message.path[0]}));
+      return NextResponse.json({ error: message }, { status: 422 });
+    }
 
-    if (!email || !password || !confirmationPassword) {
+    const { email, password, confirmPassword }: AgentType = body;
+
+
+    if (!email || !password || !confirmPassword) {
       return NextResponse.json(
         { error: "Please fill all required fields" },
         { status: 422 }
       )
     }
 
-    if (password !== confirmationPassword) {
+    if (password !== confirmPassword) {
       return NextResponse.json(
         { error: "Password and Confirmation Password are not match" },
         { status: 401 }
