@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import connectDB from "@/lib/connectDB"
 import prisma from "@/lib/prisma"
 import { fromZodError } from "zod-validation-error";
+import { ZodError } from "zod";
 import { hashPassword } from "@/lib/hash";
 import { AgentSchema, AgentType } from "@/validation/validations";
 
@@ -14,14 +15,11 @@ export const POST = async (req: Request) => {
     const validData = AgentSchema.safeParse(body);
     
     if (!validData.success) {
-      const errorMessages = fromZodError(validData.error);
-      const messages = [...errorMessages.details];
-      const message = messages.map(message => ({ message: message.message, path: message.path[0]}));
-      return NextResponse.json({ error: message }, { status: 422 });
+      const zodError = new ZodError(validData.error.errors);
+      throw zodError;
     }
 
     const { email, password, confirmPassword }: AgentType = body;
-
 
     if (!email || !password || !confirmPassword) {
       return NextResponse.json(
@@ -38,7 +36,7 @@ export const POST = async (req: Request) => {
     }
 
     const existingAgent = await prisma.autoGalleryAgent.findUnique({
-      where: { email: email }
+      where: { email: email.toLowerCase() }
     })
 
     if (existingAgent) {
@@ -52,7 +50,7 @@ export const POST = async (req: Request) => {
 
     await prisma.autoGalleryAgent.create({
       data: {
-        email,
+        email: email.toLowerCase(),
         password: hashedPassword
       }
     })
@@ -64,10 +62,16 @@ export const POST = async (req: Request) => {
 
   }
   catch(error) {
+    if (error instanceof ZodError) {
+      const errorMessages = fromZodError(error);
+      const messages = [...errorMessages.details];
+      const message = messages.map(message => ({ message: message.message, path: message.path[0]} ));
+      return NextResponse.json({ error: message }, { status: 422 });
+    }
+
     return NextResponse.json({ error: "Something went wrong please try again later" }, { status: 500 })
   }
   finally {
     await prisma.$disconnect()
   }
 }
-
