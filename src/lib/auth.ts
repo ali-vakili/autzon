@@ -9,6 +9,7 @@ import prisma from "./prisma";
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
+  secret: process.env.NEXTAUTH_SECERET,
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -20,7 +21,7 @@ export const authOptions: NextAuthOptions = {
         try {
           await connectDB();
         }
-        catch (error){
+        catch (error) {
           throw new Error("Something went wrong please try again later");
         }
 
@@ -34,8 +35,6 @@ export const authOptions: NextAuthOptions = {
           where: { email: email }
         });
 
-        console.log(existingAgent)
-
         if(!existingAgent) throw new Error("Email not found")
 
         const passwordMatch = await verifyPassword(password, existingAgent.password);
@@ -48,5 +47,29 @@ export const authOptions: NextAuthOptions = {
         }
       },
     })
-  ]
+  ],
+  callbacks: {
+    async jwt({ token, user, session}) {
+      if (user) {
+        return {
+          ...token,
+          id: user.id
+        };
+      }
+      return token;
+    },
+
+    async session({ session, token, user }) {
+      if (token) {
+        return {
+          ...session,
+          user: {
+            ...session.user,
+            id: token.id,
+          }
+        };
+      }
+      return session;
+    }
+  }
 };
