@@ -45,13 +45,13 @@ export const POST = async (req: Request) => {
         { status: 409 }
       )
     }
-
+    
     const hashedPassword = await hashPassword(password);
 
     await prisma.autoGalleryAgent.create({
       data: {
         email: email.toLowerCase(),
-        password: hashedPassword
+        password: hashedPassword,
       }
     })
 

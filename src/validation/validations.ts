@@ -15,8 +15,14 @@ const AgentSchema = z.object({
   message: "Password do not match"
 });
 
+const SignInFormSchema = z.object({
+  email: z.string().toLowerCase().min(1, "Email is required").email(),
+  password: z.string().min(1, "Password is required")
+}).required()
+
 type AgentType = z.infer<typeof AgentSchema>
+type SignInFormSchemaType = z.infer<typeof SignInFormSchema>
 
 
-export { AgentSchema }
-export type { AgentType }
+export { AgentSchema, SignInFormSchema }
+export type { AgentType, SignInFormSchemaType }
