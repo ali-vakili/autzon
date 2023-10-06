@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/ui/button"
 import { Loader2 } from "lucide-react"
+import { toast } from 'sonner';
 
 import {
   Form,
@@ -23,14 +24,17 @@ import { useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 
+
 const SignIn = () => {
   const[loader, setLoader] = useState(false);
   const[error, setError] = useState("");
+  const[success, setSuccess] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const onSubmit = async (values: SignInFormSchemaType) => {
+    toast.loading("Signing in...");
     setLoader(true);
     try {
       const {email, password} = values;
@@ -42,13 +46,17 @@ const SignIn = () => {
       })
       if (!response?.error) {
         setError("");
-        router.push(callbackUrl);
+        setSuccess(true);
+        toast.success("Signed in successfully");
+        router.replace(callbackUrl);
       }
       else {
         setError(response?.error)
+        toast.error("Invalid credentials");
       }
     }
     catch(error) { 
+      setSuccess(false);
       setError("Something went wrong please try again later")
     }
     finally {
@@ -101,7 +109,7 @@ const SignIn = () => {
                 <FormItem className="">
                   <div className="flex justify-between">
                     <FormLabel>Password</FormLabel>
-                    <FormLabel>Forgot Password?</FormLabel>
+                    <FormLabel className="text-muted-foreground">Forgot Password?</FormLabel>
                   </div>
                   <FormControl>
                     <Input placeholder="••••••••" {...field} type="password" className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
@@ -111,12 +119,12 @@ const SignIn = () => {
               )}
             />
             {loader ? (
-                <Button disabled className="w-full" style={{marginTop: "32px"}}>
+                <Button disabled className="w-full" style={{ marginTop: "32px" }}>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Please wait
                 </Button>
               ):(
-                <Button type="submit" className="w-full" style={{marginTop: "32px"}}>Sign In</Button>
+                <Button type="submit" disabled={success} className="w-full" style={{ marginTop: "32px" }}>Sign In</Button>
               )}
           </form>
         </Form>
