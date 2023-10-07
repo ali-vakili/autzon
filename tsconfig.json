@@ -23,6 +23,7 @@
       "@/ui/*": ["./src/components/ui/*"],
       "@/template/*": ["./src/components/template/*"],
       "@/scss/*": ["./src/components/scss/*"],
+      "@/module/*": ["./src/components/module/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
