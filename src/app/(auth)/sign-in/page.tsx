@@ -1,7 +1,7 @@
 import SignIn from "@/template/SignIn";
 
-const SingIn = () => {
+const SignInPage = () => {
   return < SignIn/>
 }
 
-export default SingIn;
+export default SignInPage;

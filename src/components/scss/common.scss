@@ -9,12 +9,18 @@ hr.divider {
   text-align: center;
 
   &::after {
-    content: "or sign in with email";
     display: inline-block;
     position: relative;
     top: -14px;
     padding: 0 16px;
     background: #FAFAFA;
     font-size: 14px;
+  }
+
+  &.sign-in::after {
+    content: "or sign in with email";
+  }
+  &.sign-up::after {
+    content: "or continue with email";
   }
 }

@@ -2,7 +2,7 @@ import { z } from "zod"
 
 
 const AgentSchema = z.object({
-  email: z.string().toLowerCase().email(),
+  email: z.string().toLowerCase().min(1, "Email is required").email(),
   password: z.string().min(1, "Password is required").min(8, "Password must have at least 8 characters long").refine(value =>
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+$/.test(value),
     {
