@@ -43,13 +43,18 @@ const SignIn = () => {
         callbackUrl,
         redirect: false
       })
-      if (!response?.error) {
+      if (!response?.error && response?.error !== "Your email is not verified") {
         setSuccess(true);
         toast.success("Signed in successfully");
         router.replace(callbackUrl);
       }
       else {
-        toast.error("Invalid credentials");
+        if (response?.error === "Your email is not verified") {
+          toast.error(response?.error)
+        }
+        else {
+          toast.error("Invalid credentials");
+        }
       }
     }
     catch(error) { 
@@ -70,7 +75,7 @@ const SignIn = () => {
   })
 
   return (
-    <div className="flex flex-col flex-1 items-center flex-shrink-0 px-5 pt-16 pb-8">
+    <div className="flex flex-col flex-1 items-center flex-shrink-0 px-5">
       <div className="flex flex-col flex-1">
         <h1 className="mt-8 mb-2 text-2xl lg:text-3xl font-semibold">Welcome Back</h1>
         <h2 className="text-sm text-foreground-light mb-10">Sign in to your account</h2>

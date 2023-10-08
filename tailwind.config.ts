@@ -15,6 +15,19 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    screens: {
+      'Sphone': '320px',
+      'phone': '375px',
+      'Lphone': '425px',
+      'Stablet': '576px',
+      'tablet': '768px',
+      'Slaptop': '992px',
+      'Laptop': '1024px',
+      'Sdesktop': '1200px',
+      'desktop': '1366px',
+      'Mdesktop': '1400px',
+      'Ldesktop': '1920px'
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",

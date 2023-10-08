@@ -54,7 +54,7 @@ const SignUp = () => {
   })
 
   return (
-    <div className="flex flex-col flex-1 items-center flex-shrink-0 px-5 pt-16 pb-8">
+    <div className="flex flex-col flex-1 items-center flex-shrink-0 px-5">
       <div className="flex flex-col flex-1 max-w-sm">
         <h1 className="mt-8 mb-2 text-2xl lg:text-3xl font-semibold">Get started</h1>
         <h2 className="text-sm text-foreground-light mb-10">Create a new account</h2>

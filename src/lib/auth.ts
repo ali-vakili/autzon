@@ -38,11 +38,13 @@ export const authOptions: NextAuthOptions = {
           where: { email: email }
         });
 
-        if(!existingAgent) throw new Error("Email not found")
+        if(!existingAgent) throw new Error("Email not found");
+
+        if(!existingAgent.is_verified) throw new Error("Your email is not verified");
 
         const passwordMatch = await verifyPassword(password, existingAgent.password);
 
-        if(!passwordMatch) throw new Error("Email or Password is wrong")
+        if(!passwordMatch) throw new Error("Email or Password is wrong");
 
         return {
           id: `${existingAgent.id}`,

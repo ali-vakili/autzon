@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'sonner';
 import TanStackProvider from "@/providers/TanStackProvider";
+import Layout from "@/components/Layout/Layout";
 import axios from "axios";
 
 const inter = Inter({ subsets: ['latin'] })
@@ -26,7 +27,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <NextAuthProvider>
           <TanStackProvider>
-            {children}
+            <Layout>
+              {children}
+            </Layout>
           </TanStackProvider>
         </NextAuthProvider>
         <Toaster position="top-right" richColors visibleToasts={1}/>
