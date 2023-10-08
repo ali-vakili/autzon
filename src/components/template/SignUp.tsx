@@ -20,11 +20,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { AgentSchema, AgentType } from "@/validation/validations"
 import { useCreateAgent } from "@/hooks/useCreateAgent";
 
+import { FiEye, FiEyeOff } from "react-icons/fi";
+
 import "@/scss/Common.scss"
 
 
 const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [togglePasswordType, setTogglePasswordType] = useState<boolean>(false);
 
   const { mutate: createAgent, isLoading, isSuccess, isError, error } = useCreateAgent();
 
@@ -71,7 +74,7 @@ const SignUp = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="you@example.com" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
+                    <Input id="email" placeholder="you@example.com" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,9 +88,16 @@ const SignUp = () => {
                   <div className="flex justify-between">
                     <FormLabel>Password</FormLabel>
                   </div>
-                  <FormControl>
-                    <Input placeholder="••••••••" {...field} type="password" className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
-                  </FormControl>
+                  <div className="relative">
+                    <FormControl className="z-0">
+                      <Input autoComplete="new-password" id="password" placeholder="••••••••" {...field} type={togglePasswordType ? "text" : "password"} className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
+                    </FormControl>
+                    <div className="absolute inset-y-0 right-0 pl-3 pr-1 flex space-x-1 items-center">
+                      <button type="button" onClick={() => setTogglePasswordType(prev => !prev)} className="relative justify-center cursor-pointer inline-flex items-center text-center bg-gray-50 hover:bg-zinc-100 ease-out duration-200 rounded-md outline-none transition-all outline-0 border shadow-sm text-xs px-2.5 py-1 !mr-1">
+                        {togglePasswordType ? <FiEyeOff/> : <FiEye/>}
+                      </button>
+                    </div>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -99,7 +109,7 @@ const SignUp = () => {
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="••••••••" {...field} type="password" className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
+                    <Input id="confirmPassword" autoComplete="new-password" placeholder="••••••••" {...field} type="password" className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
