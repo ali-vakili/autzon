@@ -134,7 +134,7 @@ const SignUp = () => {
           <span className="text-foreground-light">
             Have an account?&nbsp;
           </span>
-          <Link href="#" className="underline transition text-foreground hover:text-foreground-light">
+          <Link href="/sign-in" className="underline transition text-foreground hover:text-foreground-light">
             Sign In Now
           </Link>    
         </div>
