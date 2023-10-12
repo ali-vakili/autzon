@@ -38,6 +38,16 @@ model Image {
   car_id     String?           @unique
 }
 
+model ActivationToken {
+  id          String           @default(uuid())
+  verifyToken String           @unique @db.Text
+  agent_id    String
+  agent       AutoGalleryAgent @relation(fields: [agent_id], references: [id])
+  activatedAt DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
 model Province {
   id        Int    @id
   name_fa   String
@@ -110,17 +120,18 @@ model AutoGallery {
 }
 
 model AutoGalleryAgent {
-  id            String        @id @default(uuid())
-  firstName     String?       @db.VarChar(30)
-  lastName      String?       @db.VarChar(30)
-  image_id      Image?
-  role          Role          @default(AGENT)
-  email         String        @unique
-  password      String
-  phone_number  String?       @db.VarChar(11)
-  gallery       AutoGallery[]
-  is_subscribed Boolean       @default(false)
-  is_verified   Boolean       @default(false)
-  join_date     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id               String            @id @default(uuid())
+  firstName        String?           @db.VarChar(30)
+  lastName         String?           @db.VarChar(30)
+  image_id         Image?
+  role             Role              @default(AGENT)
+  email            String            @unique
+  password         String
+  phone_number     String?           @db.VarChar(11)
+  gallery          AutoGallery[]
+  activation_token ActivationToken[]
+  is_subscribed    Boolean           @default(false)
+  is_verified      Boolean           @default(false)
+  join_date        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 }

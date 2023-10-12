@@ -5,6 +5,8 @@ import { fromZodError } from "zod-validation-error";
 import { ZodError } from "zod";
 import { hashPassword } from "@/lib/hash";
 import { AgentSchema, AgentType } from "@/validation/validations";
+import generateToken from "@/lib/token";
+import { Prisma } from '@prisma/client'
 
 
 export const POST = async (req: Request) => {
@@ -47,13 +49,33 @@ export const POST = async (req: Request) => {
     }
     
     const hashedPassword = await hashPassword(password);
+    const token = generateToken()
+    let agent: Prisma.AutoGalleryAgentCreateInput
 
-    await prisma.autoGalleryAgent.create({
+    agent = {
+      email: email.toLowerCase(),
+      password: hashedPassword,
+      activation_token: {
+        create: {
+          verifyToken: token,
+        },
+      },
+    }
+    console.log(token);
+
+    const user = await prisma.autoGalleryAgent.create({
       data: {
         email: email.toLowerCase(),
         password: hashedPassword,
+        activation_token: {
+          create: {
+            verifyToken: token
+          }
+        }
       }
     })
+
+    console.log(user)
 
     return NextResponse.json(
       { message: "Auto Gallery Agent Created Successfully" },
@@ -62,6 +84,7 @@ export const POST = async (req: Request) => {
 
   }
   catch(error) {
+    console.log(error)
     if (error instanceof ZodError) {
       const errorMessages = fromZodError(error);
       const messages = [...errorMessages.details];
