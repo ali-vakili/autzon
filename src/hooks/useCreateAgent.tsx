@@ -8,7 +8,7 @@ const createAgent = async (values: AgentType) => {
   const { data } = await axios.post(
     "api/auth/signup", { email, password, confirmPassword }
   )
-  console.log(data)
+  
   return data;
 }
 
