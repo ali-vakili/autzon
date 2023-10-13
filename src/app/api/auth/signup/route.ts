@@ -6,6 +6,7 @@ import { ZodError } from "zod";
 import { hashPassword } from "@/lib/hash";
 import { AgentSchema, AgentType } from "@/validation/validations";
 import generateToken from "@/lib/token";
+import sendMail from "@/lib/sendMail";
 
 
 export const POST = async (req: Request) => {
@@ -61,6 +62,8 @@ export const POST = async (req: Request) => {
         }
       }
     })
+
+    await sendMail({ email, token })
 
     return NextResponse.json(
       { message: "Auto Gallery Agent Created Successfully" },

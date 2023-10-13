@@ -42,7 +42,7 @@ model ActivationToken {
   id          String           @default(uuid())
   verifyToken String           @unique @db.Text
   agent_id    String
-  agent       AutoGalleryAgent @relation(fields: [agent_id], references: [id])
+  agent       AutoGalleryAgent @relation(fields: [agent_id], references: [id], onDelete: Cascade)
   activatedAt DateTime?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
