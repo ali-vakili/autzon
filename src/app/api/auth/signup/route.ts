@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server"
-import connectDB from "@/lib/connectDB"
-import prisma from "@/lib/prisma"
 import { fromZodError } from "zod-validation-error";
 import { ZodError } from "zod";
-import { hashPassword } from "@/lib/hash";
 import { AgentSchema, AgentType } from "@/validation/validations";
-import generateToken from "@/lib/token";
-import sendMail from "@/lib/sendMail";
+import { sendMail, connectDB, hashPassword, generateToken, prisma } from "@/lib";
 
 
 export const POST = async (req: Request) => {

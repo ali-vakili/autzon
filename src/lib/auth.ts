@@ -1,7 +1,7 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import connectDB from "./connectDB";
+import { connectDB } from "./connectDB";
 import { verifyPassword } from "./hash";
 import prisma from "./prisma";
 

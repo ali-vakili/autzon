@@ -1,5 +1,5 @@
 import prisma from "./prisma";
 
-export default async () => {
+export const connectDB = async () => {
   await prisma.$connect();
 }
