@@ -26,7 +26,7 @@ const AgentCreateSchema = z.object({
 const AgentUpdateSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
-  phone_number: z.string().min(1, "Phone number is required").max(11, "Phone number is not valid")
+  phone_number: z.string().min(1, "Phone number is required").max(11, "Phone number is too long")
   .refine(value => !value.includes(' '), "Phone number cannot contain spaces")
   .refine(value => /^\d+$/.test(value), "Phone number can only contain digits"),
 }).required()

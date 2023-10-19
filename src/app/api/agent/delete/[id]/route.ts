@@ -2,9 +2,6 @@ import { getServerSession } from "next-auth/next"
 import { NextResponse } from "next/server"
 import { authOptions } from "@/lib/auth";
 import { connectDB, prisma } from "@/lib";
-import { ZodError } from "zod";
-import { fromZodError } from "zod-validation-error";
-import { AgentUpdateSchema, AgentUpdateType } from "@/validation/validations";
 
 
 type requestParams = {
@@ -13,7 +10,7 @@ type requestParams = {
   }
 }
 
-export const PATCH = async (req: Request, { params }: requestParams) => {
+export const DELETE = async (req: Request, { params }: requestParams) => {
   try {
     connectDB()
   
@@ -25,22 +22,6 @@ export const PATCH = async (req: Request, { params }: requestParams) => {
         },
         { status: 401 }
       );
-    }
-    const body = await req.json();
-    const validData = AgentUpdateSchema.safeParse(body);
-
-    if (!validData.success) {
-      const zodError = new ZodError(validData.error.errors);
-      throw zodError;
-    }
-
-    const { firstName, lastName, phone_number }: AgentUpdateType = body;
-
-    if (!firstName || !lastName || !phone_number) {
-      return NextResponse.json(
-        { error: "Please fill all required fields" },
-        { status: 422 }
-      )
     }
 
     const agent = await prisma.autoGalleryAgent.findUnique({
@@ -60,13 +41,11 @@ export const PATCH = async (req: Request, { params }: requestParams) => {
     }
 
     if (agent.id === params.id) {
-      await prisma.autoGalleryAgent.update({
-        where: { id: agent.id },
-        data: {
-          firstName,
-          lastName,
-          phone_number
-        },
+      await prisma.autoGalleryAgent.delete({
+        where : { 
+          email: agent.email,
+          AND: { id: agent.id }
+        }
       })
     }else {
       return NextResponse.json(
@@ -79,20 +58,14 @@ export const PATCH = async (req: Request, { params }: requestParams) => {
 
     return NextResponse.json(
       {
-        message: "agent profile updated successfully"
+        message: "Your agent account deleted successfully"
       },
       { status: 200 }
     )
 
   }
   catch(err) {
-    if (err instanceof ZodError) {
-      const errorMessages = fromZodError(err);
-      const messages = [...errorMessages.details];
-      const message = messages.map(message => ({ message: message.message, path: message.path[0]} ));
-      return NextResponse.json({ error: message }, { status: 422 });
-    }
-
+    console.log(err)
     return NextResponse.json({ error: "Something went wrong please try again later" }, { status: 500 })
   }
   finally {
