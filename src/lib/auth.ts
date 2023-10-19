@@ -28,9 +28,11 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Something went wrong please try again later");
         }
 
+        
         if (!credentials?.email || !credentials?.password || !credentials) {
           throw new Error("Please provide valid email and password")
         }
+        console.log(credentials)
 
         const { email, password } = credentials;
 
@@ -48,7 +50,10 @@ export const authOptions: NextAuthOptions = {
 
         return {
           id: `${existingAgent.id}`,
-          email: existingAgent.email
+          email: existingAgent.email,
+          role: existingAgent.role,
+          is_verified: existingAgent.is_verified,
+          is_subscribed: existingAgent.is_subscribed,
         }
       },
     })
@@ -58,7 +63,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         return {
           ...token,
-          id: user.id
+          ...user
         };
       }
       return token;
@@ -71,6 +76,10 @@ export const authOptions: NextAuthOptions = {
           user: {
             ...session.user,
             id: token.id,
+            email: token.email,
+            role: token.role,
+            is_verified: token.is_verified,
+            is_subscribed: token.is_subscribed
           }
         };
       }

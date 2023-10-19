@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { fromZodError } from "zod-validation-error";
 import { ZodError } from "zod";
-import { AgentSchema, AgentType } from "@/validation/validations";
+import { AgentCreateSchema, AgentCreateType } from "@/validation/validations";
 import { sendMail, connectDB, hashPassword, generateToken, prisma } from "@/lib";
 
 
@@ -10,14 +10,14 @@ export const POST = async (req: Request) => {
     connectDB();
 
     const body = await req.json();
-    const validData = AgentSchema.safeParse(body);
+    const validData = AgentCreateSchema.safeParse(body);
     
     if (!validData.success) {
       const zodError = new ZodError(validData.error.errors);
       throw zodError;
     }
 
-    const { email, password, confirmPassword }: AgentType = body;
+    const { email, password, confirmPassword }: AgentCreateType = body;
 
     if (!email || !password || !confirmPassword) {
       return NextResponse.json(

@@ -17,7 +17,7 @@ import {
 import { Input } from "@/ui/input"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AgentSchema, AgentType } from "@/validation/validations"
+import { AgentCreateSchema, AgentCreateType } from "@/validation/validations"
 import { useCreateAgent } from "@/hooks/useCreateAgent";
 
 import { FiEye, FiEyeOff, FiCheckCircle } from "react-icons/fi";
@@ -40,12 +40,12 @@ const SignUp = () => {
     }
   },[error])
 
-  const onSubmit = async (values: AgentType) => {
+  const onSubmit = async (values: AgentCreateType) => {
     createAgent(values);
   }
   
-  const form = useForm<AgentType>({
-    resolver: zodResolver(AgentSchema),
+  const form = useForm<AgentCreateType>({
+    resolver: zodResolver(AgentCreateSchema),
     defaultValues: {
       email: "",
       password: "",
