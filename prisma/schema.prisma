@@ -16,11 +16,10 @@ enum Role {
 }
 
 model AutoGalleryCategory {
-  id           Int          @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   category     String
   abbreviation String?
-  gallery      AutoGallery? @relation(fields: [gallery_id], references: [id])
-  gallery_id   String?
+  galleries    AutoGallery[]
 }
 
 model Image {
@@ -107,7 +106,7 @@ model AutoGallery {
   name         String                @db.VarChar(30)
   image_id     Image?
   cars         Car[]
-  categorys    AutoGalleryCategory[]
+  categories   AutoGalleryCategory[]
   city         City                  @relation(fields: [city_id], references: [id])
   city_id      Int
   address      String

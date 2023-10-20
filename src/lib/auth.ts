@@ -32,7 +32,6 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials?.password || !credentials) {
           throw new Error("Please provide valid email and password")
         }
-        console.log(credentials)
 
         const { email, password } = credentials;
 

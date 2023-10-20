@@ -65,7 +65,6 @@ export const DELETE = async (req: Request, { params }: requestParams) => {
 
   }
   catch(err) {
-    console.log(err)
     return NextResponse.json({ error: "Something went wrong please try again later" }, { status: 500 })
   }
   finally {
