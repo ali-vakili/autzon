@@ -27,7 +27,7 @@ model PhoneNumber {
   number String @db.VarChar(11)
 
   //relations
-  gallery    AutoGallery? @relation(fields: [gallery_id], references: [id])
+  gallery    AutoGallery? @relation(fields: [gallery_id], references: [id], onDelete: Cascade)
   gallery_id String?
 }
 

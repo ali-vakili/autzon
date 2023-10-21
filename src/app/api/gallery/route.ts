@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { connectDB, validateSession, prisma } from "@/lib";
+import { connectDB, validateSession, prisma, checkAgent } from "@/lib";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { GalleryCreateSchema, GalleryCreateSchemaType } from "@/validation/validations";
@@ -31,6 +31,7 @@ export const GET = async () => {
           address: true,
           phone_numbers: {
             select: {
+              id: true,
               number: true
             }
           },
@@ -81,35 +82,15 @@ export const POST = async (req: Request) => {
 
     const { name, address, city, phone_numbers, categories }: GalleryCreateSchemaType = body;
 
-    const agent = await prisma.autoGalleryAgent.findUnique({
-      where: { 
-        email: session.user.email,
-        AND: { id: session.user.id }
-      }
-    })
-
-    if (!agent) {
+    if (!name || !address || !city || !phone_numbers || !categories) {
       return NextResponse.json(
-        {
-          error: "agent does not found credentials are mismatched",
-        },
-        { status: 401 }
-      );
+        { error: "Please fill all required fields" },
+        { status: 422 }
+      )
     }
 
-    if (!agent.is_verified) {
-      return NextResponse.json(
-        { message: "Your account is not verified" },
-        { status: 401 }
-      );
-    }
-
-    if (!agent.firstName || !agent.lastName || !agent.phone_number) {
-      return NextResponse.json(
-        { message: "Please complete your account information in order to create an auto gallery" },
-        { status: 400 }
-      );
-    }
+    const agent = await checkAgent(session);
+    if (agent instanceof NextResponse) return agent;
 
     const existingAutoGallery = await prisma.autoGallery.findFirst({
       where: { agent_id: agent.id }
@@ -131,7 +112,9 @@ export const POST = async (req: Request) => {
         city_id: +city,
         agent_id: agent.id,
         phone_numbers: {
-          create: phone_numbers.map(number => ({ number }))
+          createMany:{
+            data: phone_numbers.map(number => ({ number }))
+          } 
         },
         categories: {
           connect: categories.map(categoryId => ({ id: +categoryId }))

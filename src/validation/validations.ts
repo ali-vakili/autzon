@@ -40,11 +40,20 @@ const AgentUpdateSchema = z.object({
 
 // Gallery
 const GalleryCreateSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, "Name is required").max(30, "Name must be less that 30 characters"),
   address: z.string().min(1, "Address is required"),
   categories: z.array(z.string()).nonempty("At least one category must be selected"),
   city: z.string(),
   phone_numbers: z.array(phoneNumberSchema).nonempty("At least one phone number must be provided").max(3, "Can not add more than 3 phone numbers"),
+}).required()
+
+
+const GalleryUpdateSchema = z.object({
+  name: z.string().min(1, "Name is required").max(30, "Name must be less that 30 characters"),
+  address: z.string().min(1, "Address is required"),
+  categories: z.array(z.string()).nonempty("At least one category must be selected"),
+  city: z.string(),
+  phone_numbers: z.array(phoneNumberSchema).nonempty("At least one phone number must be provided").max(3, "Can not add more than 3 phone numbers")
 }).required()
 
 
@@ -58,17 +67,20 @@ const SignInFormSchema = z.object({
 type AgentCreateType = z.infer<typeof AgentCreateSchema>
 type AgentUpdateType = z.infer<typeof AgentUpdateSchema>
 type GalleryCreateSchemaType = z.infer<typeof GalleryCreateSchema>
+type GalleryUpdateSchemaType = z.infer<typeof GalleryUpdateSchema>
 type SignInFormSchemaType = z.infer<typeof SignInFormSchema>
 
 export {
   AgentCreateSchema,
   AgentUpdateSchema,
-  SignInFormSchema,
-  GalleryCreateSchema 
+  GalleryCreateSchema,
+  GalleryUpdateSchema, 
+  SignInFormSchema
 }
 export type { 
   AgentCreateType,
   AgentUpdateType,
   GalleryCreateSchemaType,
+  GalleryUpdateSchemaType,
   SignInFormSchemaType
 }
