@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { connectDB, validateSession, prisma, checkAgent } from "@/lib";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { GalleryCreateSchema, GalleryCreateSchemaType } from "@/validation/validations";
+import { GalleryCreateAndUpdateSchema, GalleryCreateAndUpdateSchemaType } from "@/validation/validations";
 
 
 export const GET = async () => {
@@ -73,14 +73,14 @@ export const POST = async (req: Request) => {
     if (session instanceof NextResponse) return session;
 
     const body = await req.json();
-    const validData = GalleryCreateSchema.safeParse(body);
+    const validData = GalleryCreateAndUpdateSchema.safeParse(body);
 
     if (!validData.success) {
       const zodError = new ZodError(validData.error.errors);
       throw zodError;
     }
 
-    const { name, address, city, phone_numbers, categories }: GalleryCreateSchemaType = body;
+    const { name, address, city, phone_numbers, categories }: GalleryCreateAndUpdateSchemaType = body;
 
     if (!name || !address || !city || !phone_numbers || !categories) {
       return NextResponse.json(
