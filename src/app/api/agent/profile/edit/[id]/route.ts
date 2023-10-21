@@ -1,7 +1,5 @@
-import { getServerSession } from "next-auth/next"
 import { NextResponse } from "next/server"
-import { authOptions } from "@/lib/auth";
-import { connectDB, prisma } from "@/lib";
+import { connectDB, validateSession, prisma } from "@/lib";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { AgentUpdateSchema, AgentUpdateType } from "@/validation/validations";
@@ -15,17 +13,11 @@ type requestParams = {
 
 export const PATCH = async (req: Request, { params }: requestParams) => {
   try {
-    connectDB()
+    connectDB();
   
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user || !session.user.email || !session.user.id) {
-      return NextResponse.json(
-        {
-          error: "unauthorized please sign in",
-        },
-        { status: 401 }
-      );
-    }
+    const session = await validateSession();
+    if (session instanceof NextResponse) return session;
+
     const body = await req.json();
     const validData = AgentUpdateSchema.safeParse(body);
 
@@ -53,7 +45,7 @@ export const PATCH = async (req: Request, { params }: requestParams) => {
     if (!agent) {
       return NextResponse.json(
         {
-          error: "agent does not match",
+          error: "agent does not found",
         },
         { status: 401 }
       );

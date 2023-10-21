@@ -1,7 +1,5 @@
-import { getServerSession } from "next-auth/next"
 import { NextResponse } from "next/server"
-import { authOptions } from "@/lib/auth";
-import { connectDB, prisma } from "@/lib";
+import { connectDB, prisma, validateSession } from "@/lib";
 
 
 type requestParams = {
@@ -14,15 +12,8 @@ export const DELETE = async (req: Request, { params }: requestParams) => {
   try {
     connectDB()
   
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user || !session.user.email || !session.user.id) {
-      return NextResponse.json(
-        {
-          error: "unauthorized please sign in",
-        },
-        { status: 401 }
-      );
-    }
+    const session = await validateSession();
+    if (session instanceof NextResponse) return session;
 
     const agent = await prisma.autoGalleryAgent.findUnique({
       where: { 

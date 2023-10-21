@@ -1,21 +1,13 @@
-import { getServerSession } from "next-auth/next"
 import { NextResponse } from "next/server"
-import { authOptions } from "@/lib/auth";
-import { connectDB, prisma } from "@/lib";
+import { connectDB, validateSession, prisma } from "@/lib";
 
 
 export const GET = async () => {
   try {
-    connectDB()
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json(
-        {
-          error: "unauthorized please sign in",
-        },
-        { status: 401 }
-      );
-    }
+    connectDB();
+
+    const session = await validateSession();
+    if (session instanceof NextResponse) return session;
 
     const agents = await prisma.autoGalleryAgent.findMany(
       {
