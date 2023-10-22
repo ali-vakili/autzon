@@ -85,6 +85,7 @@ export const PATCH = async (req: Request, { params }: requestParams) => {
           }
         },
         categories: {
+          set: [],
           connect: categories.map(categoryId => ({ id: +categoryId }))
         }
       },

@@ -15,10 +15,10 @@ export const DELETE = async (req: Request, { params }: requestParams) => {
     const session = await validateSession();
     if (session instanceof NextResponse) return session;
 
-    const agent = await prisma.autoGalleryAgent.findUnique({
+    const agent = await prisma.autoGalleryAgent.findFirst({
       where: { 
-        email: session.user.email,
-        AND: { id: session.user.id }
+        email: session?.user.email,
+        AND: { id: session?.user.id }
       }
     })
 
@@ -31,17 +31,32 @@ export const DELETE = async (req: Request, { params }: requestParams) => {
       );
     }
 
-    if (agent.id === params.id) {
-      await prisma.autoGalleryAgent.delete({
+    const gallery = await prisma.autoGallery.findUnique({
+      where: {
+        id: params.id,
+      }
+    })
+
+    if (!gallery) {
+      return NextResponse.json(
+        {
+          error: "auto gallery does not found",
+        },
+        { status: 404 }
+      );
+    }
+
+    if (gallery.agent_id === agent.id) {
+      await prisma.autoGallery.delete({
         where : { 
-          email: agent.email,
-          AND: { id: agent.id }
+          id: gallery.id,
+          AND: { agent_id: agent.id }
         }
       })
     }else {
       return NextResponse.json(
         {
-          message: "agent credentials are mismatched"
+          message: "auto gallery credentials with your account information are mismatched"
         },
         { status: 403 }
       )
@@ -49,7 +64,7 @@ export const DELETE = async (req: Request, { params }: requestParams) => {
 
     return NextResponse.json(
       {
-        message: "Your agent account deleted successfully"
+        message: "Your auto gallery deleted successfully"
       },
       { status: 200 }
     )
