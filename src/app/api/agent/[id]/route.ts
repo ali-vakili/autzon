@@ -24,6 +24,42 @@ export const GET = async (req: Request, { params }: requestParams) => {
           lastName: true,
           role: true,
           email: true,
+          gallery: {
+            select: {
+              id: true,
+              name: true,
+              cars: true,
+              categories: {
+                select: {
+                  category: true,
+                  abbreviation: true
+                }
+              },
+              city: {
+                select: {
+                  name_en: true,
+                  name_fa: true,
+                  slug: true
+                }
+              },
+              address: true,
+              phone_numbers: {
+                select: {
+                  id: true,
+                  number: true
+                }
+              },
+              agent: {
+                select: {
+                  firstName:true,
+                  lastName: true
+                },
+              },
+              is_verified: true,
+              createdAt: true,
+              updatedAt: true,
+            }
+          },
           phone_number: true,
           is_subscribed: true,
           is_verified: true,

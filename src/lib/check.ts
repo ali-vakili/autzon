@@ -16,7 +16,7 @@ const checkAgent = async (session: session | null) => {
   if (!session || !session.user) {
     return NextResponse.json(
       {
-        error: "Session is not valid",
+        error: "Session does not exist",
       },
       { status: 401 }
     );
@@ -32,7 +32,7 @@ const checkAgent = async (session: session | null) => {
   if (!agent) {
     return NextResponse.json(
       {
-        error: "agent does not found",
+        error: "Session credentials are invalid",
       },
       { status: 401 }
     );

@@ -35,25 +35,11 @@ export const PATCH = async (req: Request, { params }: requestParams) => {
       )
     }
 
-    const agent = await prisma.autoGalleryAgent.findUnique({
-      where: { 
-        email: session.user.email,
-        AND: { id: session.user.id }
-      }
-    })
+    const { user } = session;
 
-    if (!agent) {
-      return NextResponse.json(
-        {
-          error: "agent does not found",
-        },
-        { status: 401 }
-      );
-    }
-
-    if (agent.id === params.id) {
+    if (user.id === params.id) {
       await prisma.autoGalleryAgent.update({
-        where: { id: agent.id },
+        where: { id: user.id },
         data: {
           firstName,
           lastName,
