@@ -15,10 +15,10 @@ export const DELETE = async (req: Request, { params }: requestParams) => {
     const session = await validateSession();
     if (session instanceof NextResponse) return session;
 
-    const agent = await prisma.autoGalleryAgent.findFirst({
+    const agent = await prisma.autoGalleryAgent.findUnique({
       where: { 
-        email: session?.user.email,
-        AND: { id: session?.user.id }
+        email: session.user.email,
+        AND: { id: session.user.id }
       }
     })
 
