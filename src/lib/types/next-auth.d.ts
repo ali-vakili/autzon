@@ -1,4 +1,4 @@
-import NextAuth from "next-auth/next";
+import { DefaultSession } from "next-auth";
 
 declare module 'next-auth' {
   interface Session {
@@ -10,6 +10,6 @@ declare module 'next-auth' {
       role: string;
       is_verified: boolean;
       is_subscribed: boolean;
-    }
+    } & DefaultSession
   }
 }

@@ -5,13 +5,13 @@ import { fromZodError } from "zod-validation-error";
 import { GalleryCreateAndUpdateSchema, GalleryCreateAndUpdateSchemaType } from "@/validation/validations";
 
 
-type requestParams = {
+type requestProps = {
   params: {
     id: string
   }
 }
 
-export const PATCH = async (req: Request, { params }: requestParams) => {
+export const PATCH = async (req: Request, { params }: requestProps) => {
   try {
     connectDB();
   

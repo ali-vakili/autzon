@@ -2,13 +2,13 @@ import { NextResponse } from "next/server"
 import { connectDB, prisma, validateSession } from "@/lib";
 
 
-type requestParams = {
+type requestProps = {
   params: {
     id: string
   }
 }
 
-export const GET = async (req: Request, { params }: requestParams) => {
+export const GET = async (req: Request, { params }: requestProps) => {
   try {
     connectDB();
 
@@ -49,12 +49,6 @@ export const GET = async (req: Request, { params }: requestParams) => {
                   number: true
                 }
               },
-              agent: {
-                select: {
-                  firstName:true,
-                  lastName: true
-                },
-              },
               is_verified: true,
               createdAt: true,
               updatedAt: true,
@@ -65,7 +59,7 @@ export const GET = async (req: Request, { params }: requestParams) => {
           is_verified: true,
           join_date: true,
           updatedAt: true,
-        },
+        }
       }
     )
 

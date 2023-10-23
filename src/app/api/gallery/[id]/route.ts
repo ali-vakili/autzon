@@ -2,13 +2,13 @@ import { NextResponse } from "next/server"
 import { connectDB, prisma } from "@/lib";
 
 
-type requestParams = {
+type requestProps = {
   params: {
     id: string
   }
 }
 
-export const GET = async (req: Request, { params }: requestParams) => {
+export const GET = async (req: Request, { params }: requestProps) => {
   try {
     connectDB();
   

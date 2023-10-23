@@ -2,13 +2,13 @@ import { NextResponse } from "next/server"
 import { connectDB, prisma, validateSession } from "@/lib";
 
 
-type requestParams = {
+type requestProps = {
   params: {
     id: string
   }
 }
 
-export const DELETE = async (req: Request, { params }: requestParams) => {
+export const DELETE = async (req: Request, { params }: requestProps) => {
   try {
     connectDB()
   
