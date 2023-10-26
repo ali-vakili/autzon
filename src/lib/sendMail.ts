@@ -5,14 +5,17 @@ type sendMailParams = {
   token: string
 }
 
+const user = process.env.NODEMAILER_EMAIL;
+const pass = process.env.NODEMAILER_PASSWORD;
+
 const sendMail = async ({ email, token }: sendMailParams) => {
 
   const transport = nodemailer.createTransport({
     service: "gmail",
     secure: true,
     auth: {
-      user: process.env.NODEMAILER_EMAIL,
-      pass: process.env.NODEMAILER_PASSWORD,
+      user,
+      pass
     },
   });
   
