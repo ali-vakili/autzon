@@ -4,7 +4,7 @@ import Link from "next/link"
 import { buttonVariants } from "@/components/ui/button"
 import { usePathname } from 'next/navigation'
 import { useSession } from "next-auth/react"
-import NavUser from "@/module/NavUser"
+import UserNav from "@/components/module/UserNav"
 import { Skeleton } from "@/components/ui/skeleton"
 
 const Navbar = () => {
@@ -40,7 +40,7 @@ const Navbar = () => {
               <Skeleton className="h-10 w-10 rounded-full" />
             </div>
           ) : status === "authenticated" ? (
-            <NavUser user={session.user}/>
+            <UserNav user={session.user}/>
           ) : (
             <>
               {pathname === "/sign-up" ? (

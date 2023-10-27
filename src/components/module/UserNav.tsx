@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { Role } from "@prisma/client";
 import { signOut } from "next-auth/react";
 
 import { Button } from "@/components/ui/button"
@@ -10,17 +9,13 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-import {
-  FiUser,
-  FiBookmark,
-  FiLogOut,
-  FiGrid,
-  FiAlertCircle
-} from "react-icons/fi"
+import { FiLogOut, FiAlertCircle } from "react-icons/fi"
+import userNavDropDownMenuItems from "@/constants/userNavMenuItem";
 
 
 type NavUserPropsType = {
@@ -36,9 +31,9 @@ type NavUserPropsType = {
   }
 }
 
-const NavUser = ({ user } : NavUserPropsType) => {
+const UserNav = ({ user } : NavUserPropsType) => {
   const { email, firstName, lastName, role, is_profile_complete } = user;
-  console.log(user)
+
   const avatarFallBackText= (firstName: string|null, lastName: string|null): string => {
     if (firstName && lastName) {
       const firstLetters = `${firstName[0]}${lastName[0]}`;
@@ -46,6 +41,9 @@ const NavUser = ({ user } : NavUserPropsType) => {
     }
     return "AV";
   }
+
+  const items = userNavDropDownMenuItems(is_profile_complete);
+  
 
   return (
     <div className="flex items-center space-x-4">
@@ -79,26 +77,30 @@ const NavUser = ({ user } : NavUserPropsType) => {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <Link href={"#"}>
-              <DropdownMenuItem>
-                <FiUser size={16} className="me-3"/>
-                Profile
-              </DropdownMenuItem>
-            </Link>
-            {role === Role.AGENT && (
-              <Link href={"/dashboard"}>
-                <DropdownMenuItem>
-                  <FiGrid size={16} className="me-3"/>
-                  Dashboard
-                </DropdownMenuItem>
-              </Link>
-            )}
-            <Link href={"#"}>
-              <DropdownMenuItem>
-                <FiBookmark size={16} className="me-3"/>
-                Saves
-              </DropdownMenuItem>
-            </Link>
+          {items.map((item) => (
+            <>
+              {!item.role || item.role === role ? (
+                item.disabled ? (
+                  <DropdownMenuItem disabled={item.disabled}>
+                    {item.icon}
+                    {item.title}
+                  </DropdownMenuItem>
+                ) : (
+                  <Link href={item.href}>
+                    <DropdownMenuItem>
+                      {item.icon}
+                      {item.title}
+                      {item.alert && (
+                        <DropdownMenuShortcut className="text-destructive">
+                          {item.alertIcon}
+                        </DropdownMenuShortcut>
+                      )}
+                    </DropdownMenuItem>
+                  </Link>
+                )
+              ) : null}
+            </>
+          ))}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="text-destructive" onClick={() => signOut()}>
@@ -111,4 +113,4 @@ const NavUser = ({ user } : NavUserPropsType) => {
   )
 }
 
-export default NavUser;
+export default UserNav;

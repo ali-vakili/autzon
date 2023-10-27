@@ -45,7 +45,7 @@ export const POST = async (req: Request) => {
     }
     
     const hashedPassword = await hashPassword(password);
-    const token = generateToken()
+    const token = generateToken();
 
     await prisma.autoGalleryAgent.create({
       data: {

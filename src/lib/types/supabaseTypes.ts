@@ -155,6 +155,7 @@ export interface Database {
           email: string
           firstName: string | null
           id: string
+          is_profile_complete: boolean
           is_subscribed: boolean
           is_verified: boolean
           join_date: string
@@ -168,6 +169,7 @@ export interface Database {
           email: string
           firstName?: string | null
           id: string
+          is_profile_complete?: boolean
           is_subscribed?: boolean
           is_verified?: boolean
           join_date?: string
@@ -181,6 +183,7 @@ export interface Database {
           email?: string
           firstName?: string | null
           id?: string
+          is_profile_complete?: boolean
           is_subscribed?: boolean
           is_verified?: boolean
           join_date?: string

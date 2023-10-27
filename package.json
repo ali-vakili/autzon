@@ -9,7 +9,8 @@
     "lint": "next lint",
     "migrate": "dotenv -e .env.local -- npx prisma migrate dev",
     "seed": "dotenv -e .env.local -- npx prisma db seed",
-    "studio": "dotenv -e .env.local -- npx prisma studio"
+    "studio": "dotenv -e .env.local -- npx prisma studio",
+    "supabase": "npx supabase gen types typescript --project-id dszakkhmayujfuivuhja --schema public > src/lib/types/supabaseTypes.ts"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
