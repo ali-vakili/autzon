@@ -47,12 +47,20 @@ export const authOptions: NextAuthOptions = {
 
         if(!passwordMatch) throw new Error("Email or Password is wrong");
 
+        const userImage = await prisma.image.findUnique({
+          where: { agent_id: existingAgent.id }
+        })
+        
         return {
           id: `${existingAgent.id}`,
           email: existingAgent.email,
+          firstName: existingAgent.firstName,
+          lastName: existingAgent.lastName,
+          image: userImage?.url ?? null,
           role: existingAgent.role,
           is_verified: existingAgent.is_verified,
           is_subscribed: existingAgent.is_subscribed,
+          is_profile_complete: existingAgent.is_profile_complete
         }
       },
     })
@@ -76,9 +84,12 @@ export const authOptions: NextAuthOptions = {
             ...session.user,
             id: token.id,
             email: token.email,
+            firstName: token.firstName,
+            lastName: token.lastName,
             role: token.role,
             is_verified: token.is_verified,
-            is_subscribed: token.is_subscribed
+            is_subscribed: token.is_subscribed,
+            is_profile_complete: token.is_profile_complete
           }
         };
       }

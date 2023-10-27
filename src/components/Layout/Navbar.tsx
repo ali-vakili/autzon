@@ -3,9 +3,14 @@
 import Link from "next/link"
 import { buttonVariants } from "@/components/ui/button"
 import { usePathname } from 'next/navigation'
+import { useSession } from "next-auth/react"
+import NavUser from "@/module/NavUser"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const Navbar = () => {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const { data: session, status } = useSession();
+
   return (
     <header className="w-100 relative bg-gray-100">
       <nav className="grid grid-cols-3 Mdesktop:px-20 px-8 py-4 items-center">
@@ -26,15 +31,29 @@ const Navbar = () => {
           <Link href="#" className={buttonVariants({variant: "link"})}>Galleries</Link>
         </div>
         <div className="col-span-1 justify-self-end">
-          {pathname === "/sign-up" ? (
-            <Link href={"/sign-in"} className={buttonVariants({variant: "default", size: "sm"})}>
-              Sign in to your gallery
-            </Link>
+          { status === "loading" ? (
+            <div className="flex items-center space-x-4">
+              <div className="flex flex-col items-end space-y-2">
+                <Skeleton className="h-3 w-[100px]" />
+                <Skeleton className="h-3 w-[80px]" />
+              </div>
+              <Skeleton className="h-10 w-10 rounded-full" />
+            </div>
+          ) : status === "authenticated" ? (
+            <NavUser user={session.user}/>
           ) : (
+            <>
+              {pathname === "/sign-up" ? (
+                <Link href={"/sign-in"} className={buttonVariants({variant: "default", size: "sm"})}>
+                  Sign in to your gallery
+                </Link>
+              ) : (
 
-            <Link href={"/sign-up"} className={buttonVariants({variant: "default", size: "sm"})}>
-              Create your own gallery
-            </Link>
+                <Link href={"/sign-up"} className={buttonVariants({variant: "default", size: "sm"})}>
+                  Create your own gallery
+                </Link>
+              )}
+            </>
           )}
         </div>
       </nav>

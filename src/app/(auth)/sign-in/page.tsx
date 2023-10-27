@@ -1,7 +1,13 @@
 import SignIn from "@/template/SignIn";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
-const SignInPage = () => {
-  return < SignIn/>
+const SignInPage = async () => {
+  const session = await getServerSession(authOptions);
+  if (session) redirect("/");
+  
+  return <SignIn />
 }
 
 export default SignInPage;

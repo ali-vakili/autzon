@@ -23,11 +23,18 @@ import { useCreateAgent } from "@/hooks/useCreateAgent";
 import { FiEye, FiEyeOff, FiCheckCircle } from "react-icons/fi";
 
 import "@/scss/Common.scss"
+import { useSession } from "next-auth/react"
+import { redirect } from "next/navigation"
 
 
 const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [togglePasswordType, setTogglePasswordType] = useState<boolean>(false);
+
+  const { data } = useSession();
+  if (data?.user) {
+    return redirect('/');
+  }
 
   const { mutate: createAgent, isLoading, isSuccess, isError, error } = useCreateAgent();
 

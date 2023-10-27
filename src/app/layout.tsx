@@ -1,11 +1,11 @@
 import NextAuthProvider from "@/providers/NextAuthProvider";
-import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'sonner';
 import TanStackProvider from "@/providers/TanStackProvider";
 import Layout from "@/components/Layout/Layout";
 import axios from "axios";
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 

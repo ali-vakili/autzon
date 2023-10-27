@@ -43,7 +43,8 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
         data: {
           firstName,
           lastName,
-          phone_number
+          phone_number,
+          is_profile_complete: true
         },
       })
     }else {
