@@ -20,7 +20,7 @@ const userNavDropDownMenuItems = (is_profile_complete: boolean) => {
 
   const userNavMenuItems: userNavMenuItemTypes = [
     {
-      title: "profile",
+      title: "Profile",
       icon: <FiUser size={16} className="me-3"/>,
       href: "#",
       alert: !is_profile_complete,

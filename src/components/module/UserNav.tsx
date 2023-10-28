@@ -17,18 +17,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { FiLogOut, FiAlertCircle } from "react-icons/fi"
 import userNavDropDownMenuItems from "@/constants/userNavMenuItem";
 
+import { sessionUser } from "@/lib/types/sessionUserType";
+
 
 type NavUserPropsType = {
-  user: {
-    id: string;
-    email: string;
-    firstName: string | null;
-    lastName: string | null;
-    image: string | null;
-    role: string;
-    is_verified: boolean;
-    is_subscribed: boolean;
-  }
+  user: sessionUser
 }
 
 const UserNav = ({ user } : NavUserPropsType) => {
