@@ -46,7 +46,7 @@ const UserNav = ({ user } : NavUserPropsType) => {
             {firstName}&nbsp;{lastName}
           </h4>
         ) : (
-          <Link href={"#"} className="flex text-destructive text-sm hover:underline"><FiAlertCircle size={20} className="me-1"/> Complete your profile</Link>
+          <Link href={"/account/profile"} className="flex text-destructive text-sm hover:underline"><FiAlertCircle size={20} className="me-1"/> Complete your profile</Link>
         )}
         <h5 className="text-xs text-gray-400">{role}</h5>
       </div>
@@ -70,30 +70,34 @@ const UserNav = ({ user } : NavUserPropsType) => {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-          {items.map((item) => (
-            <>
-              {!item.role || item.role === role ? (
-                item.disabled ? (
-                  <DropdownMenuItem disabled={item.disabled}>
-                    {item.icon}
-                    {item.title}
-                  </DropdownMenuItem>
-                ) : (
-                  <Link href={item.href}>
-                    <DropdownMenuItem>
+            {items.map((item) => {
+              if (!item.role || item.role === role) {
+                if (item.disabled) {
+                  return (
+                    <DropdownMenuItem disabled={item.disabled} key={item.id}>
                       {item.icon}
                       {item.title}
-                      {item.alert && (
-                        <DropdownMenuShortcut className="text-destructive">
-                          {item.alertIcon}
-                        </DropdownMenuShortcut>
-                      )}
                     </DropdownMenuItem>
-                  </Link>
-                )
-              ) : null}
-            </>
-          ))}
+                  );
+                } else {
+                  return (
+                    <Link href={item.href} key={item.id}>
+                      <DropdownMenuItem>
+                        {item.icon}
+                        {item.title}
+                        {item.alert && (
+                          <DropdownMenuShortcut className="text-destructive">
+                            {item.alertIcon}
+                          </DropdownMenuShortcut>
+                        )}
+                      </DropdownMenuItem>
+                    </Link>
+                  );
+                }
+              } else {
+                return null;
+              }
+            })}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="text-destructive" onClick={() => signOut()}>

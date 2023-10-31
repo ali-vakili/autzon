@@ -1,10 +1,10 @@
 import Navbar from "./Navbar"
 
-const Layout = ({ children } : { children: React.ReactNode }) => {
+const Layout = async ({ children } : { children: React.ReactNode }) => {
   return (
     <>
       <Navbar />
-      <div className="container max-w-screen-Ldesktop !p-0">
+      <div className="container max-w-screen-LDesktop relative !p-0">
         {children}
       </div>
     </>

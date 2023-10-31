@@ -7,6 +7,7 @@ import {
 import { AGENT } from "./roles"
 
 type userNavMenuItemTypes = {
+  id: number,
   title: string,
   icon: JSX.Element,
   href: string,
@@ -17,16 +18,19 @@ type userNavMenuItemTypes = {
 }[]
 
 const userNavDropDownMenuItems = (is_profile_complete: boolean) => {
+  const alertIcon = <FiAlertCircle size={16}/>
 
   const userNavMenuItems: userNavMenuItemTypes = [
     {
-      title: "Profile",
+      id: 1,
+      title: "Account",
       icon: <FiUser size={16} className="me-3"/>,
-      href: "#",
+      href: "/account",
       alert: !is_profile_complete,
-      alertIcon: <FiAlertCircle size={16}/>
+      alertIcon
     },
     {
+      id: 2,
       title: "Dashboard",
       icon: <FiGrid size={16} className="me-3"/>,
       href: "dashboard",
@@ -34,6 +38,7 @@ const userNavDropDownMenuItems = (is_profile_complete: boolean) => {
       disabled: !is_profile_complete
     },
     {
+      id: 3,
       title: "Saves",
       icon: <FiBookmark size={16} className="me-3"/>,
       href: "#",

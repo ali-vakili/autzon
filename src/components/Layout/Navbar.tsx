@@ -12,8 +12,8 @@ const Navbar = () => {
   const { data: session, status } = useSession();
 
   return (
-    <header className="w-100 relative bg-gray-100">
-      <nav className="grid grid-cols-3 Mdesktop:px-20 px-8 py-4 items-center">
+    <header className="w-100 relative bg-gray-100 shadow-sm">
+      <nav className="grid grid-cols-3 MDesktop:px-20 px-8 py-4 items-center">
         <Link href={"/"}>
           <svg width="82" height="18" viewBox="0 0 82 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M76.6359 3.69598C78.2199 3.69598 79.4999 4.19998 80.4759 5.20798C81.4519 6.19999 81.9399 7.59198 81.9399 9.38398V17.184H78.5799V9.83998C78.5799 8.78399 78.3159 7.97599 77.7879 7.41599C77.2599 6.83998 76.5399 6.55198 75.6279 6.55198C74.6999 6.55198 73.9639 6.83998 73.4199 7.41599C72.8919 7.97599 72.6279 8.78399 72.6279 9.83998V17.184H69.2679V3.88798H72.6279V5.54398C73.0759 4.96798 73.6439 4.51998 74.3319 4.19998C75.0359 3.86398 75.8039 3.69598 76.6359 3.69598Z" fill="#101010"/>

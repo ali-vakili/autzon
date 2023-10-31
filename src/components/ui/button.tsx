@@ -26,10 +26,18 @@ const buttonVariants = cva(
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
       },
+      fontSize: {
+        default: "font-medium text-gray-500 hover:text-gray-800",
+        light: "font-light text-gray-400 hover:text-gray-800",
+        normal: "font-normal text-gray-400 hover:text-gray-800",
+        semibold: "font-semibold text-gray-700",
+        bold: "!font-bold text-gray-800",
+      }
     },
     defaultVariants: {
       variant: "default",
       size: "default",
+      fontSize: null
     },
   }
 )

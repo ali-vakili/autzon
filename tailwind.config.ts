@@ -16,17 +16,17 @@ module.exports = {
       },
     },
     screens: {
-      'Sphone': '320px',
+      'SPhone': '320px',
       'phone': '375px',
-      'Lphone': '425px',
-      'Stablet': '576px',
+      'LPhone': '425px',
+      'STablet': '576px',
       'tablet': '768px',
-      'Slaptop': '992px',
+      'SLaptop': '992px',
       'Laptop': '1024px',
-      'Sdesktop': '1200px',
+      'SDesktop': '1200px',
       'desktop': '1366px',
-      'Mdesktop': '1400px',
-      'Ldesktop': '1920px'
+      'MDesktop': '1400px',
+      'LDesktop': '1920px'
     },
     extend: {
       colors: {
