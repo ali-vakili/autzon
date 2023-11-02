@@ -25,6 +25,7 @@
       "@/scss/*": ["./src/components/scss/*"],
       "@/module/*": ["./src/components/module/*"],
       "@/constants/*": ["./src/constants/*"],
+      "@/helper/*": ["./src/helper/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

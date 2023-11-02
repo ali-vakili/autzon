@@ -18,6 +18,7 @@ import { FiLogOut, FiAlertCircle } from "react-icons/fi"
 import userNavDropDownMenuItems from "@/constants/userNavMenuItem";
 
 import { sessionUser } from "@/lib/types/sessionUserType";
+import { avatarFallBackText } from "@/helper/fallBackText";
 
 
 type NavUserPropsType = {
@@ -27,14 +28,7 @@ type NavUserPropsType = {
 const UserNav = ({ user } : NavUserPropsType) => {
   const { email, firstName, lastName, role, is_profile_complete } = user;
 
-  const avatarFallBackText= (firstName: string|null, lastName: string|null): string => {
-    if (firstName && lastName) {
-      const firstLetters = `${firstName[0]}${lastName[0]}`;
-      return firstLetters.toUpperCase();
-    }
-    return "AV";
-  }
-
+  const fallBackText = avatarFallBackText(firstName, lastName);
   const items = userNavDropDownMenuItems(is_profile_complete);
   
 
@@ -55,7 +49,7 @@ const UserNav = ({ user } : NavUserPropsType) => {
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
             <Avatar>
               <AvatarImage alt="avatar" />
-              <AvatarFallback>{avatarFallBackText(firstName, lastName)}</AvatarFallback>
+              <AvatarFallback>{fallBackText}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
