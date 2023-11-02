@@ -26,8 +26,8 @@ const Navbar = () => {
         </Link>
 
         <div className="space-x-2 justify-self-center">
-          <Link href="#" className={buttonVariants({variant: "link"})}>Buy car</Link>
-          <Link href="#" className={buttonVariants({variant: "link"})}>Rent car</Link>
+          <Link href="#" className={buttonVariants({variant: "link"})}>Buy Car</Link>
+          <Link href="#" className={buttonVariants({variant: "link"})}>Rent Car</Link>
           <Link href="#" className={buttonVariants({variant: "link"})}>Galleries</Link>
         </div>
         <div className="col-span-1 justify-self-end">

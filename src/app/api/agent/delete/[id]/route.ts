@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { connectDB, prisma, validateSession } from "@/lib";
+import { connectDB, validateSession, prisma } from "@/lib";
 
 
 type requestProps = {

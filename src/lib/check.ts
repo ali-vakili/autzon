@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { sessionUser } from "./types/sessionUserType";
 import  prisma from "./prisma";
 
 
@@ -10,6 +11,23 @@ type session = {
     is_verified: boolean,
     is_subscribed: boolean,
   }
+}
+
+type agentProfile = {
+  firstName: string | null;
+  lastName: string | null;
+  phone_number: string | null;
+}
+
+const checkAgentProfile = (agent: agentProfile) => {
+  if (!agent.firstName || !agent.lastName || !agent.phone_number) {
+    return NextResponse.json(
+      { message: "Please complete your account information in order to create an auto gallery" },
+      { status: 400 }
+    );
+  }
+
+  return true;
 }
 
 const checkAgent = async (session: session | null) => {
@@ -45,12 +63,8 @@ const checkAgent = async (session: session | null) => {
     );
   }
 
-  else if (!agent.firstName || !agent.lastName || !agent.phone_number) {
-    return NextResponse.json(
-      { message: "Please complete your account information in order to create an auto gallery" },
-      { status: 400 }
-    );
-  }
+  const agentProfile = checkAgentProfile(agent);
+  if (agentProfile instanceof NextResponse) return agentProfile;
 
   return agent;
 }

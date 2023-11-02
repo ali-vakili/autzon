@@ -46,7 +46,7 @@ const UserNav = ({ user } : NavUserPropsType) => {
             {firstName}&nbsp;{lastName}
           </h4>
         ) : (
-          <Link href={"/account/profile"} className="flex text-destructive text-sm hover:underline"><FiAlertCircle size={20} className="me-1"/> Complete your profile</Link>
+          <Link href={"/account/profile"} className="flex text-destructive text-sm hover:underline"><FiAlertCircle size={20} className="me-1"/>Complete your profile</Link>
         )}
         <h5 className="text-xs text-gray-400">{role}</h5>
       </div>

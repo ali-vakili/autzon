@@ -33,7 +33,7 @@ const userNavDropDownMenuItems = (is_profile_complete: boolean) => {
       id: 2,
       title: "Dashboard",
       icon: <FiGrid size={16} className="me-3"/>,
-      href: "dashboard",
+      href: "/dashboard",
       role: AGENT,
       disabled: !is_profile_complete
     },
