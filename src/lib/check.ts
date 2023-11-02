@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { sessionUser } from "./types/sessionUserType";
 import  prisma from "./prisma";
 
 

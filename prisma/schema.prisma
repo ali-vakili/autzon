@@ -134,13 +134,42 @@ model AutoGalleryAgent {
   image_id            Image?
   role                Role              @default(AGENT)
   email               String            @unique
-  password            String
+  password            String?
   phone_number        String?           @db.VarChar(11)
   gallery             AutoGallery[]
   activation_token    ActivationToken[]
+  accounts            Account[]
+  sessions            Session[]
   is_profile_complete Boolean           @default(false)
   is_subscribed       Boolean           @default(false)
   is_verified         Boolean           @default(false)
   join_date           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user AutoGalleryAgent @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String           @id @default(uuid())
+  sessionToken String           @unique
+  userId       String
+  expires      DateTime
+  user         AutoGalleryAgent @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

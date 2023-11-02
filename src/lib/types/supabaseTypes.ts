@@ -26,12 +26,14 @@ export interface Database {
           {
             foreignKeyName: "_AutoGalleryToAutoGalleryCategory_A_fkey"
             columns: ["A"]
+            isOneToOne: false
             referencedRelation: "AutoGallery"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "_AutoGalleryToAutoGalleryCategory_B_fkey"
             columns: ["B"]
+            isOneToOne: false
             referencedRelation: "AutoGalleryCategory"
             referencedColumns: ["id"]
           }
@@ -70,6 +72,59 @@ export interface Database {
         }
         Relationships: []
       }
+      Account: {
+        Row: {
+          access_token: string | null
+          expires_at: number | null
+          id: string
+          id_token: string | null
+          provider: string
+          providerAccountId: string
+          refresh_token: string | null
+          scope: string | null
+          session_state: string | null
+          token_type: string | null
+          type: string
+          userId: string
+        }
+        Insert: {
+          access_token?: string | null
+          expires_at?: number | null
+          id: string
+          id_token?: string | null
+          provider: string
+          providerAccountId: string
+          refresh_token?: string | null
+          scope?: string | null
+          session_state?: string | null
+          token_type?: string | null
+          type: string
+          userId: string
+        }
+        Update: {
+          access_token?: string | null
+          expires_at?: number | null
+          id?: string
+          id_token?: string | null
+          provider?: string
+          providerAccountId?: string
+          refresh_token?: string | null
+          scope?: string | null
+          session_state?: string | null
+          token_type?: string | null
+          type?: string
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Account_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "AutoGalleryAgent"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       ActivationToken: {
         Row: {
           activatedAt: string | null
@@ -99,6 +154,7 @@ export interface Database {
           {
             foreignKeyName: "ActivationToken_agent_id_fkey"
             columns: ["agent_id"]
+            isOneToOne: false
             referencedRelation: "AutoGalleryAgent"
             referencedColumns: ["id"]
           }
@@ -139,12 +195,14 @@ export interface Database {
           {
             foreignKeyName: "AutoGallery_agent_id_fkey"
             columns: ["agent_id"]
+            isOneToOne: false
             referencedRelation: "AutoGalleryAgent"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "AutoGallery_city_id_fkey"
             columns: ["city_id"]
+            isOneToOne: false
             referencedRelation: "City"
             referencedColumns: ["id"]
           }
@@ -160,7 +218,7 @@ export interface Database {
           is_verified: boolean
           join_date: string
           lastName: string | null
-          password: string
+          password: string | null
           phone_number: string | null
           role: Database["public"]["Enums"]["Role"]
           updatedAt: string
@@ -174,7 +232,7 @@ export interface Database {
           is_verified?: boolean
           join_date?: string
           lastName?: string | null
-          password: string
+          password?: string | null
           phone_number?: string | null
           role?: Database["public"]["Enums"]["Role"]
           updatedAt: string
@@ -188,7 +246,7 @@ export interface Database {
           is_verified?: boolean
           join_date?: string
           lastName?: string | null
-          password?: string
+          password?: string | null
           phone_number?: string | null
           role?: Database["public"]["Enums"]["Role"]
           updatedAt?: string
@@ -254,6 +312,7 @@ export interface Database {
           {
             foreignKeyName: "Car_gallery_id_fkey"
             columns: ["gallery_id"]
+            isOneToOne: false
             referencedRelation: "AutoGallery"
             referencedColumns: ["id"]
           }
@@ -291,6 +350,7 @@ export interface Database {
           {
             foreignKeyName: "City_province_id_fkey"
             columns: ["province_id"]
+            isOneToOne: false
             referencedRelation: "Province"
             referencedColumns: ["id"]
           }
@@ -328,18 +388,21 @@ export interface Database {
           {
             foreignKeyName: "Image_agent_id_fkey"
             columns: ["agent_id"]
+            isOneToOne: false
             referencedRelation: "AutoGalleryAgent"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "Image_car_id_fkey"
             columns: ["car_id"]
+            isOneToOne: false
             referencedRelation: "Car"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "Image_gallery_id_fkey"
             columns: ["gallery_id"]
+            isOneToOne: false
             referencedRelation: "AutoGallery"
             referencedColumns: ["id"]
           }
@@ -365,6 +428,7 @@ export interface Database {
           {
             foreignKeyName: "PhoneNumber_gallery_id_fkey"
             columns: ["gallery_id"]
+            isOneToOne: false
             referencedRelation: "AutoGallery"
             referencedColumns: ["id"]
           }
@@ -420,6 +484,7 @@ export interface Database {
           {
             foreignKeyName: "RentCar_car_id_fkey"
             columns: ["car_id"]
+            isOneToOne: false
             referencedRelation: "Car"
             referencedColumns: ["id"]
           }
@@ -445,7 +510,37 @@ export interface Database {
           {
             foreignKeyName: "SaleCar_car_id_fkey"
             columns: ["car_id"]
+            isOneToOne: false
             referencedRelation: "Car"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      Session: {
+        Row: {
+          expires: string
+          id: string
+          sessionToken: string
+          userId: string
+        }
+        Insert: {
+          expires: string
+          id: string
+          sessionToken: string
+          userId: string
+        }
+        Update: {
+          expires?: string
+          id?: string
+          sessionToken?: string
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Session_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "AutoGalleryAgent"
             referencedColumns: ["id"]
           }
         ]

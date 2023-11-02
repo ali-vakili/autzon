@@ -65,7 +65,7 @@ const SignUp = () => {
       <div className="flex flex-col flex-1 max-w-sm">
         <h1 className="mt-8 mb-2 text-2xl lg:text-3xl font-semibold">Get started</h1>
         <h2 className="text-sm text-foreground-light mb-10">Create a new account</h2>
-        <ContinueWithGoogle text='Sign up with Google' />
+        <ContinueWithGoogle text='Sign up with Google' callbackUrl={"/"}/>
         <hr className="divider sign-up"></hr>
         {isError && (
           <div className="w-full bg-destructive/80 rounded mb-3">

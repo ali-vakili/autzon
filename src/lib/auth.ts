@@ -1,8 +1,11 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import { GoogleProfile } from "next-auth/providers/google";
 import { connectDB } from "./connectDB";
 import { verifyPassword } from "./hash";
+import { USER } from "@/constants/roles";
 import prisma from "./prisma";
 
 
@@ -14,6 +17,30 @@ export const authOptions: NextAuthOptions = {
     signIn: "/sign-in",
   },
   providers: [
+    GoogleProvider({
+      profile: async (profile: GoogleProfile) => {
+        let imageId = null
+        if (profile.picture) {
+          const agentImage = await prisma.image.create({
+            data: {
+              url: profile.image,
+            },
+          })
+          imageId = agentImage.id
+        }
+        return {
+          ...profile,
+          id: profile.sub,
+          role: profile.role ?? USER,
+          image_id: imageId,
+          firstName: profile.given_name,
+          lastName: profile.family_name,
+          is_verified: profile.email_verified,
+        }
+      },
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+    }),
     CredentialsProvider({
       name: "credentials",
       credentials: {
@@ -43,9 +70,10 @@ export const authOptions: NextAuthOptions = {
 
         if(!existingAgent.is_verified) throw new Error("Your email is not verified");
 
-        const passwordMatch = await verifyPassword(password, existingAgent.password);
-
-        if(!passwordMatch) throw new Error("Email or Password is wrong");
+        if (existingAgent.password) {
+          const passwordMatch = await verifyPassword(password, existingAgent.password);
+          if(!passwordMatch) throw new Error("Email or Password is wrong");
+        }
 
         const userImage = await prisma.image.findUnique({
           where: { agent_id: existingAgent.id }
