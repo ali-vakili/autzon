@@ -88,19 +88,26 @@ export const authOptions: NextAuthOptions = {
           role: existingAgent.role,
           is_verified: existingAgent.is_verified,
           is_subscribed: existingAgent.is_subscribed,
-          is_profile_complete: existingAgent.is_profile_complete
+          is_profile_complete: existingAgent.is_profile_complete,
+          join_date: existingAgent.join_date,
+          updatedAt: existingAgent.updatedAt
         }
       },
     })
   ],
   callbacks: {
-    async jwt({ token, user, session}) {
+    async jwt({ token, user, session, trigger }) {
       if (user) {
         return {
           ...token,
           ...user
         };
       }
+
+      if (trigger === "update") {
+        return { ...token, ...session.user }
+      }
+      
       return token;
     },
 
@@ -117,7 +124,9 @@ export const authOptions: NextAuthOptions = {
             role: token.role,
             is_verified: token.is_verified,
             is_subscribed: token.is_subscribed,
-            is_profile_complete: token.is_profile_complete
+            is_profile_complete: token.is_profile_complete,
+            join_date: token.join_date,
+            updatedAt: token.updatedAt
           }
         };
       }

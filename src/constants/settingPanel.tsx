@@ -11,7 +11,7 @@ type settingPanelItemsTypes = {
   disabled?: boolean
 }[]
 
-const settingPanel = (is_profile_complete: boolean|undefined) => {
+const settingPanel = (is_profile_complete: boolean|undefined = true) => {
   const settingPanelItems: settingPanelItemsTypes = [
     {
       id: 1,

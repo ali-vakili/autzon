@@ -77,7 +77,7 @@ const SignIn = () => {
   return (
     <div className="flex flex-col flex-1 items-center flex-shrink-0 px-5">
       <div className="flex flex-col flex-1">
-        <h1 className="mt-8 mb-2 text-2xl lg:text-3xl font-semibold">Welcome Back</h1>
+        <h1 className="mt-8 mb-2 text-2xl font-semibold">Welcome Back</h1>
         <h2 className="text-sm text-foreground-light mb-10">Sign in to your account</h2>
         <ContinueWithGoogle text='Sign in with Google' callbackUrl={callbackUrl}/>
         <hr className="divider sign-in"></hr>

@@ -12,7 +12,7 @@ const SettingPanel = () => {
   const pathName = usePathname();
   const items = settingPanel(session?.user.is_profile_complete)
   return (
-    <aside className="min-w-[250px] w-72 self-center overflow-auto p-6">
+    <aside className="min-w-[250px] w-72 self-start overflow-auto py-6">
       <ul>
         { items.map((item) => (
           <li className="my-2" key={item.id}>

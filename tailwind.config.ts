@@ -15,20 +15,20 @@ module.exports = {
         "2xl": "1400px",
       },
     },
-    screens: {
-      'SPhone': '320px',
-      'phone': '375px',
-      'LPhone': '425px',
-      'STablet': '576px',
-      'tablet': '768px',
-      'SLaptop': '992px',
-      'Laptop': '1024px',
-      'SDesktop': '1200px',
-      'desktop': '1366px',
-      'MDesktop': '1400px',
-      'LDesktop': '1920px'
-    },
     extend: {
+      screens: {
+        'SPhone': '320px',
+        'phone': '375px',
+        'LPhone': '425px',
+        'STablet': '576px',
+        'tablet': '768px',
+        'SLaptop': '992px',
+        'Laptop': '1024px',
+        'SDesktop': '1200px',
+        'desktop': '1366px',
+        'MDesktop': '1400px',
+        'LDesktop': '1920px'
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

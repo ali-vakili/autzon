@@ -27,10 +27,7 @@ type NavUserPropsType = {
 
 const UserNav = ({ user } : NavUserPropsType) => {
   const { email, firstName, lastName, role, is_profile_complete } = user;
-
-  const fallBackText = avatarFallBackText(firstName, lastName);
   const items = userNavDropDownMenuItems(is_profile_complete);
-  
 
   return (
     <div className="flex items-center space-x-4">
@@ -49,7 +46,7 @@ const UserNav = ({ user } : NavUserPropsType) => {
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
             <Avatar>
               <AvatarImage alt="avatar" />
-              <AvatarFallback>{fallBackText}</AvatarFallback>
+              <AvatarFallback>{avatarFallBackText(firstName, lastName)}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>

@@ -1,26 +1,28 @@
-import { authOptions } from "@/lib/auth";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { getServerSession } from "next-auth";
-import { avatarFallBackText } from "@/helper/fallBackText"
+import Link from "next/link";
+import { sessionUser } from "@/lib/types/sessionUserType";
+
 import { FiCheckCircle, FiAlertCircle, FiEdit, FiUser } from "react-icons/fi";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { buttonVariants } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator"
+import { Badge } from "@/components/ui/badge"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { buttonVariants } from "../ui/button";
-import Link from "next/link";
+
+import { avatarFallBackText } from "@/helper/fallBackText"
+import { getJoinedDate, getUpdatedAtDate } from "@/helper/getDate";
 
 
-const Account = async () => {
-  const session = await getServerSession(authOptions);
+const Account = async ({ user } : { user: sessionUser }) => {
+  const { email, image, firstName, lastName, role, is_verified, join_date, updatedAt } = user
+  const joined_date = getJoinedDate(join_date);
+  const updatedAt_date = getUpdatedAtDate(updatedAt);
 
-  if(!session) return;
-
-  const { email, image, firstName, lastName, role, is_verified } = session.user
   return (
     <>
       <div className="flex items-center justify-between h-fit">
@@ -59,12 +61,14 @@ const Account = async () => {
             <h4 className="text-base text-gray-400">{role}</h4>
           </div>
         </div>
-        <Link href="/profile" className={buttonVariants({variant: "secondary"})}><FiEdit size={16} className="me-1.5"/> Edit Profile</Link>
+        <Link href="account/profile" className={buttonVariants({variant: "secondary"})}><FiEdit size={16} className="me-1.5"/> Edit Profile</Link>
       </div>
       <Separator className="my-8" />
-      <h3 className="inline-flex items-center text-sm text-gray-400 mb-4"><FiUser className="me-1" />Account Information</h3>
-      <h4 className="mb-1">Email</h4>
+      <h3 className="inline-flex items-center text-sm text-gray-400 mb-5"><FiUser className="me-1" />Account Information</h3>
+      <h4 className="mb-1 text-primary">Email</h4>
       <h5 className="text-zinc-400 ms-3">{email}</h5>
+      <h4 className="mb-1 text-primary mt-3">Join Date</h4>
+      <h5 className="text-zinc-400 ms-3">{joined_date}</h5>
     </>
   )
 }
