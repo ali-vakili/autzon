@@ -36,25 +36,20 @@ const Account = async ({ user } : { user: sessionUser }) => {
               {firstName}&nbsp;{lastName}
               <TooltipProvider>
                 <Tooltip>
-                  {is_verified ? (
-                    <>
-                      <TooltipTrigger>
-                        <Badge className="ms-3"><FiCheckCircle size={16} className="me-1.5"/> Verified</Badge>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Your Account is Verified</p>
-                      </TooltipContent>
-                    </>
-                  ) : (
-                    <>
-                      <TooltipTrigger>
-                        <Badge variant="destructive" className="ms-3"><FiAlertCircle size={16} className="me-1.5"/> Not Verified</Badge>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Your Account is Not Verified</p>
-                      </TooltipContent>
-                    </>
-                  )}
+                  <TooltipTrigger>
+                    {is_verified ? (
+                      <Badge className="ms-3"><FiCheckCircle size={16} className="me-1.5"/> Verified</Badge>
+                    ) : (
+                      <Badge variant="destructive" className="ms-3"><FiAlertCircle size={16} className="me-1.5"/> Not Verified</Badge>
+                    )}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {is_verified ? (
+                      <p>Your Account is Verified</p>
+                    ) : (
+                      <p>Your Account is Not Verified</p>
+                    )}
+                  </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </h2>
@@ -64,11 +59,14 @@ const Account = async ({ user } : { user: sessionUser }) => {
         <Link href="account/profile" className={buttonVariants({variant: "secondary"})}><FiEdit size={16} className="me-1.5"/> Edit Profile</Link>
       </div>
       <Separator className="my-8" />
-      <h3 className="inline-flex items-center text-sm text-gray-400 mb-5"><FiUser className="me-1" />Account Information</h3>
+      <div className="flex items-center justify-between mb-5">
+        <h3 className="inline-flex items-center text-sm text-gray-400"><FiUser className="me-1" />Account Information</h3>
+        <h5 className="text-sm text-gray-400">Last updated: {updatedAt_date}</h5>
+      </div>
       <h4 className="mb-1 text-primary">Email</h4>
-      <h5 className="text-zinc-400 ms-3">{email}</h5>
+      <h5 className="text-zinc-500 ms-3">{email}</h5>
       <h4 className="mb-1 text-primary mt-3">Join Date</h4>
-      <h5 className="text-zinc-400 ms-3">{joined_date}</h5>
+      <h5 className="text-zinc-500 ms-3">{joined_date}</h5>
     </>
   )
 }
