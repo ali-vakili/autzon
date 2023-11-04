@@ -2,6 +2,12 @@ import EditProfile from "@/components/template/EditProfile";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib";
+import type { Metadata } from 'next'
+
+
+export const metadata: Metadata = {
+  title: "Profile",
+}
 
 export default async function Profile() {
   const session = await getServerSession(authOptions);

@@ -1,9 +1,4 @@
 import SettingPanel from "@/module/SettingPanel"
-import type { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'Account',
-}
 
 const AccountLayout = ({ children }: { children: React.ReactNode }) => {
   return (
