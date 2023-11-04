@@ -58,7 +58,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
 
     return NextResponse.json(
       {
-        message: "agent profile updated successfully"
+        message: "Your profile updated successfully"
       },
       { status: 200 }
     )

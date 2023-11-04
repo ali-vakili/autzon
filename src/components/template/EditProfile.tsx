@@ -1,7 +1,7 @@
 "use client"
 
 import { avatarFallBackText } from "@/helper/fallBackText";
-import { useUpdateAgent } from "@/hooks/useUpdateAgent";
+import { useUpdateAgent, updateAgentHookType } from "@/hooks/useUpdateAgent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar";
 import { Button, buttonVariants } from "@/ui/button";
 import {
@@ -17,6 +17,8 @@ import { AgentUpdateSchema, AgentUpdateType } from "@/validation/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 
 type editProfilePropType = {
@@ -31,15 +33,21 @@ type editProfilePropType = {
 }
 
 const EditProfile = ({ user }: {user: editProfilePropType}) => {
+  const [name, setName] = useState({ firstName: '', lastName: '' });
   const { id, firstName, lastName, image_id, phone_number } = user;
   const { url: image } = image_id || { url: null };
   const { data: session, update } = useSession();
 
-  const { mutate: updateAgent, data, isLoading, isSuccess, isError, error } = useUpdateAgent();
+  const { mutate: updateAgent, data, isLoading, isSuccess, isError, error }: updateAgentHookType = useUpdateAgent();
 
   const onSubmit = async (values: AgentUpdateType) => {
     const { firstName, lastName } = values;
     updateAgent({ values, agent_id: id });
+    setName({ firstName, lastName });
+  }
+
+  const updateSession = async () => {
+    const { firstName, lastName } = name;
     await update({
       ...session,
       user: {
@@ -50,6 +58,10 @@ const EditProfile = ({ user }: {user: editProfilePropType}) => {
       }
     });
   }
+  useEffect(()=> {
+    isSuccess === true && data?.message && (toast.success(data.message), updateSession());
+    isError === true && error && toast.error(error?.response.data.message);
+  }, [isSuccess, isError])
 
   const form = useForm<AgentUpdateType>({
     resolver: zodResolver(AgentUpdateSchema),

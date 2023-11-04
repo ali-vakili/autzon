@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { UseMutateFunction, useMutation } from "@tanstack/react-query";
 import { AgentUpdateType } from "@/validation/validations"
 import axios from "axios";
 
@@ -16,4 +16,20 @@ export const useUpdateAgent = () => {
   return useMutation({
     mutationFn: updateAgent,
   })
+}
+
+export type updateAgentHookType = {
+  mutate: UseMutateFunction<any, unknown, {
+    values: {
+      firstName: string;
+      lastName: string;
+      phone_number: string;
+    };
+    agent_id: string;
+  }, unknown>
+  data: any,
+  error: any,
+  isLoading: boolean,
+  isSuccess: boolean,
+  isError: boolean,
 }
