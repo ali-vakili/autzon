@@ -72,6 +72,8 @@ const EditProfile = ({ user }: {user: editProfilePropType}) => {
     },
   })
 
+  const { isDirty } = form.formState;
+
   return (
     <div className="flex flex-col h-fit">
       <div className="flex items-center space-x-4">
@@ -132,7 +134,7 @@ const EditProfile = ({ user }: {user: editProfilePropType}) => {
             )}
           />
           <div className="text-end">
-            <Button type="submit" disabled={isLoading} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Saving Profile...' : 'Save Profile'}</Button>
+            <Button type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Saving Profile...' : 'Save Profile'}</Button>
           </div>
         </form>
       </Form>

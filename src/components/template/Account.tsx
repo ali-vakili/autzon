@@ -60,12 +60,12 @@ const Account = async ({ user } : { user: sessionUser }) => {
       </div>
       <Separator className="my-8" />
       <div className="flex items-center justify-between mb-5">
-        <h3 className="inline-flex items-center text-sm text-gray-400"><FiUser className="me-1" />Account Information</h3>
+        <h3 className="inline-flex items-center text-sm text-gray-400"><FiUser size={16} className="me-1.5" />Account Information</h3>
         <h5 className="text-sm text-gray-400">Last updated: {updatedAt_date}</h5>
       </div>
-      <h4 className="mb-1 text-primary">Email</h4>
+      <h4 className="mb-1 font-semibold text-primary">Email</h4>
       <h5 className="text-zinc-500 ms-3">{email}</h5>
-      <h4 className="mb-1 text-primary mt-3">Join Date</h4>
+      <h4 className="mb-1 font-semibold text-primary mt-3">Join Date</h4>
       <h5 className="text-zinc-500 ms-3">{joined_date}</h5>
     </>
   )

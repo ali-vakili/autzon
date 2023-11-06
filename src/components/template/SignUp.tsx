@@ -60,6 +60,8 @@ const SignUp = () => {
     },
   })
 
+  const { isDirty } = form.formState;
+
   return (
     <div className="flex flex-col flex-1 items-center flex-shrink-0 px-5">
       <div className="flex flex-col flex-1 max-w-sm">
@@ -133,7 +135,7 @@ const SignUp = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isLoading} isLoading={isLoading} className="w-full" style={{ marginTop: "32px" }}>{isLoading ? 'Signing up...' : 'Sign Up'}</Button>
+              <Button type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-full" style={{ marginTop: "32px" }}>{isLoading ? 'Signing up...' : 'Sign Up'}</Button>
             </form>
           </Form>
         )}
