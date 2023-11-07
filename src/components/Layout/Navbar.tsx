@@ -10,11 +10,12 @@ import { Skeleton } from "@/components/ui/skeleton"
 const Navbar = () => {
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  const isDashboardPage = pathname.startsWith("/dashboard");
 
   return (
-    <header className="w-100 relative bg-gray-100 shadow-sm">
-      <nav className="grid grid-cols-3 MDesktop:px-20 px-8 py-4 items-center">
-        <Link href={"/"}>
+    <header className="w-100 relative bg-background border-b">
+      <nav className={`grid ${isDashboardPage ? 'grid-cols-2' : 'grid-cols-3'} p-4 items-center`}>
+        <Link href={"/"} className="w-fit">
           <svg width="82" height="18" viewBox="0 0 82 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M76.6359 3.69598C78.2199 3.69598 79.4999 4.19998 80.4759 5.20798C81.4519 6.19999 81.9399 7.59198 81.9399 9.38398V17.184H78.5799V9.83998C78.5799 8.78399 78.3159 7.97599 77.7879 7.41599C77.2599 6.83998 76.5399 6.55198 75.6279 6.55198C74.6999 6.55198 73.9639 6.83998 73.4199 7.41599C72.8919 7.97599 72.6279 8.78399 72.6279 9.83998V17.184H69.2679V3.88798H72.6279V5.54398C73.0759 4.96798 73.6439 4.51998 74.3319 4.19998C75.0359 3.86398 75.8039 3.69598 76.6359 3.69598Z" fill="#101010"/>
             <path d="M59.8672 17.4C58.5872 17.4 57.4352 17.12 56.4112 16.56C55.3872 15.984 54.5792 15.176 53.9872 14.136C53.4112 13.096 53.1232 11.896 53.1232 10.536C53.1232 9.176 53.4192 7.976 54.0112 6.936C54.6192 5.896 55.4432 5.096 56.4832 4.536C57.5232 3.96 58.6832 3.672 59.9632 3.672C61.2432 3.672 62.4032 3.96 63.4432 4.536C64.4832 5.096 65.2992 5.896 65.8912 6.936C66.4992 7.976 66.8032 9.176 66.8032 10.536C66.8032 11.896 66.4912 13.096 65.8672 14.136C65.2592 15.176 64.4272 15.984 63.3712 16.56C62.3312 17.12 61.1632 17.4 59.8672 17.4ZM59.8672 14.472C60.4752 14.472 61.0432 14.328 61.5712 14.04C62.1152 13.736 62.5472 13.288 62.8672 12.696C63.1872 12.104 63.3472 11.384 63.3472 10.536C63.3472 9.272 63.0112 8.304 62.3392 7.632C61.6832 6.944 60.8752 6.6 59.9152 6.6C58.9552 6.6 58.1472 6.944 57.4912 7.632C56.8512 8.304 56.5312 9.272 56.5312 10.536C56.5312 11.8 56.8432 12.776 57.4672 13.464C58.1072 14.136 58.9072 14.472 59.8672 14.472Z" fill="#101010"/>
@@ -25,11 +26,13 @@ const Navbar = () => {
           </svg>
         </Link>
 
-        <div className="space-x-2 justify-self-center">
-          <Link href="#" className={buttonVariants({variant: "link"})}>Buy Car</Link>
-          <Link href="#" className={buttonVariants({variant: "link"})}>Rent Car</Link>
-          <Link href="#" className={buttonVariants({variant: "link"})}>Galleries</Link>
-        </div>
+        {!isDashboardPage && (
+          <div className="space-x-2 justify-self-center">
+            <Link href="#" className={buttonVariants({variant: "link"})}>Buy Car</Link>
+            <Link href="#" className={buttonVariants({variant: "link"})}>Rent Car</Link>
+            <Link href="#" className={buttonVariants({variant: "link"})}>Galleries</Link>
+          </div>
+        )}
         <div className="col-span-1 justify-self-end">
           { status === "loading" ? (
             <div className="flex items-center space-x-4">
@@ -40,7 +43,7 @@ const Navbar = () => {
               <Skeleton className="h-10 w-10 rounded-full" />
             </div>
           ) : status === "authenticated" ? (
-            <UserNav user={session.user}/>
+            <UserNav user={session.user} isDashboardPage={isDashboardPage}/>
           ) : (
             <>
               {pathname === "/sign-up" ? (

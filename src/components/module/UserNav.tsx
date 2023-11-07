@@ -22,10 +22,11 @@ import { avatarFallBackText } from "@/helper/fallBackText";
 
 
 type NavUserPropsType = {
-  user: sessionUser
+  user: sessionUser,
+  isDashboardPage: boolean
 }
 
-const UserNav = ({ user } : NavUserPropsType) => {
+const UserNav = ({ user, isDashboardPage }: NavUserPropsType) => {
   const { email, firstName, lastName, role, is_profile_complete } = user;
   const items = userNavDropDownMenuItems(is_profile_complete);
 
@@ -39,7 +40,7 @@ const UserNav = ({ user } : NavUserPropsType) => {
         ) : (
           <Link href={"/account/profile"} className="flex text-destructive text-sm hover:underline"><FiAlertCircle size={20} className="me-1"/>Complete your profile</Link>
         )}
-        <h5 className="text-xs text-gray-400">{role}</h5>
+        {!isDashboardPage && <h5 className="text-xs text-gray-400">{role}</h5>}
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
