@@ -1,13 +1,12 @@
-import DashboardPanel from "@/components/module/DashboardPanel"
+import DashboardLayout from "@/components/Layout/DashboardLayout";
 
 
-const DashBoardLayout = ({ children }: { children: React.ReactNode }) => {
+const DashBoardRootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
-      <DashboardPanel/>
-      { children }
-    </div>
+    <DashboardLayout>
+      {children}
+    </DashboardLayout>
   )
 }
 
-export default DashBoardLayout
+export default DashBoardRootLayout

@@ -45,18 +45,16 @@ const Navbar = () => {
           ) : status === "authenticated" ? (
             <UserNav user={session.user} isDashboardPage={isDashboardPage}/>
           ) : (
-            <>
-              {pathname === "/sign-up" ? (
-                <Link href={"/sign-in"} className={buttonVariants({variant: "default", size: "sm"})}>
-                  Sign in to your gallery
-                </Link>
-              ) : (
+            pathname === "/sign-up" ? (
+              <Link href={"/sign-in"} className={buttonVariants({variant: "default", size: "sm"})}>
+                Sign in to your gallery
+              </Link>
+            ) : (
 
-                <Link href={"/sign-up"} className={buttonVariants({variant: "default", size: "sm"})}>
-                  Create your own gallery
-                </Link>
-              )}
-            </>
+              <Link href={"/sign-up"} className={buttonVariants({variant: "default", size: "sm"})}>
+                Create your own gallery
+              </Link>
+            )
           )}
         </div>
       </nav>
