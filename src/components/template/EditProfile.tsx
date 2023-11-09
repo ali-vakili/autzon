@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { useRouter, useSearchParams, usePathname, redirect } from "next/navigation";
 import { toast } from "sonner";
 
 
@@ -38,6 +39,22 @@ const EditProfile = ({ user }: {user: editProfilePropType}) => {
   const { url: image } = image_id || { url: null };
   const { data: session, update } = useSession();
 
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const message = searchParams.get("message");
+  const messageType = searchParams.get("messageType");
+  const callbackUrl = searchParams.get("callbackUrl");
+
+  useEffect(() => {
+    if (message) {
+      if (messageType === "error") {
+        toast.error(message);
+      }
+    }
+  }, [])
+
   const { mutate: updateAgent, data, isLoading, isSuccess, isError, error }: updateAgentHookType = useUpdateAgent();
 
   const onSubmit = async (values: AgentUpdateType) => {
@@ -57,9 +74,16 @@ const EditProfile = ({ user }: {user: editProfilePropType}) => {
         is_profile_complete: true 
       }
     });
+    redirectTo(callbackUrl);
   }
+
+  const redirectTo = (url: string | null) => {
+    toast.loading("Going to the dashboard page...");
+    isSuccess === true && url && router.push(url);
+  }
+
   useEffect(()=> {
-    isSuccess === true && data?.message && (toast.success(data.message), updateSession());
+    isSuccess === true && data?.message && (toast.success(data.message), updateSession(), router.replace(pathname));
     isError === true && error && toast.error(error?.response.data.message);
   }, [isSuccess, isError])
 

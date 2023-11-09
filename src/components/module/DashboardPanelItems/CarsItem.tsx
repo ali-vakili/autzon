@@ -14,7 +14,7 @@ const CarsItem = ({ hasAutoGallery }: {hasAutoGallery: boolean}) => {
       {dashboardPanelCarsItems.map((item) => (
         <div className="py-2" key={item.id}>
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">{item.label}</h2>
-          { hasAutoGallery ? (
+          {hasAutoGallery ? (
             item.children.map((child) => (
               <li className="my-1" key={child.id}>
                 <Link
@@ -34,11 +34,9 @@ const CarsItem = ({ hasAutoGallery }: {hasAutoGallery: boolean}) => {
             ))
           ) : (
             <div className="flex items-start bg-orange-100 text-orange-400 p-4 rounded">
-              <div>
-                <FiAlertTriangle size={16} className="mb-2 me-1.5"/>
-              </div>
+              <FiAlertTriangle size={16} className="mb-2 me-1.5 flex-shrink-0"/>
               <h3 className="text-sm">
-                Order to add your cars need to first create an <span className="underline">Auto Gallery</span>.
+                Order to add your cars first need to create an <span className="underline">Auto Gallery</span>.
               </h3>
             </div>
           )}
