@@ -44,7 +44,9 @@ const GalleryCreateAndUpdateSchema = z.object({
   address: z.string().min(1, "Address is required"),
   categories: z.array(z.string()).nonempty("At least one category must be selected"),
   city: z.string(),
-  phone_numbers: z.array(phoneNumberSchema).nonempty("At least one phone number must be provided").max(3, "Can not add more than 3 phone numbers"),
+  phone_numbers: z.array(z.object({
+    number: phoneNumberSchema
+  })).nonempty("At least one phone number must be provided").max(3, "Can not add more than 3 phone numbers"),
 }).required()
 
 

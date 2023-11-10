@@ -113,7 +113,7 @@ export const POST = async (req: Request) => {
         agent_id: agent.id,
         phone_numbers: {
           createMany:{
-            data: phone_numbers.map(number => ({ number }))
+            data: phone_numbers.map(phone_number => ({ number: phone_number.number }))
           } 
         },
         categories: {

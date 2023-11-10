@@ -15,10 +15,10 @@ import {
 import { Input } from "@/ui/input"
 import { AgentUpdateSchema, AgentUpdateType } from "@/validation/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams, usePathname, redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
 

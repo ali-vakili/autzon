@@ -22,7 +22,7 @@ const AutoGalleryItems = ({ hasAutoGallery }: {hasAutoGallery: boolean}) => {
                     href={`dashboard/${child.href}`}
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
-                      pathname.startsWith(child.href)
+                      pathname.includes(child.href)
                         ? "bg-muted hover-bg-muted text-gray-800 !font-bold"
                         : "hover:text-gray-800 text-gray-400",
                       "justify-between w-full"

@@ -1,16 +1,6 @@
 import { FiGrid, FiList, FiPlus, FiEdit, FiCircle, FiAlertCircle } from "react-icons/fi"
 
 
-type dashboardPanelItem = {
-  id: number;
-  title: string;
-  href: string;
-  icon?: JSX.Element;
-  alert?: boolean;
-  alertIcon?: JSX.Element;
-  disabled?: boolean;
-};
-
 const dashboardPanel = [
   {
     id: 1,

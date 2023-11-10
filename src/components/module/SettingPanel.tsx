@@ -9,14 +9,14 @@ import { buttonVariants } from "@/components/ui/button"
 
 const SettingPanel = () => {
   const { data: session } = useSession();
-  const pathName = usePathname();
+  const pathname = usePathname();
   const items = settingPanel(session?.user.is_profile_complete)
   return (
     <aside className="min-w-[250px] w-72 self-start overflow-auto py-6 pe-12">
       <ul>
-        { items.map((item) => (
+        {items.map((item) => (
           <li className="my-2" key={item.id}>
-            <Link href={item.href} className={`${buttonVariants({variant: "ghost", fontSize: pathName === item.href ? "bold" : "normal",})} !text-base w-full !justify-start`}>
+            <Link href={item.href} className={`${buttonVariants({variant: "ghost", fontSize: pathname === item.href ? "bold" : "normal",})} !text-base w-full !justify-start`}>
               {item.title}
               {item.alert && (
                 <span className="text-destructive ms-2">

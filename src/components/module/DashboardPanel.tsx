@@ -24,7 +24,7 @@ const DashboardPanel = ({ user, hasAutoGallery }: { user: sessionUser, hasAutoGa
                     href={item.href}
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
-                      pathname.startsWith(item.href)
+                      pathname === item.href
                         ? "bg-muted hover-bg-muted text-gray-800 !font-bold"
                         : "hover:text-gray-800 text-gray-400",
                       "justify-start w-full"
