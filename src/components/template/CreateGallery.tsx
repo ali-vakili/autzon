@@ -7,10 +7,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar"
 import { Input } from "@/ui/input"
 import { Button, buttonVariants } from "@/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/ui/form"
+import { useState } from "react"
 import { cn } from "@/lib/utils"
 
 import { FiX, FiPlus } from "react-icons/fi"
-import { useState } from "react"
 
 
 const CreateGalleryForm = () => {
