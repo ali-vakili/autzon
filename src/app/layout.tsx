@@ -27,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body id="body" className={inter.className}>
+      <body id="body" className={`${inter.className} overflow-hidden`}>
         <NextAuthProvider>
           <TanStackProvider>
             <Layout>

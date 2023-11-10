@@ -58,6 +58,7 @@ const SignUp = () => {
       password: "",
       confirmPassword: ""
     },
+    mode: "onTouched"
   })
 
   const { isDirty } = form.formState;
