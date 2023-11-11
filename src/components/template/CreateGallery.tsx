@@ -7,21 +7,36 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar"
 import { Input } from "@/ui/input"
 import { Button, buttonVariants } from "@/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/ui/form"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 
 import { FiX, FiPlus } from "react-icons/fi"
 
 
-const CreateGalleryForm = () => {
+type createGalleryFormProp = {
+  id: number;
+  category: string;
+  abbreviation: string | null;
+}[]
+
+const CreateGalleryForm = ({ categories }: {categories: createGalleryFormProp}) => {
   const [leftPhoneNumbersCount, setLeftPhoneNumbersCount] = useState<number>(2);
 
   const form = useForm<GalleryCreateAndUpdateSchemaType>({
     resolver: zodResolver(GalleryCreateAndUpdateSchema),
     defaultValues: {
       name: "",
+      city: "",
       address: "",
-      phone_numbers:[{ number: "" }]
+      phone_numbers:[{ number: "" }],
+      categories: []
     },
   })
 
@@ -30,7 +45,7 @@ const CreateGalleryForm = () => {
     control: form.control
   })
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: GalleryCreateAndUpdateSchemaType) => {
     console.log("Submitted");
   }
 
@@ -90,7 +105,7 @@ const CreateGalleryForm = () => {
                           Phone numbers <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormDescription className={cn(index !== 0 && "sr-only", "flex items-center justify-between")}>
-                          Add a phone number to your gallery, so makes it contact easier.
+                          Add a phone number to your gallery, so it makes contact easier.
                           {leftPhoneNumbersCount === 0 ? (
                             <span className="text-destructive">
                               Can not add more
@@ -101,9 +116,10 @@ const CreateGalleryForm = () => {
                             </span>
                           )}
                         </FormDescription>
-                        <FormControl className="!mt-3">
-                          <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-4 !mt-3">
+                          <FormControl>
                             <Input type="tel" placeholder="000 000 0000" {...field} className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
+                          </FormControl>
                             {
                               index > 0 && (
                                 <Button
@@ -117,8 +133,7 @@ const CreateGalleryForm = () => {
                                 </Button>
                               )
                             }
-                          </div>
-                        </FormControl>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -137,6 +152,71 @@ const CreateGalleryForm = () => {
                   </Button>
                 )}
               </div>
+              <FormField
+                control={form.control}
+                name="categories"
+                render={() => (
+                  <FormItem className="mt-8">
+                    <div className="mb-4">
+                      <FormLabel className="text-base">Categories <span className="text-destructive">*</span></FormLabel>
+                      <FormDescription>
+                        Select the categories that suit your gallery.
+                      </FormDescription>
+                    </div>
+                    <div className="grid grid-cols-4 gap-2">
+                      {categories.map((item) => (
+                        <FormField
+                          key={item.id}
+                          control={form.control}
+                          name="categories"
+                          render={({ field }) => {
+                            return (
+                              <FormItem
+                                key={item.id}
+                                className="flex flex-row items-start space-x-3 space-y-0"
+                              >
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value?.includes(item.category)}
+                                    onCheckedChange={(checked) => {
+                                      return checked
+                                        ? field.onChange([...field.value, item.category])
+                                        : field.onChange(
+                                            field.value?.filter(
+                                              (value) => value !== item.category
+                                            )
+                                          )
+                                    }}
+                                  />
+                                </FormControl>
+                                {item.abbreviation ? (
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <FormLabel className="font-normal underline">
+                                          {item.category}
+                                        </FormLabel>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        { item.abbreviation }
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                ) : (
+                                  <FormLabel className="font-normal">
+                                    {item.category}
+                                  </FormLabel>
+                                )}
+                              </FormItem>
+                            )
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <div className="text-end">
               <Button size="lg" type="submit" disabled={false || false} isLoading={false} className="w-fit" style={{ marginTop: "44px" }}>{false ? 'Creating Gallery...' : 'Create Gallery'}</Button>

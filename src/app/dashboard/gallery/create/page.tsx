@@ -1,14 +1,23 @@
 import CreateGalleryForm from "@/components/template/CreateGallery";
-import type { Metadata } from 'next'
+import { prisma } from "@/lib";
 
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: "Create Gallery",
 }
 
-export default function CreateGallery() {
+export default async function CreateGallery() {
+
+  const autoGalleryCategories = await prisma.autoGalleryCategory.findMany({
+    select: {
+      id: true,
+      category: true,
+      abbreviation: true,
+    }
+  })
 
   return (
-    <CreateGalleryForm />
+    <CreateGalleryForm categories={autoGalleryCategories} />
   )
 }
