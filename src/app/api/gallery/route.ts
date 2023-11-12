@@ -80,7 +80,7 @@ export const POST = async (req: Request) => {
       throw zodError;
     }
 
-    const { name, address, city, phone_numbers, categories }: GalleryCreateAndUpdateSchemaType = body;
+    const { name, address, city, phone_numbers, categories, about }: GalleryCreateAndUpdateSchemaType = body;
 
     if (!name || !address || !city || !phone_numbers || !categories) {
       return NextResponse.json(
@@ -118,7 +118,8 @@ export const POST = async (req: Request) => {
         },
         categories: {
           connect: categories.map(categoryId => ({ id: +categoryId }))
-        }
+        },
+        about
       },
     })
 

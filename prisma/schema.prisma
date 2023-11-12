@@ -120,6 +120,7 @@ model AutoGallery {
   city_id       Int
   address       String
   phone_numbers PhoneNumber[]
+  about         String?               @db.VarChar(1024)
   agent         AutoGalleryAgent      @relation(fields: [agent_id], references: [id], onDelete: Cascade)
   agent_id      String
   is_verified   Boolean               @default(false)

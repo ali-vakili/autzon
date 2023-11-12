@@ -47,6 +47,9 @@ const GalleryCreateAndUpdateSchema = z.object({
   phone_numbers: z.array(z.object({
     number: phoneNumberSchema
   })).nonempty("At least one phone number must be provided").max(3, "Can not add more than 3 phone numbers"),
+  about: z
+    .string()
+    .optional()
 }).required()
 
 

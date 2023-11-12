@@ -32,6 +32,8 @@ import {
   CommandItem,
 } from "@/components/ui/command"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Textarea } from "@/ui/textarea";
+
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 
@@ -60,7 +62,8 @@ const CreateGalleryForm = ({ categories, cities }: createGalleryFormProp) => {
       city: "",
       address: "",
       phone_numbers:[{ number: "" }],
-      categories: []
+      categories: [],
+      about: ""
     },
   })
 
@@ -315,6 +318,23 @@ const CreateGalleryForm = ({ categories, cities }: createGalleryFormProp) => {
                         />
                       ))}
                     </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="about"
+                render={({ field }) => (
+                  <FormItem className="mt-8">
+                    <FormLabel>About your gallery</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Tell us a little bit about your gallery"
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
