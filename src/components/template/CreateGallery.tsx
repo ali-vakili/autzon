@@ -3,6 +3,7 @@
 import { GalleryCreateAndUpdateSchema, GalleryCreateAndUpdateSchemaType } from "@/validation/validations"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
+import { ScrollArea } from "@/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar"
 import { Input } from "@/ui/input"
 import { Button, buttonVariants } from "@/ui/button"
@@ -13,20 +14,43 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 
-import { FiX, FiPlus } from "react-icons/fi"
+import { FiX, FiPlus, FiChevronRight, FiCheck } from "react-icons/fi"
 
 
 type createGalleryFormProp = {
-  id: number;
-  category: string;
-  abbreviation: string | null;
-}[]
+  categories: {
+    id: number;
+    category: string;
+    abbreviation: string | null;
+  }[],
+  cities: {
+    id: number;
+    name_en: string;
+  }[]
+}
 
-const CreateGalleryForm = ({ categories }: {categories: createGalleryFormProp}) => {
+const CreateGalleryForm = ({ categories, cities }: createGalleryFormProp) => {
   const [leftPhoneNumbersCount, setLeftPhoneNumbersCount] = useState<number>(2);
 
   const form = useForm<GalleryCreateAndUpdateSchemaType>({
@@ -73,6 +97,88 @@ const CreateGalleryForm = ({ categories }: {categories: createGalleryFormProp}) 
                     <FormControl>
                       <Input placeholder="" {...field} type="tel" className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="city"
+                render={({ field }) => (
+                  <FormItem className="mt-8">
+                    <FormLabel>City <span className="text-destructive">*</span></FormLabel>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <FormControl>
+                          <Button variant="outline" className={cn("w-full justify-between", !field.value && "text-muted-foreground")}>
+                            {field.value
+                              ? cities.find(
+                                  (city) => `${city.id}` === field.value
+                                )?.name_en
+                              : "Select city"
+                            }
+                            <FiChevronRight size={16}/>
+                          </Button>
+                        </FormControl>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>Select City</DialogTitle>
+                          <DialogDescription>
+                            The selected city will be your gallery city.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <Command>
+                          <CommandInput placeholder="Search city..."/>
+                          <ScrollArea className="h-80">
+                            <CommandEmpty>No city found.</CommandEmpty>
+                            <CommandGroup>
+                              {cities.map((city) => (
+                                <DialogClose asChild>
+                                  <CommandItem
+                                    value={city.name_en}
+                                    key={city.id}
+                                    className={cn(
+                                      "mb-0.5",
+                                      `${city.id}` === field.value
+                                        && "bg-accent"
+                                    )}
+                                    onSelect={() => {
+                                      form.setValue("city", `${city.id}`)
+                                    }}
+                                  >
+                                    <span className="flex items-center mr-2 h-4 w-4">
+                                      { `${city.id}` === field.value && (
+                                        <FiCheck
+                                          className={cn(
+                                            `${city.id}` === field.value
+                                              ? "opacity-100"
+                                              : "opacity-0"
+                                          )}
+                                        />
+                                      )}
+                                    </span>
+                                    {city.name_en}
+                                  </CommandItem>
+                                </DialogClose>
+                              ))}
+                            </CommandGroup>
+                          </ScrollArea>
+                        </Command>
+                        <DialogFooter>
+  
+                            <DialogClose asChild>
+                              <Button type="button" variant="secondary">
+                                Close
+                              </Button>
+                            </DialogClose>
+                          
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                    <FormDescription>
+                      Select which city your gallery is.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -173,7 +279,7 @@ const CreateGalleryForm = ({ categories }: {categories: createGalleryFormProp}) 
                             return (
                               <FormItem
                                 key={item.id}
-                                className="flex flex-row items-start space-x-3 space-y-0"
+                                className="flex flex-row items-start space-x-2 space-y-0"
                               >
                                 <FormControl>
                                   <Checkbox
@@ -193,7 +299,7 @@ const CreateGalleryForm = ({ categories }: {categories: createGalleryFormProp}) 
                                   <TooltipProvider>
                                     <Tooltip>
                                       <TooltipTrigger asChild>
-                                        <FormLabel className="font-normal underline">
+                                        <FormLabel className="font-normal underline cursor-pointer">
                                           {item.category}
                                         </FormLabel>
                                       </TooltipTrigger>
@@ -203,7 +309,7 @@ const CreateGalleryForm = ({ categories }: {categories: createGalleryFormProp}) 
                                     </Tooltip>
                                   </TooltipProvider>
                                 ) : (
-                                  <FormLabel className="font-normal">
+                                  <FormLabel className="font-normal cursor-pointer">
                                     {item.category}
                                   </FormLabel>
                                 )}

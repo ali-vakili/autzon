@@ -17,7 +17,12 @@ export default async function CreateGallery() {
     }
   })
 
+  const cities = await prisma.city.findMany({ 
+    select: { id: true, name_en: true, }, 
+    orderBy: { name_en: 'asc' },
+  })
+
   return (
-    <CreateGalleryForm categories={autoGalleryCategories} />
+    <CreateGalleryForm categories={autoGalleryCategories} cities={cities}/>
   )
 }

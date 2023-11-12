@@ -43,7 +43,7 @@ const GalleryCreateAndUpdateSchema = z.object({
   name: z.string().min(1, "Name is required").max(30, "Name must be less that 30 characters"),
   address: z.string().min(1, "Address is required"),
   categories: z.array(z.string()).nonempty("At least one category must be selected"),
-  city: z.string(),
+  city: z.string().min(1, "Please select a city"),
   phone_numbers: z.array(z.object({
     number: phoneNumberSchema
   })).nonempty("At least one phone number must be provided").max(3, "Can not add more than 3 phone numbers"),
