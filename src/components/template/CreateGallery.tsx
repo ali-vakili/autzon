@@ -134,45 +134,41 @@ const CreateGalleryForm = ({ categories, cities }: createGalleryFormProp) => {
                             <CommandEmpty>No city found.</CommandEmpty>
                             <CommandGroup>
                               {cities.map((city) => (
-                                <DialogClose asChild>
-                                  <CommandItem
-                                    value={city.name_en}
-                                    key={city.id}
-                                    className={cn(
-                                      "mb-0.5",
-                                      `${city.id}` === field.value
-                                        && "bg-accent"
+                                <CommandItem
+                                  value={city.name_en}
+                                  key={city.id}
+                                  className={cn(
+                                    "mb-0.5",
+                                    `${city.id}` === field.value
+                                      && "bg-accent"
+                                  )}
+                                  onSelect={() => {
+                                    form.setValue("city", `${city.id}`)
+                                  }}
+                                >
+                                  <span className="flex items-center mr-2 h-4 w-4">
+                                    {`${city.id}` === field.value && (
+                                      <FiCheck
+                                        className={cn(
+                                          `${city.id}` === field.value
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
                                     )}
-                                    onSelect={() => {
-                                      form.setValue("city", `${city.id}`)
-                                    }}
-                                  >
-                                    <span className="flex items-center mr-2 h-4 w-4">
-                                      { `${city.id}` === field.value && (
-                                        <FiCheck
-                                          className={cn(
-                                            `${city.id}` === field.value
-                                              ? "opacity-100"
-                                              : "opacity-0"
-                                          )}
-                                        />
-                                      )}
-                                    </span>
-                                    {city.name_en}
-                                  </CommandItem>
-                                </DialogClose>
+                                  </span>
+                                  {city.name_en}
+                                </CommandItem>
                               ))}
                             </CommandGroup>
                           </ScrollArea>
                         </Command>
                         <DialogFooter>
-  
-                            <DialogClose asChild>
-                              <Button type="button" variant="secondary">
-                                Close
-                              </Button>
-                            </DialogClose>
-                          
+                          <DialogClose asChild>
+                            <Button type="button" variant="secondary">
+                              Close
+                            </Button>
+                          </DialogClose>
                         </DialogFooter>
                       </DialogContent>
                     </Dialog>
@@ -283,13 +279,13 @@ const CreateGalleryForm = ({ categories, cities }: createGalleryFormProp) => {
                               >
                                 <FormControl>
                                   <Checkbox
-                                    checked={field.value?.includes(item.category)}
+                                    checked={field.value?.includes(`${item.id}`)}
                                     onCheckedChange={(checked) => {
                                       return checked
-                                        ? field.onChange([...field.value, item.category])
+                                        ? field.onChange([...field.value, `${item.id}`])
                                         : field.onChange(
                                             field.value?.filter(
-                                              (value) => value !== item.category
+                                              (value) => value !== `${item.id}`
                                             )
                                           )
                                     }}
