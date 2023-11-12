@@ -4,9 +4,9 @@ import axios from "axios";
 
 
 const updateAgent = async ({ values, agent_id }: {values: AgentUpdateType , agent_id: string}) => {
-  const { firstName, lastName, phone_number } = values;
+  const { firstName, lastName, phone_number, bio } = values;
   const { data } = await axios.patch(
-    `/api/agent/profile/edit/${agent_id}`, { firstName, lastName, phone_number }
+    `/api/agent/profile/edit/${agent_id}`, { firstName, lastName, phone_number, bio }
   )
   
   return data;
@@ -24,6 +24,7 @@ export type updateAgentHookType = {
       firstName: string;
       lastName: string;
       phone_number: string;
+      bio: string
     };
     agent_id: string;
   }, unknown>

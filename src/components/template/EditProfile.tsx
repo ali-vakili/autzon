@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/ui/form"
+import { Textarea } from "@/ui/textarea";
 import { Input } from "@/ui/input"
 import { AgentUpdateSchema, AgentUpdateType } from "@/validation/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,19 +24,22 @@ import { toast } from "sonner";
 
 
 type editProfilePropType = {
-  id: string;
-  email: string;
-  firstName: string | null;
-  lastName: string | null;
-  phone_number: string | null;
-  image_id: {
-    url: string;
-  } | null;
+  user: {
+    id: string;
+    email: string;
+    firstName: string | null;
+    lastName: string | null;
+    phone_number: string | null;
+    bio: string | null;
+    image_id: {
+      url: string;
+    } | null;
+  }
 }
 
-const EditProfile = ({ user }: {user: editProfilePropType}) => {
+const EditProfile = ({ user }: editProfilePropType) => {
   const [name, setName] = useState({ firstName: '', lastName: '' });
-  const { id, firstName, lastName, image_id, phone_number } = user;
+  const { id, firstName, lastName, image_id, phone_number, bio } = user;
   const { url: image } = image_id || { url: null };
   const { data: session, update } = useSession();
 
@@ -78,7 +82,7 @@ const EditProfile = ({ user }: {user: editProfilePropType}) => {
   }
 
   const redirectTo = (url: string | null) => {
-    toast.loading("Going to the dashboard page...");
+    url === "/dashboard" && toast.loading("Going to the dashboard page...");
     isSuccess === true && url && router.push(url);
   }
 
@@ -92,7 +96,8 @@ const EditProfile = ({ user }: {user: editProfilePropType}) => {
     defaultValues: {
       firstName: firstName || undefined,
       lastName: lastName || undefined,
-      phone_number: phone_number || undefined
+      phone_number: phone_number || undefined,
+      bio: bio || undefined
     },
   })
 
@@ -152,6 +157,23 @@ const EditProfile = ({ user }: {user: editProfilePropType}) => {
                 </div>
                 <FormControl>
                   <Input placeholder="000 000 0000" {...field} type="tel" className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="bio"
+            render={({ field }) => (
+              <FormItem className="mt-8">
+                <FormLabel>Bio</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Tell us a little bit about yourself"
+                    className="resize-none"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

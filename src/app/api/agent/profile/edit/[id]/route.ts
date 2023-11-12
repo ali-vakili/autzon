@@ -26,7 +26,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
       throw zodError;
     }
 
-    const { firstName, lastName, phone_number }: AgentUpdateType = body;
+    const { firstName, lastName, phone_number, bio }: AgentUpdateType = body;
 
     if (!firstName || !lastName || !phone_number) {
       return NextResponse.json(
@@ -44,6 +44,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
           firstName,
           lastName,
           phone_number,
+          bio,
           is_profile_complete: true
         },
       })

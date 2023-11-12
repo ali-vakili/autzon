@@ -137,6 +137,7 @@ model AutoGalleryAgent {
   email               String            @unique
   password            String?
   phone_number        String?           @db.VarChar(11)
+  bio                 String?           @db.VarChar(1024)
   gallery             AutoGallery[]
   activation_token    ActivationToken[]
   accounts            Account[]

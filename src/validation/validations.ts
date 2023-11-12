@@ -33,7 +33,8 @@ const AgentCreateSchema = z.object({
 const AgentUpdateSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
-  phone_number: phoneNumberSchema
+  phone_number: phoneNumberSchema,
+  bio: z.string().max(1024, "Bio must not be longer than 1024 characters").optional()
 }).required()
 
 
@@ -49,6 +50,7 @@ const GalleryCreateAndUpdateSchema = z.object({
   })).nonempty("At least one phone number must be provided").max(3, "Can not add more than 3 phone numbers"),
   about: z
     .string()
+    .max(1024, "Bio must not be longer than 1024 characters")
     .optional()
 }).required()
 
