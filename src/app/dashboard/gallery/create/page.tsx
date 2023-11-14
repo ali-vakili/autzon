@@ -1,5 +1,8 @@
 import CreateGalleryForm from "@/components/template/CreateGallery";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib";
+import { redirect } from "next/navigation";
 
 import type { Metadata } from 'next'
 
@@ -8,6 +11,19 @@ export const metadata: Metadata = {
 }
 
 export default async function CreateGallery() {
+  const session = await getServerSession(authOptions);
+  if(!session || !session.user) redirect("/sign-in");
+  const user = session.user
+
+  const agent = await prisma.autoGalleryAgent.findUnique({
+    where: {
+      email: user.email,
+      AND: { id: user.id}
+    },
+    include: { gallery: true },
+  });
+
+  agent!.gallery.length > 0 && redirect("/dashboard")
 
   const autoGalleryCategories = await prisma.autoGalleryCategory.findMany({
     select: {
