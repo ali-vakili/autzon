@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import brandsAndModels from "./brandsAndModels.json"
 import provincesData from './provinces.json'
 import citiesData from './cities.json'
 import categories from './categories.json'
@@ -21,6 +22,18 @@ async function main() {
   for (const category of categories) {
     await prisma.autoGalleryCategory.create({
       data: category
+    })
+  }
+
+  for (const brandAndModels of brandsAndModels){
+    await prisma.brand.create({
+      data: {
+        id: brandAndModels.id,
+        name: brandAndModels.brandName,
+        models: {
+          create: brandAndModels.models
+        }
+      }
     })
   }
 }

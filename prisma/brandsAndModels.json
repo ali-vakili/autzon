@@ -1,0 +1,851 @@
+[
+  {
+    "id": 1,
+    "brandName": "Alfa Romeo",
+    "models": [
+      { "name": "Giulia" },
+      { "name": "Stelvio" },
+      { "name": "4C" },
+      { "name": "Giulietta" },
+      { "name": "Brera" },
+      { "name": "Spider" },
+      { "name": "159" },
+      { "name": "MiTo" },
+      { "name": "GT" },
+      { "name": "147" }
+    ]
+  },
+  {
+    "id": 2,
+    "brandName": "Acura",
+    "models": [
+      { "name": "MDX" },
+      { "name": "RDX" },
+      { "name": "TLX" },
+      { "name": "ILX" },
+      { "name": "RLX" },
+      { "name": "NSX" },
+      { "name": "CL" },
+      { "name": "RSX" },
+      { "name": "TSX" },
+      { "name": "Integra" }
+    ]
+  },
+  {
+    "id": 3,
+    "brandName": "Audi",
+    "models": [
+      { "name": "A3" },
+      { "name": "A4" },
+      { "name": "A6" },
+      { "name": "A5" },
+      { "name": "Q5" },
+      { "name": "Q7" },
+      { "name": "Q3" },
+      { "name": "Q8" },
+      { "name": "TT" },
+      { "name": "R8" }
+    ]
+  },
+  {
+    "id": 4,
+    "brandName": "Bentley",
+    "models": [
+      { "name": "Continental GT" },
+      { "name": "Bentayga" },
+      { "name": "Flying Spur" },
+      { "name": "Mulsanne" },
+      { "name": "Arnage" },
+      { "name": "Azure" },
+      { "name": "Brooklands" },
+      { "name": "Turbo R" },
+      { "name": "Mark VI" },
+      { "name": "S1" }
+    ]
+  },
+  {
+    "id": 5,
+    "brandName": "Cadillac",
+    "models": [
+      { "name": "Escalade" },
+      { "name": "CTS" },
+      { "name": "XT5" },
+      { "name": "CT6" },
+      { "name": "ATS" },
+      { "name": "SRX" },
+      { "name": "XT4" },
+      { "name": "XT6" },
+      { "name": "DeVille" },
+      { "name": "Eldorado" }
+    ]
+  },
+  {
+    "id": 6,
+    "brandName": "Chevrolet",
+    "models": [
+      { "name": "Silverado" },
+      { "name": "Equinox" },
+      { "name": "Malibu" },
+      { "name": "Traverse" },
+      { "name": "Camaro" },
+      { "name": "Tahoe" },
+      { "name": "Suburban" },
+      { "name": "Corvette" },
+      { "name": "Impala" },
+      { "name": "Colorado" }
+    ]
+  },
+
+  {
+    "id": 7,
+    "brandName": "Dacia",
+    "models": [
+      { "name": "Sandero" },
+      { "name": "Duster" },
+      { "name": "Logan" },
+      { "name": "Dokker" },
+      { "name": "Lodgy" },
+      { "name": "Nova" },
+      { "name": "1300" },
+      { "name": "Solenza" },
+      { "name": "Supernova" },
+      { "name": "Pick-Up" }
+    ]
+  },
+  {
+    "id": 8,
+    "brandName": "Daewoo",
+    "models": [
+      { "name": "Matiz" },
+      { "name": "Nexia" },
+      { "name": "Lanos" },
+      { "name": "Espero" },
+      { "name": "Kalos" },
+      { "name": "Magnus" },
+      { "name": "Arcadia" },
+      { "name": "Gentra" },
+      { "name": "Racer" },
+      { "name": "Tacuma" }
+    ]
+  },
+  {
+    "id": 9,
+    "brandName": "Daihatsu",
+    "models": [
+      { "name": "Sirion" },
+      { "name": "Terios" },
+      { "name": "Cuore" },
+      { "name": "Materia" },
+      { "name": "Charade" },
+      { "name": "Copen" },
+      { "name": "Rocky" },
+      { "name": "Applause" },
+      { "name": "Feroza" },
+      { "name": "YRV" }
+    ]
+  },
+  {
+    "id": 10,
+    "brandName": "Datsun",
+    "models": [
+      { "name": "Go" },
+      { "name": "Go+" },
+      { "name": "redi-GO" },
+      { "name": "on-DO" },
+      { "name": "mi-DO" },
+      { "name": "280Z" },
+      { "name": "Bluebird" },
+      { "name": "Cherry" },
+      { "name": "Skyline" },
+      { "name": "Fairlady Z" }
+    ]
+  },
+  {
+    "id": 11,
+    "brandName": "Dodge",
+    "models": [
+      { "name": "Challenger" },
+      { "name": "Charger" },
+      { "name": "Durango" },
+      { "name": "Grand Caravan" },
+      { "name": "Journey" },
+      { "name": "Viper" },
+      { "name": "Avenger" },
+      { "name": "Caliber" },
+      { "name": "Dart" },
+      { "name": "Magnum" }
+    ]
+  },
+  {
+    "id": 12,
+    "brandName": "Ferrari",
+    "models": [
+      { "name": "F8 Tributo" },
+      { "name": "812 Superfast" },
+      { "name": "Roma" },
+      { "name": "SF90 Stradale" },
+      { "name": "Portofino" },
+      { "name": "488 Pista" },
+      { "name": "GTC4Lusso" },
+      { "name": "LaFerrari" },
+      { "name": "458 Italia" },
+      { "name": "California T" }
+    ]
+  },
+  {
+    "id": 13,
+    "brandName": "Fiat",
+    "models": [
+      { "name": "500" },
+      { "name": "Panda" },
+      { "name": "Tipo" },
+      { "name": "Punto" },
+      { "name": "500X" },
+      { "name": "124 Spider" },
+      { "name": "Doblo" },
+      { "name": "Qubo" },
+      { "name": "Freemont" },
+      { "name": "Linea" }
+    ]
+  },
+  {
+    "id": 14,
+    "brandName": "Ford",
+    "models": [
+      { "name": "F-150" },
+      { "name": "Escape" },
+      { "name": "Explorer" },
+      { "name": "Focus" },
+      { "name": "Mustang" },
+      { "name": "Ranger" },
+      { "name": "Fusion" },
+      { "name": "Edge" },
+      { "name": "Expedition" },
+      { "name": "EcoSport" }
+    ]
+  },
+  {
+    "id": 15,
+    "brandName": "Honda",
+    "models": [
+      { "name": "Civic" },
+      { "name": "Accord" },
+      { "name": "CR-V" },
+      { "name": "HR-V" },
+      { "name": "Pilot" },
+      { "name": "Odyssey" },
+      { "name": "Fit" },
+      { "name": "Ridgeline" },
+      { "name": "Insight" },
+      { "name": "Passport" }
+    ]
+  },
+  {
+    "id": 16,
+    "brandName": "Hyundai",
+    "models": [
+      { "name": "Elantra" },
+      { "name": "Sonata" },
+      { "name": "Tucson" },
+      { "name": "Santa Fe" },
+      { "name": "Kona" },
+      { "name": "Venue" },
+      { "name": "Palisade" },
+      { "name": "Accent" },
+      { "name": "Ioniq" },
+      { "name": "Veloster" }
+    ]
+  },
+  {
+    "id": 17,
+    "brandName": "GEO",
+    "models": [
+      { "name": "Metro" },
+      { "name": "Tracker" },
+      { "name": "Prizm" },
+      { "name": "Storm" },
+      { "name": "Spectrum" },
+      { "name": "Tracker Convertible" },
+      { "name": "Tracker Hardtop" },
+      { "name": "Tracker 4-door" },
+      { "name": "Metro XFi" },
+      { "name": "Metro Convertible" }
+    ]
+  },
+  {
+    "id": 18,
+    "brandName": "Infiniti",
+    "models": [
+      { "name": "Q50" },
+      { "name": "Q60" },
+      { "name": "QX50" },
+      { "name": "QX60" },
+      { "name": "QX80" },
+      { "name": "QX30" },
+      { "name": "QX70" },
+      { "name": "G37" },
+      { "name": "EX35" },
+      { "name": "M35" }
+    ]
+  },
+  {
+    "id": 19,
+    "brandName": "Isuzu",
+    "models": [
+      { "name": "Trooper" },
+      { "name": "Rodeo" },
+      { "name": "Amigo" },
+      { "name": "Ascender" },
+      { "name": "VehiCROSS" },
+      { "name": "Hombre" },
+      { "name": "i-Series" },
+      { "name": "Impulse" },
+      { "name": "Stylus" },
+      { "name": "Oasis" }
+    ]
+  },
+  {
+    "id": 20,
+    "brandName": "Iveco",
+    "models": [
+      { "name": "Daily" },
+      { "name": "Eurocargo" },
+      { "name": "Stralis" },
+      { "name": "Powerstar" },
+      { "name": "Trakker" },
+      { "name": "Massif" },
+      { "name": "TurboDaily" },
+      { "name": "Zeta" },
+      { "name": "Vertis" },
+      { "name": "Massif 4x4" }
+    ]
+  },
+  {
+    "id": 21,
+    "brandName": "Jaguar",
+    "models": [
+      { "name": "F-Pace" },
+      { "name": "XE" },
+      { "name": "XF" },
+      { "name": "XJ" },
+      { "name": "E-Pace" },
+      { "name": "I-Pace" },
+      { "name": "S-Type" },
+      { "name": "X-Type" },
+      { "name": "F-Type" },
+      { "name": "XK" }
+    ]
+  },
+  {
+    "id": 22,
+    "brandName": "Jeep",
+    "models": [
+      { "name": "Wrangler" },
+      { "name": "Cherokee" },
+      { "name": "Grand Cherokee" },
+      { "name": "Compass" },
+      { "name": "Renegade" },
+      { "name": "Gladiator" },
+      { "name": "Liberty" },
+      { "name": "Patriot" },
+      { "name": "Commander" },
+      { "name": "Wagoneer" }
+    ]
+  },
+  {
+    "id": 23,
+    "brandName": "Kia",
+    "models": [
+      { "name": "Sorento" },
+      { "name": "Sportage" },
+      { "name": "Soul" },
+      { "name": "Telluride" },
+      { "name": "Rio" },
+      { "name": "Forte" },
+      { "name": "Stinger" },
+      { "name": "Cadenza" },
+      { "name": "Optima" },
+      { "name": "K900" }
+    ]
+  },
+  {
+    "id": 24,
+    "brandName": "Lada",
+    "models": [
+      { "name": "Niva" },
+      { "name": "Granta" },
+      { "name": "Kalina" },
+      { "name": "Priora" },
+      { "name": "Vesta" },
+      { "name": "4x4 Urban" },
+      { "name": "XRAY" },
+      { "name": "Largus" },
+      { "name": "Samara" },
+      { "name": "2107" }
+    ]
+  },
+  {
+    "id": 25,
+    "brandName": "Lamborghini",
+    "models": [
+      { "name": "Aventador" },
+      { "name": "Huracan" },
+      { "name": "Urus" },
+      { "name": "Gallardo" },
+      { "name": "Murcielago" },
+      { "name": "Diablo" },
+      { "name": "Countach" },
+      { "name": "Reventon" },
+      { "name": "Sian" },
+      { "name": "Centenario" }
+    ]
+  },
+  {
+    "id": 26,
+    "brandName": "Lancia",
+    "models": [
+      { "name": "Delta" },
+      { "name": "Ypsilon" },
+      { "name": "Thema" },
+      { "name": "Voyager" },
+      { "name": "Fulvia" },
+      { "name": "Stratos" },
+      { "name": "Beta" },
+      { "name": "Appia" },
+      { "name": "Aurelia" },
+      { "name": "Aprilila" }
+    ]
+  },
+  {
+    "id": 27,
+    "brandName": "Land Rover",
+    "models": [
+      { "name": "Range Rover" },
+      { "name": "Discovery" },
+      { "name": "Defender" },
+      { "name": "Range Rover Sport" },
+      { "name": "Velar" },
+      { "name": "Evoque" },
+      { "name": "Freelander" },
+      { "name": "Discovery Sport" },
+      { "name": "Series I" },
+      { "name": "Series II" }
+    ]
+  },
+  {
+    "id": 28,
+    "brandName": "Lexus",
+    "models": [
+      { "name": "RX" },
+      { "name": "ES" },
+      { "name": "NX" },
+      { "name": "UX" },
+      { "name": "LS" },
+      { "name": "IS" },
+      { "name": "LC" },
+      { "name": "GS" },
+      { "name": "RC" },
+      { "name": "LFA" }
+    ]
+  },
+  {
+    "id": 29,
+    "brandName": "Lotus",
+    "models": [
+      { "name": "Elise" },
+      { "name": "Evora" },
+      { "name": "Exige" },
+      { "name": "Esprit" },
+      { "name": "Europa" },
+      { "name": "Seven" },
+      { "name": "Cortina" },
+      { "name": "Elan" },
+      { "name": "Eclat" },
+      { "name": "Super Seven" }
+    ]
+  },
+  {
+    "id": 30,
+    "brandName": "Maserati",
+    "models": [
+      { "name": "Ghibli" },
+      { "name": "Quattroporte" },
+      { "name": "Levante" },
+      { "name": "GranTurismo" },
+      { "name": "GranCabrio" },
+      { "name": "Spyder" },
+      { "name": "Bora" },
+      { "name": "Indy" },
+      { "name": "Khamsin" },
+      { "name": "Merak" }
+    ]
+  },
+  {
+    "id": 31,
+    "brandName": "Mazda",
+    "models": [
+      { "name": "Mazda3" },
+      { "name": "Mazda6" },
+      { "name": "CX-5" },
+      { "name": "CX-9" },
+      { "name": "MX-5 Miata" },
+      { "name": "CX-30" },
+      { "name": "RX-8" },
+      { "name": "MPV" },
+      { "name": "RX-7" },
+      { "name": "CX-3" }
+    ]
+  },
+  {
+    "id": 32,
+    "brandName": "Mercedes-Benz",
+    "models": [
+      { "name": "C-Class" },
+      { "name": "E-Class" },
+      { "name": "S-Class" },
+      { "name": "GLC" },
+      { "name": "GLE" },
+      { "name": "GLA" },
+      { "name": "GLB" },
+      { "name": "CLS" },
+      { "name": "SLC" },
+      { "name": "AMG GT" }
+    ]
+  },
+  {
+    "id": 33,
+    "brandName": "Mini-Cooper",
+    "models": [
+      { "name": "Cooper" },
+      { "name": "Countryman" },
+      { "name": "Clubman" },
+      { "name": "Paceman" },
+      { "name": "Convertible" },
+      { "name": "Coupe" },
+      { "name": "Roadster" },
+      { "name": "Hardtop 2 Door" },
+      { "name": "Hardtop 4 Door" },
+      { "name": "John Cooper Works" }
+    ]
+  },
+  {
+    "id": 34,
+    "brandName": "Mitsubishi",
+    "models": [
+      { "name": "Outlander" },
+      { "name": "Eclipse Cross" },
+      { "name": "ASX" },
+      { "name": "Pajero" },
+      { "name": "Lancer" },
+      { "name": "Mirage" },
+      { "name": "RVR" },
+      { "name": "Galant" },
+      { "name": "i-MiEV" },
+      { "name": "Endeavor" }
+    ]
+  },
+  {
+    "id": 35,
+    "brandName": "Morgan",
+    "models": [
+      { "name": "Plus Six" },
+      { "name": "Plus Four" },
+      { "name": "3 Wheeler" },
+      { "name": "Aero GT" },
+      { "name": "4/4" },
+      { "name": "Aero 8" },
+      { "name": "Roadster" },
+      { "name": "Aero Supersports" },
+      { "name": "V6 Roadster" },
+      { "name": "Plus 8" }
+    ]
+  },
+  {
+    "id": 36,
+    "brandName": "Nissan",
+    "models": [
+      { "name": "Altima" },
+      { "name": "Rogue" },
+      { "name": "Sentra" },
+      { "name": "Pathfinder" },
+      { "name": "Maxima" },
+      { "name": "Murano" },
+      { "name": "Versa" },
+      { "name": "Frontier" },
+      { "name": "370Z" },
+      { "name": "Armada" }
+    ]
+  },
+  {
+    "id": 37,
+    "brandName": "Opel",
+    "models": [
+      { "name": "Corsa" },
+      { "name": "Astra" },
+      { "name": "Insignia" },
+      { "name": "Mokka" },
+      { "name": "Adam" },
+      { "name": "Crossland X" },
+      { "name": "Grandland X" },
+      { "name": "Zafira" },
+      { "name": "Karl" },
+      { "name": "Combo" }
+    ]
+  },
+  {
+    "id": 38,
+    "brandName": "Peugeot",
+    "models": [
+      { "name": "208" },
+      { "name": "3008" },
+      { "name": "2008" },
+      { "name": "308" },
+      { "name": "5008" },
+      { "name": "508" },
+      { "name": "108" },
+      { "name": "Rifter" },
+      { "name": "Traveller" },
+      { "name": "Expert" }
+    ]
+  },
+  {
+    "id": 39,
+    "brandName": "Pontiac",
+    "models": [
+      { "name": "GTO" },
+      { "name": "Firebird" },
+      { "name": "Grand Prix" },
+      { "name": "Solstice" },
+      { "name": "Bonneville" },
+      { "name": "Montana" },
+      { "name": "Vibe" },
+      { "name": "Aztek" },
+      { "name": "Sunfire" },
+      { "name": "Torrent" }
+    ]
+  },
+  {
+    "id": 40,
+    "brandName": "Porshe",
+    "models": [
+      { "name": "911" },
+      { "name": "Cayenne" },
+      { "name": "Macan" },
+      { "name": "Panamera" },
+      { "name": "Cayman" },
+      { "name": "Boxster" },
+      { "name": "Taycan" },
+      { "name": "718" },
+      { "name": "918 Spyder" },
+      { "name": "944" }
+    ]
+  },
+  {
+    "id": 41,
+    "brandName": "Renault",
+    "models": [
+      { "name": "Clio" },
+      { "name": "Captur" },
+      { "name": "Megane" },
+      { "name": "Kadjar" },
+      { "name": "Duster" },
+      { "name": "Talisman" },
+      { "name": "Twingo" },
+      { "name": "Zoe" },
+      { "name": "Koleos" },
+      { "name": "Scenic" }
+    ]
+  },
+  {
+    "id": 42,
+    "brandName": "Rolls-Royce",
+    "models": [
+      { "name": "Phantom" },
+      { "name": "Ghost" },
+      { "name": "Cullinan" },
+      { "name": "Wraith" },
+      { "name": "Dawn" },
+      { "name": "Silver Shadow" },
+      { "name": "Silver Cloud" },
+      { "name": "Corniche" },
+      { "name": "Camargue" },
+      { "name": "Silver Spirit" }
+    ]
+  },
+  {
+    "id": 43,
+    "brandName": "SEAT",
+    "models": [
+      { "name": "Leon" },
+      { "name": "Ibiza" },
+      { "name": "Ateca" },
+      { "name": "Arona" },
+      { "name": "Tarraco" },
+      { "name": "Alhambra" },
+      { "name": "Toledo" },
+      { "name": "Mii" },
+      { "name": "Cupra" },
+      { "name": "Exeo" }
+    ]
+  },
+  {
+    "id": 44,
+    "brandName": "Skoda",
+    "models": [
+      { "name": "Octavia" },
+      { "name": "Superb" },
+      { "name": "Kodiaq" },
+      { "name": "Karoq" },
+      { "name": "Fabia" },
+      { "name": "Rapid" },
+      { "name": "Scala" },
+      { "name": "Citigo" },
+      { "name": "Enyaq" },
+      { "name": "Yeti" }
+    ]
+  },
+  {
+    "id": 45,
+    "brandName": "Smart",
+    "models": [
+      { "name": "Fortwo" },
+      { "name": "Forfour" },
+      { "name": "Roadster" },
+      { "name": "Crossblade" },
+      { "name": "City-Coupe" },
+      { "name": "City-Cabrio" },
+      { "name": "Forstars" },
+      { "name": "Formore" },
+      { "name": "Fourjoy" },
+      { "name": "EQ Fortwo" }
+    ]
+  },
+  {
+    "id": 46,
+    "brandName": "SsangYong",
+    "models": [
+      { "name": "Korando" },
+      { "name": "Tivoli" },
+      { "name": "Rexton" },
+      { "name": "Actyon" },
+      { "name": "Musso" },
+      { "name": "Kyron" },
+      { "name": "Chairman" },
+      { "name": "Rodius" },
+      { "name": "Stavic" },
+      { "name": "Korando Sports" }
+    ]
+  },
+  {
+    "id": 47,
+    "brandName": "Subaru",
+    "models": [
+      { "name": "Forester" },
+      { "name": "Outback" },
+      { "name": "Impreza" },
+      { "name": "Crosstrek" },
+      { "name": "Legacy" },
+      { "name": "WRX" },
+      { "name": "BRZ" },
+      { "name": "Ascent" },
+      { "name": "Levorg" },
+      { "name": "XT" }
+    ]
+  },
+  {
+    "id": 48,
+    "brandName": "Suzuki",
+    "models": [
+      { "name": "Swift" },
+      { "name": "Vitara" },
+      { "name": "Jimny" },
+      { "name": "S-Cross" },
+      { "name": "Ignis" },
+      { "name": "Baleno" },
+      { "name": "Celerio" },
+      { "name": "SX4" },
+      { "name": "Kizashi" },
+      { "name": "Alto" }
+    ]
+  },
+  {
+    "id": 49,
+    "brandName": "Scion",
+    "models": [
+      { "name": "xB" },
+      { "name": "xD" },
+      { "name": "tC" },
+      { "name": "iQ" },
+      { "name": "FR-S" },
+      { "name": "iA" },
+      { "name": "iM" },
+      { "name": "tC Release Series" },
+      { "name": "xD Release Series" },
+      { "name": "xB Release Series" }
+    ]
+  },
+  {
+    "id": 50,
+    "brandName": "Tesla",
+    "models": [
+      { "name": "Model S" },
+      { "name": "Model 3" },
+      { "name": "Model X" },
+      { "name": "Model Y" },
+      { "name": "Roadster" },
+      { "name": "Cybertruck" },
+      { "name": "Semi" },
+      { "name": "Model B" },
+      { "name": "Model M" },
+      { "name": "Model T" }
+    ]
+  },
+  {
+    "id": 51,
+    "brandName": "Toyota",
+    "models": [
+      { "name": "Corolla" },
+      { "name": "Camry" },
+      { "name": "Rav4" },
+      { "name": "Highlander" },
+      { "name": "Tacoma" },
+      { "name": "4Runner" },
+      { "name": "Prius" },
+      { "name": "Sienna" },
+      { "name": "Tundra" },
+      { "name": "Avalon" }
+    ]
+  },
+  {
+    "id": 52,
+    "brandName": "Volkswagen",
+    "models": [
+      { "name": "Golf" },
+      { "name": "Passat" },
+      { "name": "Tiguan" },
+      { "name": "Jetta" },
+      { "name": "Atlas" },
+      { "name": "Arteon" },
+      { "name": "ID.4" },
+      { "name": "Touareg" },
+      { "name": "Atlas Cross Sport" },
+      { "name": "Taos" }
+    ]
+  },
+  {
+    "id": 53,
+    "brandName": "Volvo",
+    "models": [
+      { "name": "XC90" },
+      { "name": "XC60" },
+      { "name": "XC40" },
+      { "name": "S90" },
+      { "name": "S60" },
+      { "name": "V90" },
+      { "name": "V60" },
+      { "name": "C40" },
+      { "name": "C70" },
+      { "name": "Polestar 2" }
+    ]
+  }
+]

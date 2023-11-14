@@ -156,7 +156,7 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
                         <Command>
                           <CommandInput placeholder="Search city or province..."/>
                           {selectedProvince && (
-                            <Badge variant="secondary" className="w-fit py-2 px-4 m-2 ms-4">
+                            <Badge variant="secondary" className="w-fit py-2 px-4 m-2 ms-3">
                               <span aria-description="unselect province" className="bg-slate-300 me-1.5 cursor-pointer rounded-full p-0.5" onClick={() => setSelectedProvince(null)}><FiX size={16}/></span>
                               { selectedProvince.name }
                             </Badge>

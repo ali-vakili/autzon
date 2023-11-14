@@ -78,12 +78,34 @@ model City {
   gallery     AutoGallery[]
 }
 
+model Model {
+  id       Int    @id @default(autoincrement())
+  name     String
+  brand    Brand  @relation(fields: [brand_id], references: [id])
+  brand_id Int
+  cars     Car[]
+}
+
+model Brand {
+  id     Int     @id @default(autoincrement())
+  name   String
+  models Model[]
+}
+
+model FuelType {
+  id   Int    @id @default(autoincrement())
+  type String
+  cars Car[]
+}
+
 model Car {
   id           String      @id @default(uuid())
   title        String      @db.VarChar(30)
-  brand        String      @db.VarChar(10)
-  model        String      @db.VarChar(15)
+  model        Model       @relation(fields: [model_id], references: [id])
+  model_id     Int
   buid_year    Int
+  fuel_type    FuelType    @relation(fields: [fuel_type_id], references: [id])
+  fuel_type_id Int
   images       Image[]
   gallery      AutoGallery @relation(fields: [gallery_id], references: [id], onDelete: Cascade)
   gallery_id   String
@@ -96,11 +118,16 @@ model Car {
 }
 
 model RentCar {
-  id             String @id @default(uuid())
+  id             String  @id @default(uuid())
   price_per_day  Float?
   price_per_hour Float?
-  Car            Car    @relation(fields: [car_id], references: [id])
-  car_id         String @unique
+  days           Int?
+  hours          Int?
+  pick_up_place  String
+  drop_off_place String
+  extra_time     Boolean @default(false)
+  Car            Car     @relation(fields: [car_id], references: [id])
+  car_id         String  @unique
 }
 
 model SaleCar {

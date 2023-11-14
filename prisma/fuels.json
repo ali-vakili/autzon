@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "type": "Gasoline"
+  },
+  {
+    "id": 2,
+    "type": "Diesel"
+  },
+  {
+    "id": 3,
+    "type": "Electricity"
+  },
+  {
+    "id": 4,
+    "type": "Hybrid"
+  }
+]

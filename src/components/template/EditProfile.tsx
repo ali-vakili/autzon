@@ -124,7 +124,7 @@ const EditProfile = ({ user }: editProfilePropType) => {
                   <FormItem>
                     <FormLabel>First name <span className="text-destructive">*</span></FormLabel>
                     <FormControl>
-                      <Input placeholder="you@example.com" {...field} type="text" className="px-4 py-2 bg-secondary focus:bg-slate-50"/>
+                      <Input placeholder="" {...field} type="text" className="px-4 py-2 bg-secondary focus:bg-slate-50"/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
