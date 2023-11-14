@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/command"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Textarea } from "@/ui/textarea";
+import { Badge } from "@/components/ui/badge"
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
@@ -49,11 +50,17 @@ type createGalleryFormProp = {
   cities: {
     id: number;
     name_en: string;
+    province_id: number;
+  }[],
+  provinces: {
+    id: number;
+    name_en: string;
   }[]
 }
 
-const CreateGalleryForm = ({ categories, cities }: createGalleryFormProp) => {
+const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormProp) => {
   const [leftPhoneNumbersCount, setLeftPhoneNumbersCount] = useState<number>(2);
+  const [selectedProvince , setSelectedProvince] = useState<{id:number, name: string}|null>(null);
 
   const form = useForm<GalleryCreateAndUpdateSchemaType>({
     resolver: zodResolver(GalleryCreateAndUpdateSchema),
@@ -132,37 +139,64 @@ const CreateGalleryForm = ({ categories, cities }: createGalleryFormProp) => {
                           </DialogDescription>
                         </DialogHeader>
                         <Command>
-                          <CommandInput placeholder="Search city..."/>
+                          <CommandInput placeholder="Search city or province..."/>
+                          {selectedProvince && (
+                            <Badge variant="secondary" className="w-fit py-2 px-4 m-2 ms-4">
+                              <span aria-description="unselect province" className="bg-slate-300 me-1.5 cursor-pointer rounded-full p-0.5" onClick={() => setSelectedProvince(null)}><FiX size={16}/></span>
+                              { selectedProvince.name }
+                            </Badge>
+                          )}
                           <ScrollArea className="h-80">
-                            <CommandEmpty>No city found.</CommandEmpty>
+                            <CommandEmpty>No city or province found.</CommandEmpty>
                             <CommandGroup>
-                              {cities.map((city) => (
-                                <CommandItem
-                                  value={city.name_en}
-                                  key={city.id}
-                                  className={cn(
-                                    "mb-0.5",
-                                    `${city.id}` === field.value
-                                      && "bg-accent"
-                                  )}
-                                  onSelect={() => {
-                                    form.setValue("city", `${city.id}`)
-                                  }}
-                                >
-                                  <span className="flex items-center mr-2 h-4 w-4">
-                                    {`${city.id}` === field.value && (
-                                      <FiCheck
-                                        className={cn(
-                                          `${city.id}` === field.value
-                                            ? "opacity-100"
-                                            : "opacity-0"
-                                        )}
-                                      />
-                                    )}
-                                  </span>
-                                  {city.name_en}
-                                </CommandItem>
-                              ))}
+                              <h4 className="text-xs text-gray-400 ms-3 my-3">{selectedProvince ? "Cities" : "Provinces"}</h4>
+                              {selectedProvince ? 
+                                cities
+                                .filter((city) => city.province_id === selectedProvince.id)
+                                .map((city) => (
+                                  <CommandItem
+                                    value={city.name_en}
+                                    key={city.id}
+                                    className={cn("mb-0.5", `${city.id}` === field.value && "bg-accent")}
+                                    onSelect={() => {
+                                      form.setValue("city", `${city.id}`);
+                                    }}
+                                  >
+                                    <span className="flex items-center mr-2 h-4 w-4">
+                                      {`${city.id}` === field.value && (
+                                        <FiCheck
+                                          className={cn(
+                                            `${city.id}` === field.value ? "opacity-100" : "opacity-0"
+                                          )}
+                                        />
+                                      )}
+                                    </span>
+                                    {city.name_en}
+                                  </CommandItem>
+                                ))
+                              :
+                                provinces.map((province) => (
+                                  <CommandItem
+                                    value={province.name_en}
+                                    key={province.id}
+                                    className={cn("mb-0.5", province.id === selectedProvince && "bg-accent")}
+                                    onSelect={() => {
+                                      setSelectedProvince({id: province.id, name: province.name_en})
+                                    }}
+                                  >
+                                    <span className="flex items-center mr-2 h-4 w-4">
+                                      {province.id === selectedProvince && (
+                                        <FiCheck
+                                          className={cn(
+                                            province.id === selectedProvince ? "opacity-100" : "opacity-0"
+                                          )}
+                                        />
+                                      )}
+                                    </span>
+                                    {province.name_en}
+                                  </CommandItem>
+                                ))
+                              }
                             </CommandGroup>
                           </ScrollArea>
                         </Command>
