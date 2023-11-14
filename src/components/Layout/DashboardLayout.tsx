@@ -8,7 +8,7 @@ import { ScrollArea } from "@/ui/scroll-area";
 const DashboardLayout = async ({ children } : { children: React.ReactNode }) => {
   const session = await getServerSession(authOptions);
   if(!session || !session.user) return;
-  const user = session.user
+  const user = session.user;
 
   const agent = await prisma.autoGalleryAgent.findUnique({
     where: {

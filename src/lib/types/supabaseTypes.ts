@@ -162,6 +162,7 @@ export interface Database {
       }
       AutoGallery: {
         Row: {
+          about: string | null
           address: string
           agent_id: string
           city_id: number
@@ -172,6 +173,7 @@ export interface Database {
           updatedAt: string
         }
         Insert: {
+          about?: string | null
           address: string
           agent_id: string
           city_id: number
@@ -182,6 +184,7 @@ export interface Database {
           updatedAt: string
         }
         Update: {
+          about?: string | null
           address?: string
           agent_id?: string
           city_id?: number
@@ -210,6 +213,7 @@ export interface Database {
       }
       AutoGalleryAgent: {
         Row: {
+          bio: string | null
           email: string
           firstName: string | null
           id: string
@@ -224,6 +228,7 @@ export interface Database {
           updatedAt: string
         }
         Insert: {
+          bio?: string | null
           email: string
           firstName?: string | null
           id: string
@@ -238,6 +243,7 @@ export interface Database {
           updatedAt: string
         }
         Update: {
+          bio?: string | null
           email?: string
           firstName?: string | null
           id?: string

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default async function CreateGallery() {
   const session = await getServerSession(authOptions);
   if(!session || !session.user) redirect("/sign-in");
-  const user = session.user
+  const user = session.user;
 
   const agent = await prisma.autoGalleryAgent.findUnique({
     where: {
@@ -23,7 +23,7 @@ export default async function CreateGallery() {
     include: { gallery: true },
   });
 
-  agent!.gallery.length > 0 && redirect("/dashboard")
+  agent!.gallery.length > 0 && redirect("/dashboard");
 
   const autoGalleryCategories = await prisma.autoGalleryCategory.findMany({
     select: {
