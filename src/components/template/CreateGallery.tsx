@@ -3,6 +3,7 @@
 import { GalleryCreateAndUpdateSchema, GalleryCreateAndUpdateSchemaType } from "@/validation/validations"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
+import { toast } from "sonner";
 import { ScrollArea } from "@/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar"
 import { Input } from "@/ui/input"
@@ -35,10 +36,14 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Textarea } from "@/ui/textarea";
 import { Badge } from "@/components/ui/badge"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 
 import { FiX, FiPlus, FiChevronRight, FiCheck } from "react-icons/fi"
+
+import { useCreateGallery, createGalleryHookType } from "@/hooks/useCreateGallery";
+
+import { useRouter } from "next/navigation";
 
 
 type createGalleryFormProp = {
@@ -61,6 +66,14 @@ type createGalleryFormProp = {
 const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormProp) => {
   const [leftPhoneNumbersCount, setLeftPhoneNumbersCount] = useState<number>(2);
   const [selectedProvince , setSelectedProvince] = useState<{id:number, name: string}|null>(null);
+  const router = useRouter();
+
+  const { mutate: createGalley, data, isLoading, isSuccess, isError, error }: createGalleryHookType = useCreateGallery();
+
+  useEffect(()=> {
+    isSuccess === true && (data?.message || data?.error) && (toast.success(data.message), router.refresh(), router.replace("/dashboard"));
+    isError === true && error && toast.error(error?.response.data.message);
+  }, [isSuccess, isError])
 
   const form = useForm<GalleryCreateAndUpdateSchemaType>({
     resolver: zodResolver(GalleryCreateAndUpdateSchema),
@@ -79,8 +92,10 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
     control: form.control
   })
 
+  const { isDirty } = form.formState;
+
   const onSubmit = async (values: GalleryCreateAndUpdateSchemaType) => {
-    console.log("Submitted");
+    createGalley(values);
   }
 
   return (
@@ -365,7 +380,7 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
                     <FormControl>
                       <Textarea
                         placeholder="Tell us a little bit about your gallery"
-                        className="resize-none"
+                        className="px-4 py-2 bg-secondary focus:bg-gray-50 resize-none"
                         {...field}
                       />
                     </FormControl>
@@ -375,7 +390,7 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
               />
             </div>
             <div className="text-end">
-              <Button size="lg" type="submit" disabled={false || false} isLoading={false} className="w-fit" style={{ marginTop: "44px" }}>{false ? 'Creating Gallery...' : 'Create Gallery'}</Button>
+              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading}className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Creating Gallery...' : 'Create Gallery'}</Button>
             </div>
           </form>
         </Form>

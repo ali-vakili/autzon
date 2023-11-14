@@ -6,7 +6,7 @@ import axios from "axios";
 const createAgent = async (values: AgentCreateType) => {
   const { email, password, confirmPassword } = values;
   const { data } = await axios.post(
-    "api/auth/signup", { email, password, confirmPassword }
+    "/api/auth/signup", { email, password, confirmPassword }
   )
   
   return data;

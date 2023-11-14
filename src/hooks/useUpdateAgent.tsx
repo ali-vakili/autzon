@@ -20,12 +20,7 @@ export const useUpdateAgent = () => {
 
 export type updateAgentHookType = {
   mutate: UseMutateFunction<any, unknown, {
-    values: {
-      firstName: string;
-      lastName: string;
-      phone_number: string;
-      bio: string
-    };
+    values: AgentUpdateType;
     agent_id: string;
   }, unknown>
   data: any,
