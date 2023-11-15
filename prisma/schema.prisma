@@ -79,23 +79,26 @@ model City {
 }
 
 model Model {
-  id       Int    @id @default(autoincrement())
-  name     String
-  brand    Brand  @relation(fields: [brand_id], references: [id])
-  brand_id Int
-  cars     Car[]
+  id           Int       @id @default(autoincrement())
+  name         String
+  brand        Brand     @relation(fields: [brand_id], references: [id])
+  brand_id     Int
+  fuel_type    FuelType? @relation(fields: [fuel_type_id], references: [id])
+  fuel_type_id Int?
+  cars         Car[]
 }
 
 model Brand {
-  id     Int     @id @default(autoincrement())
+  id     Int     @id
   name   String
   models Model[]
 }
 
 model FuelType {
-  id   Int    @id @default(autoincrement())
-  type String
-  cars Car[]
+  id    Int     @id @default(autoincrement())
+  type  String
+  cars  Car[]
+  Model Model[]
 }
 
 model Car {
@@ -118,23 +121,31 @@ model Car {
 }
 
 model RentCar {
-  id             String  @id @default(uuid())
+  id             String   @id @default(uuid())
+  Car            Car      @relation(fields: [car_id], references: [id], onDelete: Cascade)
+  car_id         String   @unique
   price_per_day  Float?
   price_per_hour Float?
   days           Int?
   hours          Int?
   pick_up_place  String
   drop_off_place String
-  extra_time     Boolean @default(false)
-  Car            Car     @relation(fields: [car_id], references: [id])
-  car_id         String  @unique
+  pick_up_date   DateTime
+  drop_off_date  DateTime
+  pick_up_hour   DateTime
+  drop_off_hour  DateTime
+  extra_time     Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model SaleCar {
-  id     String @id @default(uuid())
-  price  Float
-  Car    Car    @relation(fields: [car_id], references: [id])
-  car_id String @unique
+  id        String   @id @default(uuid())
+  Car       Car      @relation(fields: [car_id], references: [id], onDelete: Cascade)
+  car_id    String   @unique
+  price     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model AutoGallery {

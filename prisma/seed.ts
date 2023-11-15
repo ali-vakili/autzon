@@ -3,6 +3,7 @@ import brandsAndModels from "./brandsAndModels.json"
 import provincesData from './provinces.json'
 import citiesData from './cities.json'
 import categories from './categories.json'
+import fuels from "./fuels.json"
 
 const prisma = new PrismaClient()
 
@@ -25,7 +26,13 @@ async function main() {
     })
   }
 
-  for (const brandAndModels of brandsAndModels){
+  for (const fuel of fuels) {
+    await prisma.fuelType.create({
+      data: fuel
+    })
+  }
+
+  for (const brandAndModels of brandsAndModels) {
     await prisma.brand.create({
       data: {
         id: brandAndModels.id,

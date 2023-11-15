@@ -9,10 +9,8 @@
       { "name": "Giulietta" },
       { "name": "Brera" },
       { "name": "Spider" },
-      { "name": "159" },
       { "name": "MiTo" },
-      { "name": "GT" },
-      { "name": "147" }
+      { "name": "GT" }
     ]
   },
   {
@@ -788,16 +786,12 @@
     "id": 50,
     "brandName": "Tesla",
     "models": [
-      { "name": "Model S" },
-      { "name": "Model 3" },
-      { "name": "Model X" },
-      { "name": "Model Y" },
-      { "name": "Roadster" },
-      { "name": "Cybertruck" },
-      { "name": "Semi" },
-      { "name": "Model B" },
-      { "name": "Model M" },
-      { "name": "Model T" }
+      { "name": "Model S", "fuel_type_id": 3 },
+      { "name": "Model 3", "fuel_type_id": 3 },
+      { "name": "Model X", "fuel_type_id": 3 },
+      { "name": "Model Y", "fuel_type_id": 3 },
+      { "name": "Roadster", "fuel_type_id": 3 },
+      { "name": "Cybertruck", "fuel_type_id": 3 }
     ]
   },
   {
@@ -826,7 +820,6 @@
       { "name": "Jetta" },
       { "name": "Atlas" },
       { "name": "Arteon" },
-      { "name": "ID.4" },
       { "name": "Touareg" },
       { "name": "Atlas Cross Sport" },
       { "name": "Taos" }
