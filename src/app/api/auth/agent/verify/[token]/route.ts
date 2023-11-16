@@ -17,9 +17,6 @@ export const GET = async (request: NextRequest, { params } : {params: { token: s
           createdAt: {
             gt: twelveHoursAgo, // 12 hour ago
           }
-        },
-        {
-          verifyToken: token
         }
       ]
     },
@@ -35,14 +32,14 @@ export const GET = async (request: NextRequest, { params } : {params: { token: s
     )
   }
 
-  if (activationToken.createdAt <= twelveHoursAgo) {
+  else if (activationToken.createdAt <= twelveHoursAgo) {
     return NextResponse.json(
       { error: "Token expired" },
       { status: 401 }
     )
   }
   
-  if (activationToken.activatedAt !== null) {
+  else if (activationToken.activatedAt !== null) {
     return NextResponse.json(
       { error: "Account already activated" },
       { status: 409 }

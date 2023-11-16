@@ -14,7 +14,7 @@ export const GET = async (req: Request, { params }: requestProps) => {
   
     const galleries = await prisma.autoGallery.findUnique(
       {
-        where: { id: params.id},
+        where: { id: params.id },
         select: {
           id: true,
           name: true,

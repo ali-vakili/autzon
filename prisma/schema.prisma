@@ -47,7 +47,7 @@ model Image {
 }
 
 model ActivationToken {
-  id          String           @default(uuid())
+  id          String           @id @default(uuid())
   verifyToken String           @unique @db.Text
   agent_id    String
   agent       AutoGalleryAgent @relation(fields: [agent_id], references: [id], onDelete: Cascade)
@@ -106,7 +106,7 @@ model Car {
   title        String      @db.VarChar(30)
   model        Model       @relation(fields: [model_id], references: [id])
   model_id     Int
-  buid_year    Int
+  build_year   Int
   fuel_type    FuelType    @relation(fields: [fuel_type_id], references: [id])
   fuel_type_id Int
   images       Image[]
@@ -167,24 +167,25 @@ model AutoGallery {
 }
 
 model AutoGalleryAgent {
-  id                  String            @id @default(uuid())
-  firstName           String?           @db.VarChar(30)
-  lastName            String?           @db.VarChar(30)
-  image_id            Image?
-  role                Role              @default(AGENT)
-  email               String            @unique
-  password            String?
-  phone_number        String?           @db.VarChar(11)
-  bio                 String?           @db.VarChar(1024)
-  gallery             AutoGallery[]
-  activation_token    ActivationToken[]
-  accounts            Account[]
-  sessions            Session[]
-  is_profile_complete Boolean           @default(false)
-  is_subscribed       Boolean           @default(false)
-  is_verified         Boolean           @default(false)
-  join_date           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
+  id                   String               @id @default(uuid())
+  firstName            String?              @db.VarChar(30)
+  lastName             String?              @db.VarChar(30)
+  image_id             Image?
+  role                 Role                 @default(AGENT)
+  email                String               @unique
+  password             String?
+  phone_number         String?              @db.VarChar(11)
+  bio                  String?              @db.VarChar(1024)
+  gallery              AutoGallery[]
+  activation_token     ActivationToken[]
+  password_reset_token PasswordResetToken[]
+  accounts             Account[]
+  sessions             Session[]
+  is_profile_complete  Boolean              @default(false)
+  is_subscribed        Boolean              @default(false)
+  is_verified          Boolean              @default(false)
+  join_date            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
 }
 
 model Account {
@@ -212,4 +213,15 @@ model Session {
   userId       String
   expires      DateTime
   user         AutoGalleryAgent @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  token     String    @unique @db.Text
+  createdAt DateTime  @default(now())
+  resetAt   DateTime?
+
+  //relations
+  agent    AutoGalleryAgent? @relation(fields: [agent_id], references: [id])
+  agent_id String?
 }

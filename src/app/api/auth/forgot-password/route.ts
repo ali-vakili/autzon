@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
 import { fromZodError } from "zod-validation-error";
 import { ZodError } from "zod";
-import { AgentCreateSchema, AgentCreateType } from "@/validation/validations";
-import { sendMail, connectDB, hashPassword, generateToken, prisma } from "@/lib";
+import { ForgotPasswordSchema, ForgotPasswordSchemaType } from "@/validation/validations";
+import { sendMail, connectDB, generateToken, prisma } from "@/lib";
 
 
 export const POST = async (req: Request) => {
@@ -10,26 +10,19 @@ export const POST = async (req: Request) => {
     connectDB();
 
     const body = await req.json();
-    const validData = AgentCreateSchema.safeParse(body);
+    const validData = ForgotPasswordSchema.safeParse(body);
     
     if (!validData.success) {
       const zodError = new ZodError(validData.error.errors);
       throw zodError;
     }
 
-    const { email, password, confirmPassword }: AgentCreateType = body;
+    const { email }: ForgotPasswordSchemaType = body;
 
-    if (!email || !password || !confirmPassword) {
+    if (!email) {
       return NextResponse.json(
-        { error: "Please fill all required fields" },
+        { error: "Please fill the required field" },
         { status: 422 }
-      )
-    }
-
-    else if (password !== confirmPassword) {
-      return NextResponse.json(
-        { error: "Password and Confirmation Password are not match" },
-        { status: 401 }
       )
     }
 
@@ -37,33 +30,27 @@ export const POST = async (req: Request) => {
       where: { email: email.toLowerCase() }
     })
 
-    if (existingAgent) {
+    if (!existingAgent) {
       return NextResponse.json(
-        { error: "Email already exists" },
+        { error: "Email does not exist" },
         { status: 409 }
       )
     }
     
-    const hashedPassword = await hashPassword(password);
     const token = generateToken();
 
-    await prisma.autoGalleryAgent.create({
+    await prisma.passwordResetToken.create({
       data: {
-        email: email.toLowerCase(),
-        password: hashedPassword,
-        activation_token: {
-          create: {
-            verifyToken: token
-          }
-        }
+        agent_id: existingAgent.id,
+        token
       }
     })
 
-    await sendMail({ email, token, type: "VERIFY" })
+    await sendMail({ email, token, type: "RESET_PASSWORD" })
 
     return NextResponse.json(
-      { message: "Auto Gallery Agent Created Successfully" },
-      { status: 201 }
+      { message: "A reset password link sent to your email" },
+      { status: 200 }
     );
 
   }

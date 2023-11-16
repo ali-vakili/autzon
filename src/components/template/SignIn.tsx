@@ -19,7 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { SignInFormSchema, SignInFormSchemaType } from "@/validation/validations"
 
 import { signIn } from "next-auth/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 import "@/scss/Common.scss"
@@ -30,7 +30,17 @@ const SignIn = () => {
   const[success, setSuccess] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const message = searchParams.get("message");
+  const messageType = searchParams.get("messageType");
   const callbackUrl = searchParams.get("callbackUrl") || "/";
+  
+  useEffect(() => {
+    if (message) {
+      if (messageType === "error") {
+        toast.error(message);
+      }
+    }
+  }, [])
 
   const onSubmit = async (values: SignInFormSchemaType) => {
     toast.loading("Signing in...");
@@ -103,7 +113,7 @@ const SignIn = () => {
                 <FormItem className="">
                   <div className="flex justify-between">
                     <FormLabel>Password</FormLabel>
-                    <FormLabel className="text-muted-foreground">Forgot Password?</FormLabel>
+                    <Link href={"/forgot-password"} className="text-sm text-muted-foreground">Forgot Password?</Link>
                   </div>
                   <FormControl>
                     <Input placeholder="••••••••" {...field} type="password" className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
