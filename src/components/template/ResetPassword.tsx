@@ -54,7 +54,7 @@ const ResetPassword = ({ token }: RestPasswordPropsType) => {
 
   useEffect(()=> {
     isSuccess === true && data?.message && (toast.success(data.message), router.replace("/sign-in"));
-    isError === true && error && toast.error(error?.response.data.message ?? "Something went wrong");
+    isError === true && error && toast.error(error?.response.data.error);
   }, [isSuccess, isError])
 
   const onSubmit = async (values: RestPasswordSchemaType) => {
@@ -65,7 +65,7 @@ const ResetPassword = ({ token }: RestPasswordPropsType) => {
     resolver: zodResolver(RestPasswordSchema),
     defaultValues: {
       newPassword: "",
-      confirmPassword: ""
+      confirmNewPassword: ""
     },
     mode: "onTouched"
   })
@@ -109,12 +109,12 @@ const ResetPassword = ({ token }: RestPasswordPropsType) => {
             />
             <FormField
               control={form.control}
-              name="confirmPassword"
+              name="confirmNewPassword"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input id="confirmPassword" autoComplete="new-password" placeholder="••••••••" {...field} type="password" className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
+                    <Input id="confirmNewPassword" autoComplete="new-password" placeholder="••••••••" {...field} type="password" className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

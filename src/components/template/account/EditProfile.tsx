@@ -105,7 +105,9 @@ const EditProfile = ({ user }: editProfilePropType) => {
 
   return (
     <div className="flex flex-col h-fit">
-      <div className="flex items-center space-x-4">
+      <h1 className="text-2xl font-bold mb-2">Edit profile</h1>
+      <h4 className="text-sm">Update your profile any time you need, it is necessary to complete your profile</h4>
+      <div className="flex items-center space-x-4 mt-8">
         <Avatar className="w-20 h-20">
           <AvatarImage alt="avatar" src={image ?? undefined}/>
           <AvatarFallback>{avatarFallBackText(firstName, lastName)}</AvatarFallback>
@@ -171,7 +173,7 @@ const EditProfile = ({ user }: editProfilePropType) => {
                 <FormControl>
                   <Textarea
                     placeholder="Tell us a little bit about yourself"
-                    className="resize-none"
+                    className="px-4 py-2 bg-secondary focus:bg-slate-50 resize-none"
                     {...field}
                   />
                 </FormControl>

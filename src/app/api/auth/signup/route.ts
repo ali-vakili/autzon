@@ -28,7 +28,7 @@ export const POST = async (req: Request) => {
 
     else if (password !== confirmPassword) {
       return NextResponse.json(
-        { error: "Password and Confirmation Password are not match" },
+        { error: "Password and Confirmation of Password are not match" },
         { status: 401 }
       )
     }

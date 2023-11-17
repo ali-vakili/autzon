@@ -1,4 +1,4 @@
-import EditProfile from "@/components/template/account/EditProfile";
+import Management from "@/components/template/account/Management";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib";
@@ -6,7 +6,7 @@ import type { Metadata } from 'next'
 
 
 export const metadata: Metadata = {
-  title: "Profile",
+  title: "Account Management",
 }
 
 export default async function Profile() {
@@ -20,23 +20,13 @@ export default async function Profile() {
       AND: { id: session.user.id}
     },
     select: {
-      id: true,
       email: true,
-      firstName: true,
-      lastName: true,
-      phone_number: true,
-      bio: true,
-      image_id: {
-        select: {
-          url: true
-        }
-      }
     }
   })
 
   if (!agent) return;
 
   return (
-    <EditProfile user={agent}/>
+    <Management user={agent}/>
   )
 }

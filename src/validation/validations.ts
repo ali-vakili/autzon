@@ -41,7 +41,7 @@ const AgentCreateSchema = z
   .object({
     email: emailSchema,
     password: passwordSchema,
-    confirmPassword: z.string().min(1, "Confirmation password is required"),
+    confirmPassword: z.string().min(1, "Confirmation of password is required"),
   })
   .required()
   .refine((data) => data.password === data.confirmPassword, {
@@ -61,6 +61,28 @@ const AgentUpdateSchema = z
   })
   .required();
 
+
+const AccountManagementSchema = z
+  .object({
+    email: emailSchema
+  })
+  .required();
+
+
+const ChangePasswordSchema = z
+  .object({
+    oldPassword: z.string().min(1, "Old password is required"),
+    newPassword: passwordSchema,
+    confirmNewPassword: z
+    .string()
+    .min(1, "Confirmation of new password is required"),
+  })
+  .required()
+  .refine((data) => data?.newPassword === data?.confirmNewPassword, {
+    path: ["confirmNewPassword"],
+    message: "Password do not match",
+  });
+  
 
 
 // Gallery
@@ -105,11 +127,11 @@ const ForgotPasswordSchema = z
 const RestPasswordSchema = z
   .object({
     newPassword: passwordSchema,
-    confirmPassword: z.string().min(1, "Confirmation password is required"),
+    confirmNewPassword: z.string().min(1, "Confirmation of new password is required"),
   })
   .required()
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    path: ["confirmPassword"],
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    path: ["confirmNewPassword"],
     message: "Password do not match",
   });
 
@@ -128,6 +150,8 @@ const SignInFormSchema = z
 
 type AgentCreateType = z.infer<typeof AgentCreateSchema>;
 type AgentUpdateType = z.infer<typeof AgentUpdateSchema>;
+type AccountManagementSchemaType = z.infer<typeof AccountManagementSchema>;
+type ChangePasswordSchemaType = z.infer<typeof ChangePasswordSchema>;
 type GalleryCreateAndUpdateSchemaType = z.infer<
   typeof GalleryCreateAndUpdateSchema
 >;
@@ -138,6 +162,8 @@ type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
 export {
   AgentCreateSchema,
   AgentUpdateSchema,
+  AccountManagementSchema,
+  ChangePasswordSchema,
   GalleryCreateAndUpdateSchema,
   SignInFormSchema,
   RestPasswordSchema,
@@ -146,6 +172,8 @@ export {
 export type {
   AgentCreateType,
   AgentUpdateType,
+  AccountManagementSchemaType,
+  ChangePasswordSchemaType,
   GalleryCreateAndUpdateSchemaType,
   SignInFormSchemaType,
   RestPasswordSchemaType,

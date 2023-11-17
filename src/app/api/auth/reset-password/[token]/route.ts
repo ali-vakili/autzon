@@ -19,16 +19,16 @@ export const POST = async (req: Request, { params } : {params: { token: string }
       throw zodError;
     }
 
-    const { newPassword, confirmPassword }: RestPasswordSchemaType = body;
+    const { newPassword, confirmNewPassword }: RestPasswordSchemaType = body;
 
-    if (!newPassword || !confirmPassword) {
+    if (!newPassword || !confirmNewPassword) {
       return NextResponse.json(
         { error: "Please fill the required fields" },
         { status: 422 }
       )
     }
 
-    else if (newPassword !== confirmPassword) {
+    else if (newPassword !== confirmNewPassword) {
       return NextResponse.json(
         { error: "New password and Confirmation Password are not match" },
         { status: 401 }
@@ -56,7 +56,7 @@ export const POST = async (req: Request, { params } : {params: { token: string }
 
     if (!passwordResetToken) {
       return NextResponse.json(
-        { error: "Password Reset credentials are not valid" },
+        { error: "Password reset credentials are not valid" },
         { status: 409 }
       )
     }
@@ -77,7 +77,7 @@ export const POST = async (req: Request, { params } : {params: { token: string }
 
     else if (!passwordResetToken.agent_id) {
       return NextResponse.json(
-        { error: "Password Reset credentials are not valid" },
+        { error: "Password reset credentials are not valid" },
         { status: 409 }
       )
     }

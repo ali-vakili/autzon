@@ -4,9 +4,9 @@ import axios from "axios";
 
 
 const resetPassword = async ({ values, token }: {values: RestPasswordSchemaType , token: string}) => {
-  const { newPassword, confirmPassword } = values;
+  const { newPassword, confirmNewPassword } = values;
   const { data } = await axios.post(
-    `/api/auth/reset-password/${token}`, { newPassword, confirmPassword }
+    `/api/auth/reset-password/${token}`, { newPassword, confirmNewPassword }
   )
   
   return data;

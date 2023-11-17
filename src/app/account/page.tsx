@@ -1,4 +1,4 @@
-import Account from "@/components/template/Account";
+import Account from "@/components/template/account/Account";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import type { Metadata } from 'next'
