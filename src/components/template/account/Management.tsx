@@ -8,6 +8,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription
 } from "@/ui/form"
 import {
   Dialog,
@@ -135,11 +136,11 @@ const Management = ({ user }: managementPropType) => {
             <DialogTrigger asChild>
               <Button variant="default" className="block mt-2">Change your password</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] gap-6">
               <DialogHeader>
                 <DialogTitle>Change your password</DialogTitle>
                 <DialogDescription>
-                  Make sure to provide all fields in order to change your password.
+                  Make sure to fill all the fields in order to change your password.
                 </DialogDescription>
               </DialogHeader>
               <form className="space-y-4" onSubmit={changePasswordForm.handleSubmit(onSubmitChangePassword)}>
@@ -149,12 +150,14 @@ const Management = ({ user }: managementPropType) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="">Old Password</FormLabel>
+                      <FormDescription>
+                        Provide your current password
+                      </FormDescription>
                       <FormControl>
                         <Input placeholder="" {...field} type="text" className="px-4 py-2 bg-secondary focus:bg-slate-50"/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
-                    
                   )}
                 />
                 <FormField
