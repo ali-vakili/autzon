@@ -3,6 +3,8 @@ import { connectDB, validateSession, prisma } from "@/lib";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { AgentUpdateSchema, AgentUpdateType } from "@/validation/validations";
+import { agentsBucketUrl } from "@/constants/supabaseStorage";
+import supabase from "@/lib/supabase";
 
 
 type requestProps = {
@@ -18,40 +20,57 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
     const session = await validateSession();
     if (session instanceof NextResponse) return session;
 
-    const body = await req.json();
-    const validData = AgentUpdateSchema.safeParse(body);
+    const body = await req.formData();
 
+    const formDataObject = Object.fromEntries(body.entries());
+    const validData = AgentUpdateSchema.safeParse(formDataObject);
     if (!validData.success) {
       const zodError = new ZodError(validData.error.errors);
       throw zodError;
     }
 
-    const { firstName, lastName, phone_number, bio }: AgentUpdateType = body;
-
+    const {imageFile, firstName, lastName, phone_number, bio } = formDataObject;
+    
     if (!firstName || !lastName || !phone_number) {
       return NextResponse.json(
         { error: "Please fill all required fields" },
         { status: 422 }
-      )
-    }
-
-    const { user } = session;
-
+        )
+      }
+      
+      const { user } = session;
+      
     if (user.id === params.id) {
+      const { data, error } = await supabase.storage.from("agents").upload(`agent_${session.user.id}` + "/" + Date.now() + "/profile", imageFile!);
+      
+      if (error) {
+        return NextResponse.json(
+          { error: "Error uploading image" },
+          { status: 500 }
+        );
+      }
+
+      const imageUrl = data ? agentsBucketUrl + data.path : null;
       await prisma.autoGalleryAgent.update({
         where: { id: user.id },
         data: {
-          firstName,
-          lastName,
-          phone_number,
-          bio,
+          image_id: {
+            upsert: {
+              create: { url: imageUrl ?? "" },
+              update: { url: imageUrl ?? "" }
+            }
+          },
+          firstName: firstName.toString(),
+          lastName: lastName.toString(),
+          phone_number: phone_number.toString(),
+          bio: bio.toString(),
           is_profile_complete: true
         },
       })
     }else {
       return NextResponse.json(
         {
-          message: "agent credentials are mismatched"
+          error: "agent credentials are mismatched"
         },
         { status: 403 }
       )

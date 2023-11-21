@@ -4,9 +4,21 @@ import axios from "axios";
 
 
 const updateAgent = async ({ values, agent_id }: {values: AgentUpdateType , agent_id: string}) => {
-  const { firstName, lastName, phone_number, bio } = values;
+  const { imageFile, firstName, lastName, phone_number, bio } = values;
+
+  const formData = new FormData();
+  formData.append('imageFile', imageFile);
+  formData.append('firstName', firstName);
+  formData.append('lastName', lastName);
+  formData.append('phone_number', phone_number);
+  formData.append('bio', bio);
+
   const { data } = await axios.patch(
-    `/api/agent/profile/edit/${agent_id}`, { firstName, lastName, phone_number, bio }
+    `/api/agent/profile/edit/${agent_id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
   )
   
   return data;

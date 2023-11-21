@@ -1,6 +1,9 @@
 import { z } from "zod";
 
 
+const MAX_IMAGE_SIZE = 4194304;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
+
 const emailSchema = z
   .string()
   .toLowerCase()
@@ -35,7 +38,6 @@ const passwordSchema = z
   });
 
 
-
 // Agent
 const AgentCreateSchema = z
   .object({
@@ -51,6 +53,17 @@ const AgentCreateSchema = z
 
 const AgentUpdateSchema = z
   .object({
+    imageUrl: z.any()
+    .nullable()
+    .optional(),
+    imageFile: z.any()
+    .refine((file) => file?.size <= MAX_IMAGE_SIZE, `Max image size is 4MB.`)
+    .refine(
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      "Only .jpg, .jpeg and .png formats are supported."
+    )
+    .nullable()
+    .optional(),
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
     phone_number: phoneNumberSchema,

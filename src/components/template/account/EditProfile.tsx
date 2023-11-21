@@ -40,7 +40,7 @@ type editProfilePropType = {
 const EditProfile = ({ user }: editProfilePropType) => {
   const [name, setName] = useState({ firstName: '', lastName: '' });
   const { id, firstName, lastName, image_id, phone_number, bio } = user;
-  const { url: image } = image_id || { url: null };
+  const { url: image } = image_id ?? { url: null };
   const { data: session, update } = useSession();
 
   const pathname = usePathname();
@@ -73,6 +73,7 @@ const EditProfile = ({ user }: editProfilePropType) => {
       ...session,
       user: {
         ...session?.user,
+        profile: image,
         firstName: firstName,
         lastName: lastName,
         is_profile_complete: true 
@@ -88,12 +89,23 @@ const EditProfile = ({ user }: editProfilePropType) => {
 
   useEffect(()=> {
     isSuccess === true && data?.message && (toast.success(data.message), updateSession(), router.replace(pathname));
-    isError === true && error && toast.error(error?.response.data.message);
+    isError === true && error && toast.error(error?.response.data.error);
   }, [isSuccess, isError])
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files;
+    if (file) {
+      if (file.length > 0){
+        form.setValue('imageFile', file[0]);
+      }
+    }
+  };
 
   const form = useForm<AgentUpdateType>({
     resolver: zodResolver(AgentUpdateSchema),
     defaultValues: {
+      imageUrl: "",
+      imageFile: null,
       firstName: firstName || undefined,
       lastName: lastName || undefined,
       phone_number: phone_number || undefined,
@@ -107,16 +119,27 @@ const EditProfile = ({ user }: editProfilePropType) => {
     <div className="flex flex-col h-fit">
       <h1 className="text-2xl font-bold mb-2">Edit profile</h1>
       <h4 className="text-sm">Update your profile any time you need, it is necessary to complete your profile</h4>
-      <div className="flex items-center space-x-4 mt-8">
-        <Avatar className="w-20 h-20">
-          <AvatarImage alt="avatar" src={image ?? undefined}/>
-          <AvatarFallback>{avatarFallBackText(firstName, lastName)}</AvatarFallback>
-        </Avatar>
-        <label htmlFor="uploadImage" className={`${buttonVariants({variant: "outline"})} cursor-pointer`}>Upload new image</label> 
-        <Input type="file" id="uploadImage" className="w-fit hidden" accept=".png, .jpg, .jpeg"/>
-      </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} >
+          <div className="flex items-center space-x-4 mt-8">
+            <Avatar className="w-20 h-20">
+              <AvatarImage alt="avatar" src={image ?? undefined}/>
+              <AvatarFallback>{avatarFallBackText(firstName, lastName)}</AvatarFallback>
+            </Avatar>
+            <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className={`${buttonVariants({variant: "outline"})} cursor-pointer`}>Upload new image</FormLabel>
+                  <FormControl>
+                    <Input type="file" name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), onFileChange(event)}} className="w-fit hidden" accept=".png, .jpg, .jpeg"/>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <div className="flex flex-wrap items-start justify-between mt-8">
             <div className="lg:w-6/12 w-full lg:pe-3">
               <FormField

@@ -3,7 +3,7 @@ type sessionUser = {
   email: string;
   firstName: string | null;
   lastName: string | null;
-  image: string | null;
+  profile: string | null;
   role: string;
   is_verified: boolean;
   is_subscribed: boolean;
