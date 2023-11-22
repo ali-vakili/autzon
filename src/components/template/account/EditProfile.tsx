@@ -113,7 +113,8 @@ const EditProfile = ({ user }: editProfilePropType) => {
     },
   })
 
-  const { isDirty } = form.formState;
+  const { isDirty, errors } = form.formState;
+  const { watch } = form;
 
   return (
     <div className="flex flex-col h-fit">
@@ -123,7 +124,7 @@ const EditProfile = ({ user }: editProfilePropType) => {
         <form onSubmit={form.handleSubmit(onSubmit)} >
           <div className="flex items-center space-x-4 mt-8">
             <Avatar className="w-20 h-20">
-              <AvatarImage alt="avatar" src={image ?? undefined}/>
+              <AvatarImage alt="avatar" src={(watch("imageFile") && URL.createObjectURL(watch("imageFile"))) ?? image ?? undefined}/>
               <AvatarFallback>{avatarFallBackText(firstName, lastName)}</AvatarFallback>
             </Avatar>
             <FormField
@@ -136,6 +137,7 @@ const EditProfile = ({ user }: editProfilePropType) => {
                     <Input type="file" name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), onFileChange(event)}} className="w-fit hidden" accept=".png, .jpg, .jpeg"/>
                   </FormControl>
                   <FormMessage />
+                  {errors.imageFile ? <p className="text-sm font-medium text-destructive">{errors.imageFile.message as string }</p> : null}
                 </FormItem>
               )}
             />
