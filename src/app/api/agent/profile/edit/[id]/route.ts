@@ -35,10 +35,10 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
       return NextResponse.json(
         { error: "Please fill all required fields" },
         { status: 422 }
-        )
-      }
+      )
+    }
       
-      const { user } = session;
+    const { user } = session;
       
     if (user.id === params.id) {
       const { data, error } = await supabase.storage.from("agents").upload(`agent_${session.user.id}` + "/" + Date.now() + "/profile", imageFile!);
@@ -67,6 +67,14 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
           is_profile_complete: true
         },
       })
+      return NextResponse.json(
+        {
+          message: "Your profile updated successfully",
+          image_url: imageUrl
+        },
+        { status: 200 }
+      )
+
     }else {
       return NextResponse.json(
         {
@@ -75,14 +83,6 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
         { status: 403 }
       )
     }
-
-    return NextResponse.json(
-      {
-        message: "Your profile updated successfully"
-      },
-      { status: 200 }
-    )
-
   }
   catch(err) {
     if (err instanceof ZodError) {

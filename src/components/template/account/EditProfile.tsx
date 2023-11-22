@@ -73,7 +73,7 @@ const EditProfile = ({ user }: editProfilePropType) => {
       ...session,
       user: {
         ...session?.user,
-        profile: image,
+        profile: data.image_url,
         firstName: firstName,
         lastName: lastName,
         is_profile_complete: true 
