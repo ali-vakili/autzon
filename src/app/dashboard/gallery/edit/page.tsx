@@ -1,4 +1,4 @@
-import CreateGalleryForm from "@/components/template/gallery/CreateGallery";
+import EditGalleryForm from "@/components/template/gallery/EditGallery";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib";
@@ -6,24 +6,48 @@ import { redirect } from "next/navigation";
 
 import type { Metadata } from 'next'
 
+
 export const metadata: Metadata = {
-  title: "Edit Gallery",
+  title: "Create Gallery",
 }
 
-export default async function CreateGallery() {
+export default async function EditGallery() {
   const session = await getServerSession(authOptions);
   if(!session || !session.user) redirect("/sign-in");
   const user = session.user;
 
-  const agent = await prisma.autoGalleryAgent.findUnique({
+  const gallery = await prisma.autoGallery.findFirst({
     where: {
-      email: user.email,
-      AND: { id: user.id}
+      agent_id: user.id,
+      AND: { agent: { email: user.email }}
     },
-    include: { gallery: true },
+    select: {
+      id: true,
+      name: true,
+      image: {
+        select: {
+          id: true,
+          url: true
+        }
+      },
+      address: true,
+      city_id: true,
+      phone_numbers: {
+        select: {
+          id: true,
+          number: true
+        }
+      },
+      categories: {
+        select: {
+          id: true,
+        }
+      },
+      about: true,
+    }
   });
 
-  agent!.gallery.length > 0 && redirect("/dashboard");
+  if (!gallery) redirect("/dashboard");
 
   const autoGalleryCategories = await prisma.autoGalleryCategory.findMany({
     select: {
@@ -44,6 +68,6 @@ export default async function CreateGallery() {
   })
 
   return (
-    <CreateGalleryForm categories={autoGalleryCategories} cities={cities} provinces={provinces}/>
+    <EditGalleryForm gallery={gallery} categories={autoGalleryCategories} cities={cities} provinces={provinces}/>
   )
 }

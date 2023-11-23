@@ -70,7 +70,7 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
 
   const { mutate: createGalley, data, isLoading, isSuccess, isError, error }: createGalleryHookType = useCreateGallery();
 
-  useEffect(()=> {
+  useEffect(() => {
     isSuccess === true && data?.message && (toast.success(data.message), router.replace("/dashboard"), router.refresh());
     isError === true && error && toast.error(error?.response.data.message);
   }, [isSuccess, isError])

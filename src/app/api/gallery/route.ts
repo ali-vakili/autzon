@@ -2,9 +2,9 @@ import { NextResponse } from "next/server"
 import { connectDB, validateSession, prisma, checkAgent } from "@/lib";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { GalleryCreateAndUpdateSchema, GalleryCreateAndUpdateSchemaType } from "@/validation/validations";
-import supabase from "@/lib/supabase";
+import { GalleryCreateAndUpdateSchema } from "@/validation/validations";
 import { galleriesBucketUrl } from "@/constants/supabaseStorage";
+import supabase from "@/lib/supabase";
 
 
 export const GET = async () => {

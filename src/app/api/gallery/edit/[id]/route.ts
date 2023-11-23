@@ -3,6 +3,8 @@ import { connectDB, validateSession, prisma, checkAgent } from "@/lib";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { GalleryCreateAndUpdateSchema, GalleryCreateAndUpdateSchemaType } from "@/validation/validations";
+import { galleriesBucketUrl } from "@/constants/supabaseStorage";
+import supabase from "@/lib/supabase";
 
 
 type requestProps = {
@@ -18,15 +20,23 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
     const session = await validateSession();
     if (session instanceof NextResponse) return session;
 
-    const body = await req.json();
-    const validData = GalleryCreateAndUpdateSchema.safeParse(body);
+    const body = await req.formData();
+
+    const formDataObject = Object.fromEntries(body.entries());
+    if (formDataObject.phone_numbers) {
+      formDataObject.phone_numbers = JSON.parse(formDataObject.phone_numbers as string);
+    }
+    if (formDataObject.categories) {
+      formDataObject.categories = JSON.parse(formDataObject.categories as string);
+    }
+    const validData = GalleryCreateAndUpdateSchema.safeParse(formDataObject);
 
     if (!validData.success) {
       const zodError = new ZodError(validData.error.errors);
       throw zodError;
     }
 
-    const { name, address, city, phone_numbers, categories }: GalleryCreateAndUpdateSchemaType = body;
+    const { name, imageFile, address, city, phone_numbers, categories, about } = formDataObject;
 
     if (!name || !address || !city || !phone_numbers || !categories) {
       return NextResponse.json(
@@ -72,11 +82,25 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
       );
     }
 
+    let imageUrl = null
+
+    if (imageFile && imageFile !== undefined && imageFile !== null && imageFile !== 'null') {
+      const { data, error } = await supabase.storage.from("galleries").upload(`gallery_${session.user.id}` + "/" + Date.now() + "/image", imageFile!);
+      
+      if (error) {
+        return NextResponse.json(
+          { error: "Error uploading image" },
+          { status: 500 }
+        );
+      }
+      imageUrl = data ? galleriesBucketUrl + data.path : null;
+    }
+
     await prisma.autoGallery.update({
       where: { id: gallery.id },
       data: {
-        name,
-        address,
+        name: name.toString(),
+        address: address.toString(),
         city_id: +city,
         phone_numbers: {
           deleteMany: {},
@@ -87,7 +111,8 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
         categories: {
           set: [],
           connect: categories.map(categoryId => ({ id: +categoryId }))
-        }
+        },
+        about: about.toString()
       },
     })
 
