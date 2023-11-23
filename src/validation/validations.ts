@@ -37,6 +37,17 @@ const passwordSchema = z
     message: "Password must only contain alphanumeric characters",
   });
 
+const imageFileSchema = z
+  .any()
+  .refine((file) => file == null || file.size <= MAX_IMAGE_SIZE, {
+    message: "Max image size is 4MB.",
+  })
+  .refine((file) => file == null || ACCEPTED_IMAGE_TYPES.includes(file.type), {
+    message: "Only .jpg, .jpeg, and .png formats are supported.",
+  })
+  .nullable()
+  .optional()
+
 
 // Agent
 const AgentCreateSchema = z
@@ -56,14 +67,7 @@ const AgentUpdateSchema = z
     imageUrl: z.any()
     .nullable()
     .optional(),
-    imageFile: z.any()
-    .refine((file) => file?.size <= MAX_IMAGE_SIZE, `Max image size is 4MB.`)
-    .refine(
-      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      "Only .jpg, .jpeg and .png formats are supported."
-    )
-    .nullable()
-    .optional(),
+    imageFile: imageFileSchema,
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
     phone_number: phoneNumberSchema,
@@ -105,6 +109,10 @@ const GalleryCreateAndUpdateSchema = z
       .string()
       .min(1, "Name is required")
       .max(30, "Name must be less that 30 characters"),
+    imageUrl: z.any()
+    .nullable()
+    .optional(),
+    imageFile: imageFileSchema,
     address: z.string().min(1, "Address is required"),
     categories: z
       .array(z.string())

@@ -31,7 +31,7 @@ type editProfilePropType = {
     lastName: string | null;
     phone_number: string | null;
     bio: string | null;
-    image_id: {
+    image: {
       url: string;
     } | null;
   }
@@ -39,8 +39,8 @@ type editProfilePropType = {
 
 const EditProfile = ({ user }: editProfilePropType) => {
   const [name, setName] = useState({ firstName: '', lastName: '' });
-  const { id, firstName, lastName, image_id, phone_number, bio } = user;
-  const { url: image } = image_id ?? { url: null };
+  const { id, firstName, lastName, image, phone_number, bio } = user;
+  const { url } = image ?? { url: null };
   const { data: session, update } = useSession();
 
   const pathname = usePathname();
@@ -124,7 +124,7 @@ const EditProfile = ({ user }: editProfilePropType) => {
         <form onSubmit={form.handleSubmit(onSubmit)} >
           <div className="flex items-center space-x-4 mt-8">
             <Avatar className="w-20 h-20">
-              <AvatarImage alt="avatar" src={(watch("imageFile") && URL.createObjectURL(watch("imageFile"))) ?? image ?? undefined}/>
+              <AvatarImage alt="avatar" src={(watch("imageFile") && URL.createObjectURL(watch("imageFile"))) ?? url ?? undefined}/>
               <AvatarFallback>{avatarFallBackText(firstName, lastName)}</AvatarFallback>
             </Avatar>
             <FormField

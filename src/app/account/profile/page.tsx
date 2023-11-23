@@ -26,7 +26,7 @@ export default async function Profile() {
       lastName: true,
       phone_number: true,
       bio: true,
-      image_id: {
+      image: {
         select: {
           url: true
         }

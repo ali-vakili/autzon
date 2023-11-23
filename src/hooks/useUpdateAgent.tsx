@@ -7,7 +7,9 @@ const updateAgent = async ({ values, agent_id }: {values: AgentUpdateType , agen
   const { imageFile, firstName, lastName, phone_number, bio } = values;
 
   const formData = new FormData();
-  formData.append('imageFile', imageFile);
+  if (imageFile) {
+    formData.append('imageFile', imageFile);
+  }
   formData.append('firstName', firstName);
   formData.append('lastName', lastName);
   formData.append('phone_number', phone_number);

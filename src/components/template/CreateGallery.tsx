@@ -79,6 +79,8 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
     resolver: zodResolver(GalleryCreateAndUpdateSchema),
     defaultValues: {
       name: "",
+      imageUrl: "",
+      imageFile: null,
       city: "",
       address: "",
       phone_numbers:[{ number: "" }],
@@ -92,7 +94,17 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
     control: form.control
   })
 
-  const { isDirty } = form.formState;
+  const { isDirty, errors } = form.formState;
+  const { watch } = form;
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files;
+    if (file) {
+      if (file.length > 0){
+        form.setValue('imageFile', file[0]);
+      }
+    }
+  };
 
   const onSubmit = async (values: GalleryCreateAndUpdateSchemaType) => {
     createGalley(values);
@@ -102,16 +114,28 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
     <>
       <h1 className="text-xl font-bold">Create Your Own Gallery</h1>
       <div className="mt-4 px-10 py-8 bg-white rounded">
-        <div className="flex items-center space-x-4">
-          <Avatar className="w-20 h-20">
-            <AvatarImage alt="avatar"/>
-            <AvatarFallback>AV</AvatarFallback>
-          </Avatar>
-          <label htmlFor="uploadImage" className={`${buttonVariants({variant: "outline"})} cursor-pointer`}>Upload image</label> 
-          <Input type="file" id="uploadImage" className="w-fit hidden" accept=".png, .jpg, .jpeg"/>
-        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="flex items-center space-x-4">
+              <Avatar className="w-20 h-20">
+                <AvatarImage alt="avatar" src={(watch("imageFile") && URL.createObjectURL(watch("imageFile"))) ?? undefined}/>
+                <AvatarFallback>AV</AvatarFallback>
+              </Avatar>
+              <FormField
+                control={form.control}
+                name="imageUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className={`${buttonVariants({variant: "outline"})} cursor-pointer`}>Upload new image</FormLabel>
+                    <FormControl>
+                      <Input type="file" name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), onFileChange(event)}} className="w-fit hidden" accept=".png, .jpg, .jpeg"/>
+                    </FormControl>
+                    <FormMessage />
+                    {errors.imageFile ? <p className="text-sm font-medium text-destructive">{errors.imageFile.message as string }</p> : null}
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className="mt-8">
               <FormField
                 control={form.control}

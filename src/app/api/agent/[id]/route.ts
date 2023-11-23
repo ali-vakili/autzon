@@ -20,6 +20,7 @@ export const GET = async (req: Request, { params }: requestProps) => {
         where: { id: params.id },
         select: {
           id: true,
+          image: true,
           firstName: true,
           lastName: true,
           role: true,

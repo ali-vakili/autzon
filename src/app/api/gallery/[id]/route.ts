@@ -18,6 +18,7 @@ export const GET = async (req: Request, { params }: requestProps) => {
         select: {
           id: true,
           name: true,
+          image: true,
           cars: true,
           categories: {
             select: {

@@ -151,7 +151,7 @@ model SaleCar {
 model AutoGallery {
   id            String                @id @default(uuid())
   name          String                @db.VarChar(30)
-  image_id      Image?
+  image         Image?
   cars          Car[]
   categories    AutoGalleryCategory[]
   city          City                  @relation(fields: [city_id], references: [id])
@@ -170,7 +170,7 @@ model AutoGalleryAgent {
   id                   String               @id @default(uuid())
   firstName            String?              @db.VarChar(30)
   lastName             String?              @db.VarChar(30)
-  image_id             Image?
+  image                Image?
   role                 Role                 @default(AGENT)
   email                String               @unique
   password             String?

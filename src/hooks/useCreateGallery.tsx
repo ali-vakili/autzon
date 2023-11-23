@@ -4,9 +4,25 @@ import axios from "axios";
 
 
 const createGallery = async (values: GalleryCreateAndUpdateSchemaType) => {
-  const { name, city, address, phone_numbers, categories, about } = values;
+  const { name, imageFile, city, address, phone_numbers, categories, about } = values;
+
+  const formData = new FormData();
+  if (imageFile) {
+    formData.append('imageFile', imageFile);
+  }
+  formData.append('name', name);
+  formData.append('city', city);
+  formData.append('address', address);
+  formData.append('phone_numbers', JSON.stringify(phone_numbers));
+  formData.append('categories',  JSON.stringify(categories));
+  formData.append('about', about);
+
   const { data } = await axios.post(
-    "/api/gallery", { name, city, address, phone_numbers, categories, about }
+    "/api/gallery", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
   )
   
   return data;

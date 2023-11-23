@@ -29,7 +29,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
       throw zodError;
     }
 
-    const {imageFile, firstName, lastName, phone_number, bio } = formDataObject;
+    const { imageFile, firstName, lastName, phone_number, bio } = formDataObject;
     
     if (!firstName || !lastName || !phone_number) {
       return NextResponse.json(
@@ -41,20 +41,24 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
     const { user } = session;
       
     if (user.id === params.id) {
-      const { data, error } = await supabase.storage.from("agents").upload(`agent_${session.user.id}` + "/" + Date.now() + "/profile", imageFile!);
-      
-      if (error) {
-        return NextResponse.json(
-          { error: "Error uploading image" },
-          { status: 500 }
-        );
+      let imageUrl = null
+
+      if (imageFile && imageFile !== undefined && imageFile !== null && imageFile !== 'null') {
+        const { data, error } = await supabase.storage.from("agents").upload(`agent_${session.user.id}` + "/" + Date.now() + "/profile", imageFile!);
+        
+        if (error) {
+          return NextResponse.json(
+            { error: "Error uploading image" },
+            { status: 500 }
+          );
+        }
+        imageUrl = data ? agentsBucketUrl + data.path : null;
       }
 
-      const imageUrl = data ? agentsBucketUrl + data.path : null;
       await prisma.autoGalleryAgent.update({
         where: { id: user.id },
         data: {
-          image_id: {
+          image: {
             upsert: {
               create: { url: imageUrl ?? "" },
               update: { url: imageUrl ?? "" }

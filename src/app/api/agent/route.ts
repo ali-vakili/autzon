@@ -13,6 +13,7 @@ export const GET = async () => {
       {
         select: {
           id: true,
+          image: true,
           firstName: true,
           lastName: true,
           role: true,
