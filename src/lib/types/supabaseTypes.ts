@@ -277,49 +277,78 @@ export interface Database {
         }
         Relationships: []
       }
+      Brand: {
+        Row: {
+          id: number
+          name: string
+        }
+        Insert: {
+          id: number
+          name: string
+        }
+        Update: {
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
       Car: {
         Row: {
-          brand: string
-          buid_year: number
+          build_year: number
           createdAt: string
           description: string
+          fuel_type_id: number
           gallery_id: string
           id: string
           is_published: boolean
-          model: string
+          model_id: number
           title: string
           updatedAt: string
         }
         Insert: {
-          brand: string
-          buid_year: number
+          build_year: number
           createdAt?: string
           description: string
+          fuel_type_id: number
           gallery_id: string
           id: string
           is_published?: boolean
-          model: string
+          model_id: number
           title: string
           updatedAt: string
         }
         Update: {
-          brand?: string
-          buid_year?: number
+          build_year?: number
           createdAt?: string
           description?: string
+          fuel_type_id?: number
           gallery_id?: string
           id?: string
           is_published?: boolean
-          model?: string
+          model_id?: number
           title?: string
           updatedAt?: string
         }
         Relationships: [
           {
+            foreignKeyName: "Car_fuel_type_id_fkey"
+            columns: ["fuel_type_id"]
+            isOneToOne: false
+            referencedRelation: "FuelType"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "Car_gallery_id_fkey"
             columns: ["gallery_id"]
             isOneToOne: false
             referencedRelation: "AutoGallery"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Car_model_id_fkey"
+            columns: ["model_id"]
+            isOneToOne: false
+            referencedRelation: "Model"
             referencedColumns: ["id"]
           }
         ]
@@ -361,6 +390,21 @@ export interface Database {
             referencedColumns: ["id"]
           }
         ]
+      }
+      FuelType: {
+        Row: {
+          id: number
+          type: string
+        }
+        Insert: {
+          id?: number
+          type: string
+        }
+        Update: {
+          id?: number
+          type?: string
+        }
+        Relationships: []
       }
       Image: {
         Row: {
@@ -410,6 +454,74 @@ export interface Database {
             columns: ["gallery_id"]
             isOneToOne: false
             referencedRelation: "AutoGallery"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      Model: {
+        Row: {
+          brand_id: number
+          fuel_type_id: number | null
+          id: number
+          name: string
+        }
+        Insert: {
+          brand_id: number
+          fuel_type_id?: number | null
+          id?: number
+          name: string
+        }
+        Update: {
+          brand_id?: number
+          fuel_type_id?: number | null
+          id?: number
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Model_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "Brand"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Model_fuel_type_id_fkey"
+            columns: ["fuel_type_id"]
+            isOneToOne: false
+            referencedRelation: "FuelType"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      PasswordResetToken: {
+        Row: {
+          agent_id: string | null
+          createdAt: string
+          id: string
+          resetAt: string | null
+          token: string
+        }
+        Insert: {
+          agent_id?: string | null
+          createdAt?: string
+          id: string
+          resetAt?: string | null
+          token: string
+        }
+        Update: {
+          agent_id?: string | null
+          createdAt?: string
+          id?: string
+          resetAt?: string | null
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "PasswordResetToken_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "AutoGalleryAgent"
             referencedColumns: ["id"]
           }
         ]
@@ -470,21 +582,54 @@ export interface Database {
       RentCar: {
         Row: {
           car_id: string
+          createdAt: string
+          days: number | null
+          drop_off_date: string
+          drop_off_hour: string
+          drop_off_place: string
+          extra_time: boolean
+          hours: number | null
           id: string
+          pick_up_date: string
+          pick_up_hour: string
+          pick_up_place: string
           price_per_day: number | null
           price_per_hour: number | null
+          updatedAt: string
         }
         Insert: {
           car_id: string
+          createdAt?: string
+          days?: number | null
+          drop_off_date: string
+          drop_off_hour: string
+          drop_off_place: string
+          extra_time?: boolean
+          hours?: number | null
           id: string
+          pick_up_date: string
+          pick_up_hour: string
+          pick_up_place: string
           price_per_day?: number | null
           price_per_hour?: number | null
+          updatedAt: string
         }
         Update: {
           car_id?: string
+          createdAt?: string
+          days?: number | null
+          drop_off_date?: string
+          drop_off_hour?: string
+          drop_off_place?: string
+          extra_time?: boolean
+          hours?: number | null
           id?: string
+          pick_up_date?: string
+          pick_up_hour?: string
+          pick_up_place?: string
           price_per_day?: number | null
           price_per_hour?: number | null
+          updatedAt?: string
         }
         Relationships: [
           {
@@ -499,18 +644,24 @@ export interface Database {
       SaleCar: {
         Row: {
           car_id: string
+          createdAt: string
           id: string
           price: number
+          updatedAt: string
         }
         Insert: {
           car_id: string
+          createdAt?: string
           id: string
           price: number
+          updatedAt: string
         }
         Update: {
           car_id?: string
+          createdAt?: string
           id?: string
           price?: number
+          updatedAt?: string
         }
         Relationships: [
           {
