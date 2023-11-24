@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { connectDB, validateSession, prisma } from "@/lib";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { AgentUpdateSchema, AgentUpdateType } from "@/validation/validations";
+import { AgentUpdateSchema } from "@/validation/validations";
 import { agentsBucketUrl } from "@/constants/supabaseStorage";
 import supabase from "@/lib/supabase";
 

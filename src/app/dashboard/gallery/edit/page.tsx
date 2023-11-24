@@ -8,7 +8,7 @@ import type { Metadata } from 'next'
 
 
 export const metadata: Metadata = {
-  title: "Create Gallery",
+  title: "Edit Gallery",
 }
 
 export default async function EditGallery() {
