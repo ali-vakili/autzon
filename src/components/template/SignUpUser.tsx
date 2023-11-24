@@ -66,8 +66,14 @@ const SignUpUser = () => {
   const { isDirty } = form.formState;
 
   return (
-    <div className="flex flex-col flex-1 items-center flex-shrink-0 px-5">
-      <div className="flex flex-col flex-1 max-w-sm">
+    <div className="flex flex-col flex-1 items-center flex-shrink-0 md:grid lg:max-w-none lg:grid-cols-5 px-4 lg:my-8 lg:mx-24 lg:px-0 lg:border rounded">
+      <div className="relative col-span-2 hidden h-full flex-col bg-muted p-10 text-white lg:flex">
+        <div className="absolute inset-0 bg-zinc-900 rounded" />
+        <div className="relative z-20 flex items-center text-lg font-medium">
+          autzon
+        </div>
+      </div>
+      <div className="flex flex-col flex-1 col-span-3 max-w-sm mx-auto">
         <h1 className="mt-8 mb-2 text-2xl font-semibold">Get started</h1>
         <h2 className="text-sm text-foreground-light mb-10">Create a new account</h2>
         <ContinueWithGoogle text='Sign up with Google' callbackUrl={"/"} role={USER} isLoading={isLoading}/>
