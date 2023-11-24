@@ -17,17 +17,19 @@ import {
 import { Input } from "@/ui/input"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AgentCreateSchema, AgentCreateType } from "@/validation/validations"
-import { useCreateAgent } from "@/hooks/useCreateAgent";
+import { AccountCreateSchema, AccountCreateType } from "@/validation/validations"
 
 import { FiEye, FiEyeOff, FiCheckCircle } from "react-icons/fi";
 
-import "@/scss/Common.scss"
+import { useCreateUser } from "@/hooks/useCreateUser"
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 
+import { USER } from "@/constants/roles"
+import "@/scss/Common.scss"
 
-const SignUp = () => {
+
+const SignUpUser = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [togglePasswordType, setTogglePasswordType] = useState<boolean>(false);
 
@@ -36,7 +38,7 @@ const SignUp = () => {
     return redirect('/');
   }
 
-  const { mutate: createAgent, isLoading, isSuccess, isError, error } = useCreateAgent();
+  const { mutate: createUser, isLoading, isSuccess, isError, error } = useCreateUser();
 
   useEffect(() => {
     if(isError) {
@@ -47,12 +49,12 @@ const SignUp = () => {
     }
   },[error])
 
-  const onSubmit = async (values: AgentCreateType) => {
-    createAgent(values);
+  const onSubmit = async (values: AccountCreateType) => {
+    createUser(values);
   }
   
-  const form = useForm<AgentCreateType>({
-    resolver: zodResolver(AgentCreateSchema),
+  const form = useForm<AccountCreateType>({
+    resolver: zodResolver(AccountCreateSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -68,7 +70,7 @@ const SignUp = () => {
       <div className="flex flex-col flex-1 max-w-sm">
         <h1 className="mt-8 mb-2 text-2xl font-semibold">Get started</h1>
         <h2 className="text-sm text-foreground-light mb-10">Create a new account</h2>
-        <ContinueWithGoogle text='Sign up with Google' callbackUrl={"/"}/>
+        <ContinueWithGoogle text='Sign up with Google' callbackUrl={"/"} role={USER} isLoading={isLoading}/>
         <hr className="divider sign-up"></hr>
         {isError && (
           <div className="w-full bg-destructive/80 rounded mb-3">
@@ -153,4 +155,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default SignUpUser

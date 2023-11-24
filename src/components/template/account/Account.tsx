@@ -19,7 +19,7 @@ import { getJoinedDate, getUpdatedAtDate } from "@/helper/getDate";
 
 
 const Account = async ({ user } : { user: sessionUser }) => {
-  const { email, image, firstName, lastName, role, is_verified, join_date, updatedAt } = user
+  const { email, profile, firstName, lastName, role, is_verified, join_date, updatedAt } = user
   const joined_date = getJoinedDate(join_date);
   const updatedAt_date = getUpdatedAtDate(updatedAt);
 
@@ -28,7 +28,7 @@ const Account = async ({ user } : { user: sessionUser }) => {
       <div className="flex items-center justify-between h-fit">
         <div className="flex items-center space-x-4">
           <Avatar className="w-20 h-20">
-            <AvatarImage alt="avatar" src={image ?? undefined}/>
+            <AvatarImage alt="avatar" src={profile ?? undefined}/>
             <AvatarFallback>{avatarFallBackText(firstName, lastName)}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col items-start space-y-1">

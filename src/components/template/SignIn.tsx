@@ -22,6 +22,7 @@ import { signIn } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
+import { USER } from "@/constants/roles";
 import "@/scss/Common.scss"
 
 
@@ -89,7 +90,7 @@ const SignIn = () => {
       <div className="flex flex-col flex-1">
         <h1 className="mt-8 mb-2 text-2xl font-semibold">Welcome Back</h1>
         <h2 className="text-sm text-foreground-light mb-10">Sign in to your account</h2>
-        <ContinueWithGoogle text='Sign in with Google' callbackUrl={callbackUrl}/>
+        <ContinueWithGoogle text='Sign in with Google' callbackUrl={callbackUrl} role={USER} isLoading={loader}/>
         <hr className="divider sign-in"></hr>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="min-[425px]:w-96 min-[375px]:w-80 w-72 space-y-4">

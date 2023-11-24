@@ -46,7 +46,7 @@ import { useCreateGallery, createGalleryHookType } from "@/hooks/useCreateGaller
 import { useRouter } from "next/navigation";
 
 
-type createGalleryFormProp = {
+type createGalleryFormPropType = {
   categories: {
     id: number;
     category: string;
@@ -63,7 +63,7 @@ type createGalleryFormProp = {
   }[]
 }
 
-const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormProp) => {
+const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormPropType) => {
   const [leftPhoneNumbersCount, setLeftPhoneNumbersCount] = useState<number>(2);
   const [selectedProvince , setSelectedProvince] = useState<{id:number, name: string}|null>(null);
   const router = useRouter();

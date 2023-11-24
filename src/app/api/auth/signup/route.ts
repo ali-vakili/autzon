@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { fromZodError } from "zod-validation-error";
 import { ZodError } from "zod";
-import { AgentCreateSchema, AgentCreateType } from "@/validation/validations";
+import { AccountCreateSchema, AccountCreateType } from "@/validation/validations";
 import { sendMail, connectDB, hashPassword, generateToken, prisma } from "@/lib";
 
 
@@ -10,14 +10,15 @@ export const POST = async (req: Request) => {
     connectDB();
 
     const body = await req.json();
-    const validData = AgentCreateSchema.safeParse(body);
+    const validData = AccountCreateSchema.safeParse(body);
     
     if (!validData.success) {
       const zodError = new ZodError(validData.error.errors);
       throw zodError;
     }
 
-    const { email, password, confirmPassword }: AgentCreateType = body;
+    const { email, password, confirmPassword }: AccountCreateType = body;
+    const { role } = body;
 
     if (!email || !password || !confirmPassword) {
       return NextResponse.json(
@@ -55,14 +56,15 @@ export const POST = async (req: Request) => {
           create: {
             verifyToken: token
           }
-        }
+        },
+        role
       }
     })
 
     await sendMail({ email, token, type: "VERIFY" })
 
     return NextResponse.json(
-      { message: "Auto Gallery Agent Created Successfully" },
+      { message: "Your Account Created Successfully" },
       { status: 201 }
     );
 

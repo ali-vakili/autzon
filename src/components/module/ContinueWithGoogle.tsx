@@ -1,17 +1,17 @@
 import { Button } from "@/ui/button"
-import { AGENT } from "@/constants/roles"
 import { signIn } from "next-auth/react"
 
-const ContinueWithGoogle = ({ text, callbackUrl }: { text: string, callbackUrl: string }) : JSX.Element => {
+const ContinueWithGoogle = ({ text, callbackUrl, role, isLoading }: { text: string, callbackUrl: string, role: string, isLoading: boolean }) : JSX.Element => {
+
   const signInWithGoogle = () => {
     signIn("google", { 
       callbackUrl,
-      role: AGENT,
+      role,
       redirect: false
     })
   }
   return (
-    <Button variant="outline" className="w-full" onClick={signInWithGoogle}>
+    <Button variant="outline" className="w-full" onClick={signInWithGoogle} disabled={isLoading}>
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" role="img" className="me-3">
         <path fillRule="evenodd" clipRule="evenodd" d="M17.64 9.20419C17.64 8.56601 17.5827 7.95237 17.4764 7.36328H9V10.8446H13.8436C13.635 11.9696 13.0009 12.9228 12.0477 13.561V15.8192H14.9564C16.6582 14.2524 17.64 11.9451 17.64 9.20419Z" fill="#4285F4"></path>
         <path fillRule="evenodd" clipRule="evenodd" d="M8.99976 18C11.4298 18 13.467 17.1941 14.9561 15.8195L12.0475 13.5613C11.2416 14.1013 10.2107 14.4204 8.99976 14.4204C6.65567 14.4204 4.67158 12.8372 3.96385 10.71H0.957031V13.0418C2.43794 15.9831 5.48158 18 8.99976 18Z" fill="#34A853"></path>

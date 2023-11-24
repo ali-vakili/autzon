@@ -44,7 +44,7 @@ import { FiX, FiPlus, FiChevronRight, FiCheck } from "react-icons/fi"
 import { useUpdateGallery, updateGalleryHookType } from "@/hooks/useUpdateGallery";
 
 
-type editGalleryFormProp = {
+type editGalleryFormPropType = {
   gallery: {
     id: string;
     name: string;
@@ -79,7 +79,7 @@ type editGalleryFormProp = {
   }[]
 }
 
-const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGalleryFormProp) => {
+const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGalleryFormPropType) => {
   const { id, name, image, address, city_id, phone_numbers, categories:galleryCategories, about } = gallery;
   const [leftPhoneNumbersCount, setLeftPhoneNumbersCount] = useState<number>(3 - phone_numbers.length);
   const [selectedProvince , setSelectedProvince] = useState<{id:number, name: string}|null>(null);

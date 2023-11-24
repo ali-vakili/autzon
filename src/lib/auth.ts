@@ -19,20 +19,20 @@ export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       profile: async (profile: GoogleProfile) => {
-        let imageId = null
+        let imageUrl = null
         if (profile.picture) {
           const agentImage = await prisma.image.create({
             data: {
               url: profile.image,
             },
           })
-          imageId = agentImage.id
+          imageUrl = agentImage.url
         }
         return {
           ...profile,
           id: profile.sub,
           role: profile.role ?? USER,
-          image_id: imageId,
+          profile: imageUrl,
           firstName: profile.given_name,
           lastName: profile.family_name,
           is_verified: profile.email_verified,

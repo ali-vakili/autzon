@@ -50,7 +50,7 @@ const imageFileSchema = z
 
 
 // Agent
-const AgentCreateSchema = z
+const AccountCreateSchema = z
   .object({
     email: emailSchema,
     password: passwordSchema,
@@ -169,7 +169,7 @@ const SignInFormSchema = z
 
 
 
-type AgentCreateType = z.infer<typeof AgentCreateSchema>;
+type AccountCreateType = z.infer<typeof AccountCreateSchema>;
 type AgentUpdateType = z.infer<typeof AgentUpdateSchema>;
 type AccountManagementSchemaType = z.infer<typeof AccountManagementSchema>;
 type ChangePasswordSchemaType = z.infer<typeof ChangePasswordSchema>;
@@ -181,7 +181,7 @@ type RestPasswordSchemaType = z.infer<typeof RestPasswordSchema>;
 type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
 
 export {
-  AgentCreateSchema,
+  AccountCreateSchema,
   AgentUpdateSchema,
   AccountManagementSchema,
   ChangePasswordSchema,
@@ -191,7 +191,7 @@ export {
   ForgotPasswordSchema
 };
 export type {
-  AgentCreateType,
+  AccountCreateType,
   AgentUpdateType,
   AccountManagementSchemaType,
   ChangePasswordSchemaType,

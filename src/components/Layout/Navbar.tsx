@@ -34,7 +34,7 @@ const Navbar = () => {
           </div>
         )}
         <div className="col-span-1 justify-self-end">
-          { status === "loading" ? (
+          {status === "loading" ? (
             <div className="flex items-center space-x-4">
               <div className="flex flex-col items-end space-y-2">
                 <Skeleton className="h-3 w-[100px]" />
@@ -43,18 +43,22 @@ const Navbar = () => {
               <Skeleton className="h-10 w-10 rounded-full" />
             </div>
           ) : status === "authenticated" ? (
-            <UserNav user={session.user} isDashboardPage={isDashboardPage}/>
+            <UserNav user={session.user} isDashboardPage={isDashboardPage} />
           ) : (
-            pathname === "/sign-up" ? (
-              <Link href={"/sign-in"} className={buttonVariants({variant: "default", size: "sm"})}>
-                Sign in to your gallery
+            <div className="space-x-3">
+              <Link href={"/sign-up"} className={buttonVariants({ variant: "secondary", size: "sm" })}>
+                Start as a customer
               </Link>
-            ) : (
-
-              <Link href={"/sign-up"} className={buttonVariants({variant: "default", size: "sm"})}>
-                Create your own gallery
-              </Link>
-            )
+              {pathname === "/agent/sign-up" ? (
+                <Link href={"/sign-in"} className={buttonVariants({ variant: "default", size: "sm" })}>
+                  Sign in to your account
+                </Link>
+              ) : (
+                <Link href={"/agent/sign-up"} className={buttonVariants({ variant: "default", size: "sm" })}>
+                  Create your own gallery
+                </Link>
+              )}
+            </div>
           )}
         </div>
       </nav>
