@@ -110,7 +110,7 @@ export const POST = async (req: Request) => {
     if (existingAutoGallery) {
       return NextResponse.json(
         {
-          message: "You already have an auto gallery"
+          error: "You already have an auto gallery"
         },
         { status: 409 }
       )

@@ -47,7 +47,7 @@ export default async function EditGallery() {
     }
   });
 
-  if (!gallery) redirect("/dashboard");
+  if (!gallery) redirect("/dashboard/gallery/create");
 
   const autoGalleryCategories = await prisma.autoGalleryCategory.findMany({
     select: {

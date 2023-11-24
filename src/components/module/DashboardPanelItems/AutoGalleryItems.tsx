@@ -19,7 +19,7 @@ const AutoGalleryItems = ({ hasAutoGallery }: {hasAutoGallery: boolean}) => {
               <li className="my-1" key={child.id}>
                 {child.alert ? (
                   <Link
-                    href={`dashboard/${child.href}`}
+                    href={`/dashboard/${child.href}`}
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
                       pathname.includes(child.href)
@@ -38,7 +38,7 @@ const AutoGalleryItems = ({ hasAutoGallery }: {hasAutoGallery: boolean}) => {
                   </Link>
                 ) : (
                   <Link
-                    href={`dashboard/${child.href}`}
+                    href={`/dashboard/${child.href}`}
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
                       pathname.startsWith(child.href)

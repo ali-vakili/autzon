@@ -91,7 +91,7 @@ const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGallery
 
   useEffect(() => {
     isSuccess === true && data?.message && toast.success(data.message);
-    isError === true && error && toast.error(error?.response.data.message);
+    isError === true && error && toast.error(error?.response.data.error);
   }, [isSuccess, isError])
 
   const form = useForm<GalleryCreateAndUpdateSchemaType>({
