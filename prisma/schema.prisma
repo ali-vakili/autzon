@@ -102,30 +102,32 @@ model FuelType {
 }
 
 model Car {
-  id           String      @id @default(uuid())
-  title        String      @db.VarChar(30)
-  model        Model       @relation(fields: [model_id], references: [id])
-  model_id     Int
-  build_year   Int
-  fuel_type    FuelType    @relation(fields: [fuel_type_id], references: [id])
-  fuel_type_id Int
-  images       Image[]
-  gallery      AutoGallery @relation(fields: [gallery_id], references: [id], onDelete: Cascade)
-  gallery_id   String
-  for_rent     RentCar?
-  for_sale     SaleCar?
-  description  String      @db.VarChar(400)
-  is_published Boolean     @default(true)
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  id                 String             @id @default(uuid())
+  title              String             @db.VarChar(30)
+  model              Model              @relation(fields: [model_id], references: [id])
+  model_id           Int
+  build_year         Int
+  fuel_type          FuelType           @relation(fields: [fuel_type_id], references: [id])
+  fuel_type_id       Int
+  images             Image[]
+  gallery            AutoGallery        @relation(fields: [gallery_id], references: [id], onDelete: Cascade)
+  gallery_id         String
+  for_rent           RentalCar?
+  for_sale           SaleCar?
+  is_car_rented      RentedCar?
+  rental_car_history RentalCarHistory[]
+  description        String             @db.VarChar(400)
+  is_published       Boolean            @default(true)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 }
 
-model RentCar {
-  id             String   @id @default(uuid())
-  Car            Car      @relation(fields: [car_id], references: [id], onDelete: Cascade)
-  car_id         String   @unique
-  price_per_day  Float?
-  price_per_hour Float?
+model RentedCar {
+  id             String           @id @default(uuid())
+  rented_user    AutoGalleryAgent @relation(fields: [rented_user_id], references: [id])
+  rented_user_id String
+  Car            Car              @relation(fields: [car_id], references: [id], onDelete: Cascade)
+  car_id         String           @unique
   days           Int?
   hours          Int?
   pick_up_place  String
@@ -134,9 +136,32 @@ model RentCar {
   drop_off_date  DateTime
   pick_up_hour   DateTime
   drop_off_hour  DateTime
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@unique([car_id, rented_user_id])
+}
+
+model RentalCar {
+  id             String   @id @default(uuid())
+  Car            Car      @relation(fields: [car_id], references: [id], onDelete: Cascade)
+  car_id         String   @unique
+  price_per_day  Float?
+  price_per_hour Float?
   extra_time     Boolean  @default(false)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+}
+
+model RentalCarHistory {
+  id             String           @id @default(uuid())
+  car_id         String
+  Car            Car              @relation(fields: [car_id], references: [id])
+  rented_user    AutoGalleryAgent @relation(fields: [rented_user_id], references: [id])
+  rented_user_id String
+  pickUpDate     DateTime
+  dropOffDate    DateTime
+  createdAt      DateTime         @default(now())
 }
 
 model SaleCar {
@@ -177,6 +202,8 @@ model AutoGalleryAgent {
   phone_number         String?              @db.VarChar(11)
   bio                  String?              @db.VarChar(1024)
   gallery              AutoGallery[]
+  rented_cars          RentedCar[]
+  rental_car_history   RentalCarHistory[]
   activation_token     ActivationToken[]
   password_reset_token PasswordResetToken[]
   accounts             Account[]
