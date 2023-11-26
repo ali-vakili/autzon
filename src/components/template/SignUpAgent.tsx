@@ -66,7 +66,7 @@ const SignUpAgent = () => {
   const { isDirty } = form.formState;
 
   return (
-    <div className="flex flex-col flex-1 items-center flex-shrink-0 md:grid lg:max-w-none lg:grid-cols-5 px-4 lg:my-8 lg:mx-24 lg:px-0 lg:border rounded">
+    <div className="flex flex-col flex-1 items-center flex-shrink-0 md:grid lg:max-w-none lg:grid-cols-5 px-4 lg:min-h-[680px] lg:my-8 lg:mx-24 lg:px-0 lg:border rounded">
       <div className="relative col-span-2 hidden h-full flex-col bg-muted p-10 text-white lg:flex">
         <div className="absolute inset-0 bg-zinc-900 rounded" />
         <div className="relative z-20 flex items-center text-lg font-medium">
@@ -155,6 +155,9 @@ const SignUpAgent = () => {
           <Link href="/sign-in" className="underline transition text-foreground hover:text-foreground-light">
             Sign In Now
           </Link>    
+        </div>
+        <div className="sm:text-center mb-6">
+          <p className="text-xs text-muted-foreground sm:mx-auto sm:max-w-sm">By continuing, you agree to autzon's <Link className="underline hover:text-foreground" href="#">Terms of Service</Link> and <Link className="underline hover:text-foreground" href="#">Privacy Policy</Link>, and to receive periodic emails with updates.</p>
         </div>
       </div>
     </div>

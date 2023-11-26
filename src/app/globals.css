@@ -94,3 +94,17 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 24px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #E4E4E7;
+  border-radius: 24px;
+}

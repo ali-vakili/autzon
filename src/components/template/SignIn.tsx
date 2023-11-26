@@ -24,6 +24,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 
 import { USER } from "@/constants/roles";
 import "@/scss/Common.scss"
+import Image from "next/image";
 
 
 const SignIn = () => {
@@ -88,9 +89,24 @@ const SignIn = () => {
   return (
     <div className="flex flex-col flex-1 items-center flex-shrink-0 md:grid lg:max-w-none lg:grid-cols-5 px-4 lg:my-8 lg:mx-24 lg:px-0 lg:border rounded">
       <div className="relative col-span-2 hidden h-full flex-col bg-muted p-10 text-white lg:flex">
-        <div className="absolute inset-0 bg-zinc-900 rounded" />
+        <div className="absolute inset-0 bg-primary rounded" />
         <div className="relative z-20 flex items-center text-lg font-medium">
           autzon
+        </div>
+        <div className="relative z-20 mt-auto">
+          <div className="absolute select-none -top-10 -left-4">
+            <span className="text-[160px] leading-none text-muted-foreground/30">“</span>
+          </div>
+          <div className="!backdrop-blur-sm bg-white/95 shadow-lg rounded-xl supports-[backdrop-filter]:bg-white/10 p-4">
+            <blockquote className="space-y-2">
+              <p className="text-2xl">
+                &ldquo;autzon has saved me countless hours of work and
+                helped me managing my auto gallery to have work with amazing clients better than
+                ever before.&rdquo;
+              </p>
+              <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://supabase.com/images/twitter-profiles/66VSV9Mm_400x400.png'} width={48} height={48} alt="user" className="rounded-full me-3"/>John Davis</footer>
+            </blockquote>
+          </div>
         </div>
       </div>
       <div className="flex flex-col flex-1 col-span-3 max-w-sm mx-auto">
