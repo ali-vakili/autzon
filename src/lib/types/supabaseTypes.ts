@@ -579,7 +579,93 @@ export interface Database {
         }
         Relationships: []
       }
-      RentCar: {
+      RentalCar: {
+        Row: {
+          car_id: string
+          createdAt: string
+          extra_time: boolean
+          id: string
+          late_return_fee_per_hour: number | null
+          price_per_day: number | null
+          price_per_hour: number | null
+          reservation_fee_percentage: number | null
+          updatedAt: string
+        }
+        Insert: {
+          car_id: string
+          createdAt?: string
+          extra_time?: boolean
+          id: string
+          late_return_fee_per_hour?: number | null
+          price_per_day?: number | null
+          price_per_hour?: number | null
+          reservation_fee_percentage?: number | null
+          updatedAt: string
+        }
+        Update: {
+          car_id?: string
+          createdAt?: string
+          extra_time?: boolean
+          id?: string
+          late_return_fee_per_hour?: number | null
+          price_per_day?: number | null
+          price_per_hour?: number | null
+          reservation_fee_percentage?: number | null
+          updatedAt?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "RentalCar_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "Car"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      RentalCarHistory: {
+        Row: {
+          car_id: string
+          createdAt: string
+          dropOffDate: string
+          id: string
+          pickUpDate: string
+          rented_user_id: string
+        }
+        Insert: {
+          car_id: string
+          createdAt?: string
+          dropOffDate: string
+          id: string
+          pickUpDate: string
+          rented_user_id: string
+        }
+        Update: {
+          car_id?: string
+          createdAt?: string
+          dropOffDate?: string
+          id?: string
+          pickUpDate?: string
+          rented_user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "RentalCarHistory_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "Car"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "RentalCarHistory_rented_user_id_fkey"
+            columns: ["rented_user_id"]
+            isOneToOne: false
+            referencedRelation: "AutoGalleryAgent"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      RentedCar: {
         Row: {
           car_id: string
           createdAt: string
@@ -587,14 +673,14 @@ export interface Database {
           drop_off_date: string
           drop_off_hour: string
           drop_off_place: string
-          extra_time: boolean
           hours: number | null
           id: string
           pick_up_date: string
           pick_up_hour: string
           pick_up_place: string
-          price_per_day: number | null
-          price_per_hour: number | null
+          rented_user_id: string
+          reservation_fee: number | null
+          total_price: number
           updatedAt: string
         }
         Insert: {
@@ -604,14 +690,14 @@ export interface Database {
           drop_off_date: string
           drop_off_hour: string
           drop_off_place: string
-          extra_time?: boolean
           hours?: number | null
           id: string
           pick_up_date: string
           pick_up_hour: string
           pick_up_place: string
-          price_per_day?: number | null
-          price_per_hour?: number | null
+          rented_user_id: string
+          reservation_fee?: number | null
+          total_price: number
           updatedAt: string
         }
         Update: {
@@ -621,22 +707,29 @@ export interface Database {
           drop_off_date?: string
           drop_off_hour?: string
           drop_off_place?: string
-          extra_time?: boolean
           hours?: number | null
           id?: string
           pick_up_date?: string
           pick_up_hour?: string
           pick_up_place?: string
-          price_per_day?: number | null
-          price_per_hour?: number | null
+          rented_user_id?: string
+          reservation_fee?: number | null
+          total_price?: number
           updatedAt?: string
         }
         Relationships: [
           {
-            foreignKeyName: "RentCar_car_id_fkey"
+            foreignKeyName: "RentedCar_car_id_fkey"
             columns: ["car_id"]
             isOneToOne: false
             referencedRelation: "Car"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "RentedCar_rented_user_id_fkey"
+            columns: ["rented_user_id"]
+            isOneToOne: false
+            referencedRelation: "AutoGalleryAgent"
             referencedColumns: ["id"]
           }
         ]
