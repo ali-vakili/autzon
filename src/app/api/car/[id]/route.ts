@@ -48,7 +48,7 @@ export const GET = async (req: Request, { params }: requestProps) => {
                 }
               },
               address: true,
-              image_id: {
+              image: {
                 select: {
                   id: true,
                   url: true

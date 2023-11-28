@@ -105,7 +105,7 @@ const SignIn = () => {
                 helped me managing my auto gallery to have work with amazing clients better than
                 ever before.&rdquo;
               </p>
-              <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://supabase.com/images/twitter-profiles/66VSV9Mm_400x400.png'} width={48} height={48} alt="user" className="rounded-full me-3"/>John Davis</footer>
+              <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://supabase.com/images/twitter-profiles/66VSV9Mm_400x400.png'} width={48} height={48} alt="user" className="rounded-full me-3"/><h5 className="font-semibold">John Davis</h5></footer>
             </blockquote>
           </div>
         </div>

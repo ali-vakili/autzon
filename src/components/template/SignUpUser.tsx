@@ -80,9 +80,9 @@ const SignUpUser = () => {
           <div className="!backdrop-blur-sm bg-white/95 shadow-lg rounded-xl supports-[backdrop-filter]:bg-white/10 p-4">
             <blockquote className="space-y-2">
               <p className="text-2xl">
-                &ldquo;Thanks to autzon's streamlined processes at this auto gallery, I'm thrilled about renting a car hassle-free, and I'm confident in the exceptional service I'll receive as a customer.&rdquo;
+                &ldquo;With autzon's, renting a car from this auto gallery feels effortless, promising a smooth experience and top-notch service as a customer..&rdquo;
               </p>
-              <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://supabase.com/images/twitter-profiles/6f1O8ZOW_400x400.jpg'} width={48} height={48} alt="user" className="rounded-full me-3"/>louis barclay</footer>
+              <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://supabase.com/images/twitter-profiles/6f1O8ZOW_400x400.jpg'} width={48} height={48} alt="user" className="rounded-full me-3"/><h5 className="font-semibold">louis barclay</h5></footer>
             </blockquote>
           </div>
         </div>

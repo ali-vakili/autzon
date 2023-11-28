@@ -126,8 +126,9 @@ model RentalCar {
   id                         String   @id @default(uuid())
   Car                        Car      @relation(fields: [car_id], references: [id], onDelete: Cascade)
   car_id                     String   @unique
-  price_per_day              Float?
-  price_per_hour             Float?
+  price_per_day              Float
+  pick_up_place              String
+  drop_off_place             String
   reservation_fee_percentage Float?
   late_return_fee_per_hour   Float?
   extra_time                 Boolean  @default(false)
@@ -141,14 +142,9 @@ model RentedCar {
   rented_user_id  String
   Car             Car              @relation(fields: [car_id], references: [id], onDelete: Cascade)
   car_id          String           @unique
-  days            Int?
-  hours           Int?
-  pick_up_place   String
-  drop_off_place  String
+  days            Int
   pick_up_date    DateTime
   drop_off_date   DateTime
-  pick_up_hour    DateTime
-  drop_off_hour   DateTime
   reservation_fee Float?
   total_price     Float
   createdAt       DateTime         @default(now())
@@ -163,8 +159,8 @@ model RentalCarHistory {
   Car            Car              @relation(fields: [car_id], references: [id])
   rented_user    AutoGalleryAgent @relation(fields: [rented_user_id], references: [id])
   rented_user_id String
-  pickUpDate     DateTime
-  dropOffDate    DateTime
+  pick_up_date   DateTime
+  drop_off_date  DateTime
   createdAt      DateTime         @default(now())
 }
 

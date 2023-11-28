@@ -39,8 +39,8 @@ const Navbar = () => {
                 <SelectValue placeholder="Select your gallery state" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="edit">Open</SelectItem>
-                <SelectItem value="view">Close</SelectItem>
+                <SelectItem value="open">Open</SelectItem>
+                <SelectItem value="close">Close</SelectItem>
               </SelectContent>
             </Select>
           )}
