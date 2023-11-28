@@ -80,7 +80,7 @@ const SignUpUser = () => {
           <div className="!backdrop-blur-sm bg-white/95 shadow-lg rounded-xl supports-[backdrop-filter]:bg-white/10 p-4">
             <blockquote className="space-y-2">
               <p className="text-2xl">
-                &ldquo;Thanks to Autzon, I've streamlined my workload and transformed the way I connect with top-tier clients in my auto gallery, saving me invaluable time and maximizing productivity.&rdquo;
+                &ldquo;Thanks to autzon's streamlined processes at this auto gallery, I'm thrilled about renting a car hassle-free, and I'm confident in the exceptional service I'll receive as a customer.&rdquo;
               </p>
               <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://supabase.com/images/twitter-profiles/6f1O8ZOW_400x400.jpg'} width={48} height={48} alt="user" className="rounded-full me-3"/>louis barclay</footer>
             </blockquote>

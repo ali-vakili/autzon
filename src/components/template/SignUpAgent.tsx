@@ -81,7 +81,7 @@ const SignUpAgent = () => {
           <div className="!backdrop-blur-sm bg-white/95 shadow-lg rounded-xl supports-[backdrop-filter]:bg-white/10 p-4">
             <blockquote className="space-y-2">
               <p className="text-2xl">
-                &ldquo;Autzon's efficiency has revolutionized my workflow, enabling me to handle my auto gallery seamlessly and elevate client interactions to a whole new level.&rdquo;
+                &ldquo;autzon's efficiency has revolutionized my workflow, enabling me to handle my auto gallery seamlessly and elevate client interactions to a whole new level.&rdquo;
               </p>
               <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://supabase.com/images/twitter-profiles/t6lpcRcn_400x400.jpg'} width={48} height={48} alt="user" className="rounded-full me-3"/>kev codez</footer>
             </blockquote>
