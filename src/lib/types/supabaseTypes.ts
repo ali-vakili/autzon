@@ -583,33 +583,36 @@ export interface Database {
         Row: {
           car_id: string
           createdAt: string
+          drop_off_place: string
           extra_time: boolean
           id: string
           late_return_fee_per_hour: number | null
-          price_per_day: number | null
-          price_per_hour: number | null
+          pick_up_place: string
+          price_per_day: number
           reservation_fee_percentage: number | null
           updatedAt: string
         }
         Insert: {
           car_id: string
           createdAt?: string
+          drop_off_place: string
           extra_time?: boolean
           id: string
           late_return_fee_per_hour?: number | null
-          price_per_day?: number | null
-          price_per_hour?: number | null
+          pick_up_place: string
+          price_per_day: number
           reservation_fee_percentage?: number | null
           updatedAt: string
         }
         Update: {
           car_id?: string
           createdAt?: string
+          drop_off_place?: string
           extra_time?: boolean
           id?: string
           late_return_fee_per_hour?: number | null
-          price_per_day?: number | null
-          price_per_hour?: number | null
+          pick_up_place?: string
+          price_per_day?: number
           reservation_fee_percentage?: number | null
           updatedAt?: string
         }
@@ -627,25 +630,25 @@ export interface Database {
         Row: {
           car_id: string
           createdAt: string
-          dropOffDate: string
+          drop_off_date: string
           id: string
-          pickUpDate: string
+          pick_up_date: string
           rented_user_id: string
         }
         Insert: {
           car_id: string
           createdAt?: string
-          dropOffDate: string
+          drop_off_date: string
           id: string
-          pickUpDate: string
+          pick_up_date: string
           rented_user_id: string
         }
         Update: {
           car_id?: string
           createdAt?: string
-          dropOffDate?: string
+          drop_off_date?: string
           id?: string
-          pickUpDate?: string
+          pick_up_date?: string
           rented_user_id?: string
         }
         Relationships: [
@@ -669,15 +672,10 @@ export interface Database {
         Row: {
           car_id: string
           createdAt: string
-          days: number | null
+          days: number
           drop_off_date: string
-          drop_off_hour: string
-          drop_off_place: string
-          hours: number | null
           id: string
           pick_up_date: string
-          pick_up_hour: string
-          pick_up_place: string
           rented_user_id: string
           reservation_fee: number | null
           total_price: number
@@ -686,15 +684,10 @@ export interface Database {
         Insert: {
           car_id: string
           createdAt?: string
-          days?: number | null
+          days: number
           drop_off_date: string
-          drop_off_hour: string
-          drop_off_place: string
-          hours?: number | null
           id: string
           pick_up_date: string
-          pick_up_hour: string
-          pick_up_place: string
           rented_user_id: string
           reservation_fee?: number | null
           total_price: number
@@ -703,15 +696,10 @@ export interface Database {
         Update: {
           car_id?: string
           createdAt?: string
-          days?: number | null
+          days?: number
           drop_off_date?: string
-          drop_off_hour?: string
-          drop_off_place?: string
-          hours?: number | null
           id?: string
           pick_up_date?: string
-          pick_up_hour?: string
-          pick_up_place?: string
           rented_user_id?: string
           reservation_fee?: number | null
           total_price?: number
