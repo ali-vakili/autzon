@@ -26,6 +26,8 @@ import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 
 import { AGENT } from "@/constants/roles"
+import Image from "next/image"
+
 import "@/scss/Common.scss"
 
 
@@ -71,6 +73,19 @@ const SignUpAgent = () => {
         <div className="absolute inset-0 bg-zinc-900 rounded" />
         <div className="relative z-20 flex items-center text-lg font-medium">
           autzon
+        </div>
+        <div className="relative z-20 mt-auto">
+          <div className="absolute select-none -top-10 -left-4">
+            <span className="text-[160px] leading-none text-muted-foreground/30">“</span>
+          </div>
+          <div className="!backdrop-blur-sm bg-white/95 shadow-lg rounded-xl supports-[backdrop-filter]:bg-white/10 p-4">
+            <blockquote className="space-y-2">
+              <p className="text-2xl">
+                &ldquo;Autzon's efficiency has revolutionized my workflow, enabling me to handle my auto gallery seamlessly and elevate client interactions to a whole new level.&rdquo;
+              </p>
+              <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://supabase.com/images/twitter-profiles/t6lpcRcn_400x400.jpg'} width={48} height={48} alt="user" className="rounded-full me-3"/>kev codez</footer>
+            </blockquote>
+          </div>
         </div>
       </div>
       <div className="flex flex-col flex-1 col-span-3 max-w-sm mx-auto">

@@ -114,7 +114,7 @@ model Car {
   gallery_id         String
   for_rent           RentalCar?
   for_sale           SaleCar?
-  is_car_rented      RentedCar?
+  is_car_rented      RentedCar[]
   rental_car_history RentalCarHistory[]
   description        String             @db.VarChar(400)
   is_published       Boolean            @default(true)

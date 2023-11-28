@@ -23,8 +23,9 @@ import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 import { USER } from "@/constants/roles";
-import "@/scss/Common.scss"
 import Image from "next/image";
+
+import "@/scss/Common.scss"
 
 
 const SignIn = () => {
