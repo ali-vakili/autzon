@@ -39,10 +39,10 @@ const passwordSchema = z
 
 const imageFileSchema = z
   .any()
-  .refine((file) => file == null || file.size <= MAX_IMAGE_SIZE, {
+  .refine((file) => file === null || file.size <= MAX_IMAGE_SIZE, {
     message: "Max image size is 4MB.",
   })
-  .refine((file) => file == null || ACCEPTED_IMAGE_TYPES.includes(file.type), {
+  .refine((file) => file === null || ACCEPTED_IMAGE_TYPES.includes(file.type), {
     message: "Only .jpg, .jpeg, and .png formats are supported.",
   })
   .nullable()
@@ -135,6 +135,68 @@ const GalleryCreateAndUpdateSchema = z
 
 
 
+// Car
+
+const CarCommonSchema = z
+  .object({
+    title: z.string().min(1, "Title is required"),
+    model: z.string().min(1, "Car model is required"),
+    buildYear: z.string().min(1, "Build Year is required"),
+    fuelType: z.string().min(1, "Fuel Type is required"),
+    imagesUrl: z.array(
+      z.object({
+        imageUrl: z.any()
+        .nullable()
+        .optional(),
+      })
+    )
+    .nonempty("At least one image must be provided")
+    .max(4, "Can not add more than 4 images"),
+    imagesFile: z.array(
+      z.object({
+        imageFile: imageFileSchema
+      })
+    )
+    .nonempty("At least one image must be provided")
+    .max(4, "Can not add more than 4 images"),
+    description: z.string().max(1024, "Description must not be longer than 1024 characters").optional(),
+    is_published: z.boolean().default(true),
+  })
+
+const AddRentalCarSchema = CarCommonSchema.merge(
+  z
+  .object({
+      price_per_day: z
+        .string()
+        .min(0.01, "Price per day must be a positive number")
+        .refine(value => Number.isFinite(parseFloat(value)) && !Number.isNaN(parseFloat(value)), {
+          message: "Price per day must be a number",
+        }),
+      pick_up_place: z.string().min(1, "Pick up place is required"),
+      drop_off_place: z.string().min(1, "Drop off place is required"),
+      reservation_fee_percentage: z
+      .string()
+      .refine(value => value === "" || (Number.isFinite(parseFloat(value)) && !Number.isNaN(parseFloat(value))), {
+        message: "Reservation fee percentage must be a number",
+      })
+      .optional(),
+      late_return_fee_per_hour: z
+      .string()
+      .refine(value => value === "" || (Number.isFinite(parseFloat(value)) && !Number.isNaN(parseFloat(value))), {
+        message: "Late return fee per hour must be a number",
+      })
+      .optional(),
+      extra_time: z.boolean().default(false),
+      })
+    )
+    .required()
+    .refine(data => !data.extra_time || !!data.late_return_fee_per_hour, {
+      message: "Late return fee per hour is required if extra time is enabled",
+      path: ["late_return_fee_per_hour"],
+    })
+
+
+
 // Forgot Password
 const ForgotPasswordSchema = z
   .object({
@@ -176,6 +238,7 @@ type ChangePasswordSchemaType = z.infer<typeof ChangePasswordSchema>;
 type GalleryCreateAndUpdateSchemaType = z.infer<
   typeof GalleryCreateAndUpdateSchema
 >;
+type AddRentalCarSchemaType = z.infer<typeof AddRentalCarSchema>;
 type SignInFormSchemaType = z.infer<typeof SignInFormSchema>;
 type RestPasswordSchemaType = z.infer<typeof RestPasswordSchema>; 
 type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
@@ -186,6 +249,7 @@ export {
   AccountManagementSchema,
   ChangePasswordSchema,
   GalleryCreateAndUpdateSchema,
+  AddRentalCarSchema,
   SignInFormSchema,
   RestPasswordSchema,
   ForgotPasswordSchema
@@ -196,6 +260,7 @@ export type {
   AccountManagementSchemaType,
   ChangePasswordSchemaType,
   GalleryCreateAndUpdateSchemaType,
+  AddRentalCarSchemaType,
   SignInFormSchemaType,
   RestPasswordSchemaType,
   ForgotPasswordSchemaType

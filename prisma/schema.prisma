@@ -94,6 +94,12 @@ model Brand {
   models Model[]
 }
 
+model BuildYear {
+  id   Int    @id @default(autoincrement())
+  year String
+  cars Car[]
+}
+
 model FuelType {
   id    Int     @id @default(autoincrement())
   type  String
@@ -106,7 +112,8 @@ model Car {
   title              String             @db.VarChar(30)
   model              Model              @relation(fields: [model_id], references: [id])
   model_id           Int
-  build_year         Int
+  build_year         BuildYear          @relation(fields: [build_year_id], references: [id])
+  build_year_id      Int
   fuel_type          FuelType           @relation(fields: [fuel_type_id], references: [id])
   fuel_type_id       Int
   images             Image[]
@@ -116,7 +123,7 @@ model Car {
   for_sale           SaleCar?
   is_car_rented      RentedCar[]
   rental_car_history RentalCarHistory[]
-  description        String             @db.VarChar(400)
+  description        String             @db.VarChar(1024)
   is_published       Boolean            @default(true)
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt

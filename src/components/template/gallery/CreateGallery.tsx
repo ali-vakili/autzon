@@ -305,19 +305,19 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
                           <FormControl>
                             <Input type="tel" placeholder="000 000 0000" {...field} className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
                           </FormControl>
-                            {
-                              index > 0 && (
-                                <Button
-                                  type="button"
-                                  variant="destructive"
-                                  size="sm"
-                                  onClick={() => (remove(index), setLeftPhoneNumbersCount(prev => prev + 1))}
-                                >
-                                  <FiX size={16} className="me-1"/>
-                                  Remove
-                                </Button>
-                              )
-                            }
+                          {
+                            index > 0 && (
+                              <Button
+                                type="button"
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => (remove(index), setLeftPhoneNumbersCount(prev => prev + 1))}
+                              >
+                                <FiX size={16} className="me-1"/>
+                                Remove
+                              </Button>
+                            )
+                          }
                         </div>
                         <FormMessage />
                       </FormItem>

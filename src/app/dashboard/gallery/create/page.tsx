@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: "Edit Gallery",
+  title: "Create Gallery",
 }
 
 export default async function CreateGallery() {
@@ -23,7 +23,7 @@ export default async function CreateGallery() {
     include: { gallery: true },
   });
 
-  agent!.gallery.length > 0 && redirect("/dashboard");
+  !agent || agent!.gallery.length > 0 && redirect("/dashboard");
 
   const autoGalleryCategories = await prisma.autoGalleryCategory.findMany({
     select: {

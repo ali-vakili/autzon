@@ -140,20 +140,27 @@ const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGallery
                 <AvatarImage alt="avatar" src={(watch("imageFile") && URL.createObjectURL(watch("imageFile"))) ?? url ?? undefined}/>
                 <AvatarFallback>AV</AvatarFallback>
               </Avatar>
-              <FormField
-                control={form.control}
-                name="imageUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className={`${buttonVariants({variant: "outline"})} cursor-pointer`}>Upload new image</FormLabel>
-                    <FormControl>
-                      <Input type="file" name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), onFileChange(event)}} className="w-fit hidden" accept=".png, .jpg, .jpeg"/>
-                    </FormControl>
-                    <FormMessage />
-                    {errors.imageFile ? <p className="text-sm font-medium text-destructive">{errors.imageFile.message as string }</p> : null}
-                  </FormItem>
+              <div className="flex flex-col gap-2 self-end">
+                <FormField
+                  control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className={`${buttonVariants({variant: "outline"})} cursor-pointer`}>Upload new image</FormLabel>
+                      <FormControl>
+                        <Input type="file" name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), onFileChange(event)}} className="w-fit hidden" accept=".png, .jpg, .jpeg"/>
+                      </FormControl>
+                      <FormMessage />
+                      {errors.imageFile ? <p className="text-sm font-medium text-destructive">{errors.imageFile.message as string }</p> : null}
+                    </FormItem>
+                  )}
+                />
+                {!errors.imageFile && (
+                  <FormDescription>
+                    Upload an image of your gallery, Max size 4Mb.
+                  </FormDescription>
                 )}
-              />
+              </div>
             </div>
             <div className="mt-8">
               <FormField

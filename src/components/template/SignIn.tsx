@@ -153,7 +153,7 @@ const SignIn = () => {
           <span className="text-foreground-light">
             Don't have an account?&nbsp;
           </span>
-          <Link href="/sign-up" className="underline transition text-foreground hover:text-foreground-light">
+          <Link href="/agent/sign-up" className="underline transition text-foreground hover:text-foreground-light">
             Sign Up Now
           </Link>    
         </div>

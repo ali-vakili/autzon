@@ -55,19 +55,19 @@ const dashboardPanelCarsItems = [
       {
         id: 3.1,
         title: "All Cars",
-        href: "/cars",
+        href: "cars",
         icon: <FiList size={16} className="me-1.5"/>,
       },
       {
         id: 3.2,
         title: "Add Sale Car",
-        href: "/cars/sale/create",
+        href: "cars/sale/create",
         icon: <FiPlus size={16} className="me-1.5"/>,
       },
       {
         id: 3.3,
         title: "Add Rental Car",
-        href: "/cars/rental/create",
+        href: "cars/rental/create",
         icon: <FiPlus size={16} className="me-1.5"/>,
       }
     ]

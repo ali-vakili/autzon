@@ -18,10 +18,10 @@ const CarsItem = ({ hasAutoGallery }: {hasAutoGallery: boolean}) => {
             item.children.map((child) => (
               <li className="my-1" key={child.id}>
                 <Link
-                  href={`dashboard/${child.href}`}
+                  href={`/dashboard/${child.href}`}
                   className={cn(
                     buttonVariants({ variant: "ghost" }),
-                    pathname.includes(child.href)
+                    pathname === `/dashboard/${child.href}`
                       ? "bg-muted hover-bg-muted text-gray-800 !font-bold"
                       : "hover:text-gray-800 text-gray-400",
                     "justify-start w-full"

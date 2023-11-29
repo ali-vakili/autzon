@@ -137,7 +137,7 @@ const EditProfile = ({ user }: editProfilePropType) => {
                     <Input type="file" name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), onFileChange(event)}} className="w-fit hidden" accept=".png, .jpg, .jpeg"/>
                   </FormControl>
                   <FormMessage />
-                  {errors.imageFile ? <p className="text-sm font-medium text-destructive">{errors.imageFile.message as string }</p> : null}
+                  {errors.imageFile ? <p className="text-sm font-medium text-destructive">{errors.imageFile.message as string}</p> : null}
                 </FormItem>
               )}
             />

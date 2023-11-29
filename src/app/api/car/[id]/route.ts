@@ -65,8 +65,7 @@ export const GET = async (req: Request, { params }: requestProps) => {
           for_rent: {
             select: {
               id: true,
-              price_per_day: true,
-              price_per_hour: true
+              price_per_day: true
             }
           },
           for_sale: {

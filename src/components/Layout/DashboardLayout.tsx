@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib";
 import { ScrollArea } from "@/ui/scroll-area";
+import { redirect } from "next/navigation";
 
 
 const DashboardLayout = async ({ children } : { children: React.ReactNode }) => {
@@ -17,7 +18,10 @@ const DashboardLayout = async ({ children } : { children: React.ReactNode }) => 
     },
     include: { gallery: true },
   });
-  const hasAutoGallery = agent!.gallery.length > 0;
+
+  if (!agent) redirect("/dashboard")
+
+  const hasAutoGallery = agent.gallery.length > 0;
   
   return (
     <>

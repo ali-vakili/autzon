@@ -3,6 +3,7 @@ import brandsAndModels from "./brandsAndModels.json"
 import provincesData from './provinces.json'
 import citiesData from './cities.json'
 import categories from './categories.json'
+import buildYear from "./buildYear.json"
 import fuels from "./fuels.json"
 
 const prisma = new PrismaClient()
@@ -29,6 +30,12 @@ async function main() {
   for (const fuel of fuels) {
     await prisma.fuelType.create({
       data: fuel
+    })
+  }
+
+  for (const year of buildYear) {
+    await prisma.buildYear.create({
+      data: year
     })
   }
 
