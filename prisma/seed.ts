@@ -22,7 +22,7 @@ async function main() {
   }
 
   for (const category of categories) {
-    await prisma.autoGalleryCategory.create({
+    await prisma.autoGalleryAndCarCategory.create({
       data: category
     })
   }

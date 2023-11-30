@@ -39,10 +39,10 @@ const passwordSchema = z
 
 const imageFileSchema = z
   .any()
-  .refine((file) => file === null || file.size <= MAX_IMAGE_SIZE, {
+  .refine((file) => file === undefined || file === null || file.size <= MAX_IMAGE_SIZE, {
     message: "Max image size is 4MB.",
   })
-  .refine((file) => file === null || ACCEPTED_IMAGE_TYPES.includes(file.type), {
+  .refine((file) => file === undefined || file === null || ACCEPTED_IMAGE_TYPES.includes(file.type), {
     message: "Only .jpg, .jpeg, and .png formats are supported.",
   })
   .nullable()
@@ -149,16 +149,18 @@ const CarCommonSchema = z
         .nullable()
         .optional(),
       })
-    )
-    .nonempty("At least one image must be provided")
-    .max(4, "Can not add more than 4 images"),
+    ).nullable().optional(),
     imagesFile: z.array(
       z.object({
         imageFile: imageFileSchema
       })
     )
-    .nonempty("At least one image must be provided")
-    .max(4, "Can not add more than 4 images"),
+    .max(4, "Can not add more than 4 images")
+    .nullable()
+    .optional(),
+    category: z
+      .string()
+      .min(1, "Category must be selected"),
     description: z.string().max(1024, "Description must not be longer than 1024 characters").optional(),
     is_published: z.boolean().default(true),
   })
@@ -189,7 +191,6 @@ const AddRentalCarSchema = CarCommonSchema.merge(
       extra_time: z.boolean().default(false),
       })
     )
-    .required()
     .refine(data => !data.extra_time || !!data.late_return_fee_per_hour, {
       message: "Late return fee per hour is required if extra time is enabled",
       path: ["late_return_fee_per_hour"],

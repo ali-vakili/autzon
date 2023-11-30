@@ -39,7 +39,7 @@ import { cn } from "@/lib/utils"
 import { FiX, FiPlusCircle , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
 import { Car } from 'lucide-react';
 
-import { useUpdateGallery, updateGalleryHookType } from "@/hooks/useUpdateGallery";
+import { useCreateRentalCar, createRentalCarHookType } from "@/hooks/useCreateRentalCar";
 
 
 type models = {
@@ -67,20 +67,25 @@ type AddRentalCardPropType = {
   fuelTypes: {
     id: number;
     type: string;
+  }[],
+  categories: {
+    id: number;
+    category: string;
+    abbreviation: string | null;
   }[]
 }
 
 
-const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears }: AddRentalCardPropType) => {
+const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears, categories }: AddRentalCardPropType) => {
   const [leftImageCount, setLeftImageCount] = useState<number>(3);
   const [selectedBrand , setSelectedBrand] = useState<{id:number, name: string, models: models[]}|null>(null);
 
-  // const { mutate: createGalley, data, isLoading, isSuccess, isError, error }: createGalleryHookType = useCreateGallery();
+  const { mutate: createRentalCar, data, isLoading, isSuccess, isError, error }: createRentalCarHookType = useCreateRentalCar();
 
-  // useEffect(() => {
-  //   isSuccess === true && data?.message && (toast.success(data.message));
-  //   isError === true && error && toast.error(error?.response.data.error);
-  // }, [isSuccess, isError])
+  useEffect(() => {
+    isSuccess === true && data?.message && (toast.success(data.message));
+    isError === true && error && toast.error(error?.response.data.error);
+  }, [isSuccess, isError])
 
   const form = useForm<AddRentalCarSchemaType>({
     resolver: zodResolver(AddRentalCarSchema),
@@ -90,6 +95,7 @@ const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears }: AddRentalCa
       imagesFile: [{ imageFile: null }],
       model: "",
       fuelType: "",
+      category: "",
       buildYear: "",
       description:"",
       price_per_day: "",
@@ -115,16 +121,7 @@ const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears }: AddRentalCa
   const { isDirty, errors } = form.formState;
   const { watch } = form;
 
-  // const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files;
-  //   if (file) {
-  //     if (file.length > 0){
-  //       form.setValue('imageFile', file[0]);
-  //     }
-  //   }
-  // };
-
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>, index: any) => {
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const file = e.target.files;
     if (file) {
       if (file.length > 0){
@@ -134,7 +131,7 @@ const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears }: AddRentalCa
   };
 
   const onSubmit = async (values: AddRentalCarSchemaType) => {
-    console.log(values)
+    createRentalCar(values);
   }
 
   return (
@@ -143,7 +140,7 @@ const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears }: AddRentalCa
       <div className="mt-4 px-10 py-8 bg-white rounded">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <p className="text-xs mb-2">{leftImageCount === 0 ? (
+            <p className="text-xs xl:text-sm mb-2">{leftImageCount === 0 ? (
               <span className="text-destructive">
                 Can not add more
               </span>
@@ -153,12 +150,12 @@ const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears }: AddRentalCa
               </span>
             )}
             </p>
-            <div className="flex items-start justify-start flex-wrap gap-6 border border-dashed w-fit rounded-lg p-4">
+            <div className="flex items-start justify-around flex-wrap gap-6 border border-dashed w-fit rounded-lg p-4">
               {ImagesUrlFields.map((field, index) => (
                 <div className="flex flex-col items-center gap-2" key={field.id}>
-                  <Avatar className="w-24 h-24 !rounded-lg">
+                  <Avatar className="w-28 h-28 !rounded-lg">
                     <AvatarImage className="!rounded-lg" alt="avatar" src={(watch(`imagesFile.${index}.imageFile`) && URL.createObjectURL(watch(`imagesFile.${index}.imageFile`))) ?? undefined}/>
-                    <AvatarFallback className="!rounded-lg">{<Car className="text-gray-400" size={36} strokeWidth={1.5}/>}</AvatarFallback>
+                    <AvatarFallback className="!rounded-lg">{<Car className="text-gray-400" size={44} strokeWidth={1}/>}</AvatarFallback>
                   </Avatar>
                   <FormField
                     control={form.control}
@@ -170,6 +167,13 @@ const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears }: AddRentalCa
                         <FormControl>
                           <Input type="file" name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), onFileChange(event, index)}} className="w-fit hidden" accept=".png, .jpg, .jpeg"/>
                         </FormControl>
+                        {
+                          index === 0 && (
+                            <p className="text-sm text-muted-foreground mt-2 text-center border border-dashed p-2 rounded-md">
+                              Cover image
+                            </p>
+                          )
+                        }
                         {
                           index > 0 && (
                             <Button
@@ -194,7 +198,7 @@ const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears }: AddRentalCa
                   type="button"
                   variant="outline"
                   size="icon"
-                  className="text-gray-600 mt-8"
+                  className="text-gray-600 my-auto"
                   onClick={() => (ImagesUrlAppend({ imageUrl: "" }), setLeftImageCount(prev => prev - 1), ImagesFileAppend({ imageFile: null }))}
                 >
                   <FiPlusCircle size={28}/>
@@ -289,8 +293,7 @@ const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears }: AddRentalCa
                                   key={model.id}
                                   className={cn("mb-0.5", `${model.id}` === field.value && "bg-accent")}
                                   onSelect={() => {
-                                    form.setValue("model", `${model.id}`);
-                                    model.fuel_type && (form.setValue("fuelType", `${model.fuel_type_id}`), form.reset({ ...watch(), fuelType: `${model.fuel_type_id}` }));
+                                    form.setValue("model", `${model.id}`)
                                   }}
                                 >
                                   <span className="flex items-center mr-2 h-4 w-4">
@@ -365,6 +368,38 @@ const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears }: AddRentalCa
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem className="mt-8">
+                  <FormLabel>Category <span className="text-destructive">*</span></FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="h-60">
+                      {categories.map(category => (
+                        <SelectItem key={category.id} value={`${category.id}`}>
+                          {category.category}&nbsp;
+                          {category.abbreviation && (
+                            <p className="text-gray-400 inline">
+                              - {category.abbreviation}
+                            </p>
+                          )}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Select your car category.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -516,7 +551,7 @@ const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears }: AddRentalCa
               )}
             />
             <div className="text-end">
-              <Button size="lg" type="submit" disabled={false || !isDirty} isLoading={false}className="w-fit" style={{ marginTop: "44px" }}>{false ? 'Creating Rental Car...' : 'Create Rental Car'}</Button>
+              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Creating Rental Car...' : 'Create Rental Car'}</Button>
             </div>
           </form>
         </Form>

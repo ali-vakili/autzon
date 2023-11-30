@@ -25,7 +25,7 @@ export default async function CreateGallery() {
 
   !agent || agent!.gallery.length > 0 && redirect("/dashboard");
 
-  const autoGalleryCategories = await prisma.autoGalleryCategory.findMany({
+  const autoGalleryCategories = await prisma.autoGalleryAndCarCategory.findMany({
     select: {
       id: true,
       category: true,

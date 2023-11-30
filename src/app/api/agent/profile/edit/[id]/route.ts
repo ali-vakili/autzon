@@ -89,6 +89,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
     }
   }
   catch(err) {
+    console.log(err);
     if (err instanceof ZodError) {
       const errorMessages = fromZodError(err);
       const messages = [...errorMessages.details];

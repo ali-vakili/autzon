@@ -15,11 +15,12 @@ enum Role {
   AGENT
 }
 
-model AutoGalleryCategory {
+model AutoGalleryAndCarCategory {
   id           Int           @id @default(autoincrement())
   category     String
   abbreviation String?
   galleries    AutoGallery[]
+  Car          Car[]
 }
 
 model PhoneNumber {
@@ -43,7 +44,7 @@ model Image {
   gallery    AutoGallery?      @relation(fields: [gallery_id], references: [id], onDelete: Cascade)
   gallery_id String?           @unique
   Car        Car?              @relation(fields: [car_id], references: [id], onDelete: Cascade)
-  car_id     String?           @unique
+  car_id     String?
 }
 
 model ActivationToken {
@@ -108,25 +109,27 @@ model FuelType {
 }
 
 model Car {
-  id                 String             @id @default(uuid())
-  title              String             @db.VarChar(30)
-  model              Model              @relation(fields: [model_id], references: [id])
+  id                 String                    @id @default(uuid())
+  title              String                    @db.VarChar(30)
+  model              Model                     @relation(fields: [model_id], references: [id])
   model_id           Int
-  build_year         BuildYear          @relation(fields: [build_year_id], references: [id])
+  build_year         BuildYear                 @relation(fields: [build_year_id], references: [id])
   build_year_id      Int
-  fuel_type          FuelType           @relation(fields: [fuel_type_id], references: [id])
+  fuel_type          FuelType                  @relation(fields: [fuel_type_id], references: [id])
   fuel_type_id       Int
+  category           AutoGalleryAndCarCategory @relation(fields: [category_id], references: [id])
+  category_id        Int
   images             Image[]
-  gallery            AutoGallery        @relation(fields: [gallery_id], references: [id], onDelete: Cascade)
+  gallery            AutoGallery               @relation(fields: [gallery_id], references: [id], onDelete: Cascade)
   gallery_id         String
   for_rent           RentalCar?
   for_sale           SaleCar?
   is_car_rented      RentedCar[]
   rental_car_history RentalCarHistory[]
-  description        String             @db.VarChar(1024)
-  is_published       Boolean            @default(true)
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
+  description        String                    @db.VarChar(1024)
+  is_published       Boolean                   @default(true)
+  createdAt          DateTime                  @default(now())
+  updatedAt          DateTime                  @updatedAt
 }
 
 model RentalCar {
@@ -181,21 +184,21 @@ model SaleCar {
 }
 
 model AutoGallery {
-  id            String                @id @default(uuid())
-  name          String                @db.VarChar(30)
+  id            String                      @id @default(uuid())
+  name          String                      @db.VarChar(30)
   image         Image?
   cars          Car[]
-  categories    AutoGalleryCategory[]
-  city          City                  @relation(fields: [city_id], references: [id])
+  categories    AutoGalleryAndCarCategory[]
+  city          City                        @relation(fields: [city_id], references: [id])
   city_id       Int
   address       String
   phone_numbers PhoneNumber[]
-  about         String?               @db.VarChar(1024)
-  agent         AutoGalleryAgent      @relation(fields: [agent_id], references: [id], onDelete: Cascade)
+  about         String?                     @db.VarChar(1024)
+  agent         AutoGalleryAgent            @relation(fields: [agent_id], references: [id], onDelete: Cascade)
   agent_id      String
-  is_verified   Boolean               @default(false)
-  createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @updatedAt
+  is_verified   Boolean                     @default(false)
+  createdAt     DateTime                    @default(now())
+  updatedAt     DateTime                    @updatedAt
 }
 
 model AutoGalleryAgent {

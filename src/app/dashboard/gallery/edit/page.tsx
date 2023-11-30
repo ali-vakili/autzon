@@ -49,7 +49,7 @@ export default async function EditGallery() {
 
   if (!gallery) redirect("/dashboard/gallery/create");
 
-  const autoGalleryCategories = await prisma.autoGalleryCategory.findMany({
+  const autoGalleryCategories = await prisma.autoGalleryAndCarCategory.findMany({
     select: {
       id: true,
       category: true,

@@ -147,7 +147,8 @@ export const POST = async (req: Request) => {
         categories: {
           connect: categories.map(categoryId => ({ id: +categoryId }))
         },
-        about: about.toString()
+        about: about.toString(),
+        is_verified: agent.is_verified
       },
     })
 

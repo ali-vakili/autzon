@@ -55,9 +55,17 @@ export default async function CreateGallery() {
     }
   })
 
+  const categories = await prisma.autoGalleryAndCarCategory.findMany({
+    select: {
+      id: true,
+      category: true,
+      abbreviation: true
+    }
+  })
+
   if (!gallery) redirect("/dashboard/gallery/create");
 
   return (
-    <AddRentalCarForm brandsAndModels={brandsAndModels} fuelTypes={fuelTypes} buildYears={buildYears} />
+    <AddRentalCarForm brandsAndModels={brandsAndModels} fuelTypes={fuelTypes} buildYears={buildYears} categories={categories} />
   )
 }
