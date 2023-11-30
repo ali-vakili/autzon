@@ -22,6 +22,8 @@ export default async function CreateGallery() {
     }
   });
 
+  if (!gallery) redirect("/dashboard/gallery/create");
+
   const brandsAndModels = await prisma.brand.findMany({
     select: {
       id: true,
@@ -63,9 +65,7 @@ export default async function CreateGallery() {
     }
   })
 
-  if (!gallery) redirect("/dashboard/gallery/create");
-
   return (
-    <AddRentalCarForm brandsAndModels={brandsAndModels} fuelTypes={fuelTypes} buildYears={buildYears} categories={categories} />
+    <AddRentalCarForm galleryAddress={gallery.address} brandsAndModels={brandsAndModels} fuelTypes={fuelTypes} buildYears={buildYears} categories={categories} />
   )
 }

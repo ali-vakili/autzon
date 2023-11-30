@@ -55,6 +55,7 @@ type models = {
 
 
 type AddRentalCardPropType = {
+  galleryAddress: string,
   brandsAndModels: {
     id: number;
     name: string;
@@ -76,7 +77,7 @@ type AddRentalCardPropType = {
 }
 
 
-const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears, categories }: AddRentalCardPropType) => {
+const AddRentalCarForm= ({ galleryAddress, brandsAndModels, fuelTypes, buildYears, categories }: AddRentalCardPropType) => {
   const [leftImageCount, setLeftImageCount] = useState<number>(3);
   const [selectedBrand , setSelectedBrand] = useState<{id:number, name: string, models: models[]}|null>(null);
 
@@ -99,8 +100,8 @@ const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears, categories }:
       buildYear: "",
       description:"",
       price_per_day: "",
-      pick_up_place: "",
-      drop_off_place: "",
+      pick_up_place: galleryAddress,
+      drop_off_place: galleryAddress,
       reservation_fee_percentage: "",
       late_return_fee_per_hour: "",
       extra_time: false,
@@ -407,6 +408,7 @@ const AddRentalCarForm= ({ brandsAndModels, fuelTypes, buildYears, categories }:
             <Separator className="my-8" />
             <div>
               <h2 className="text-lg font-semibold">Pick Up And Drop Off Place</h2>
+              <p className="text-sm text-gray-400 mt-2">First value for each field is your gallery located address.</p>
               <FormField
                 control={form.control}
                 name="pick_up_place"
