@@ -31,7 +31,16 @@ export default async function AgentGallery() {
         }
       },
       address: true,
-      city_id: true,
+      city: {
+        select: {
+          name_en: true,
+          province: {
+            select: {
+              name_en: true
+            }
+          }
+        }
+      },
       phone_numbers: {
         select: {
           id: true,
@@ -41,15 +50,39 @@ export default async function AgentGallery() {
       categories: {
         select: {
           id: true,
+          category: true,
+          abbreviation: true
         }
       },
       about: true,
+      cars: {
+        select: {
+          for_rent: {
+            select: {
+              id: true
+            }
+          },
+          for_sale: {
+            select: {
+              id: true
+            }
+          }
+        }
+      },
+      is_verified: true,
+      createdAt: true,
+      updatedAt: true,
+      agent: {
+        select: {
+          phone_number: true
+        }
+      }
     }
   });
 
   if (!gallery) redirect("/dashboard/gallery/create");
 
   return (
-    <Gallery gallery={gallery} />
+    <Gallery gallery={gallery} agent={user} />
   )
 }
