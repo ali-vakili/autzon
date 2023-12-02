@@ -1,8 +1,8 @@
-const getJoinedDate = (join_date: Date) => {
+const getCreatedAndJoinDate = (date: Date) => {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  const date = new Date(join_date).toLocaleDateString(undefined, options);
+  const formatted_date = new Date(date).toLocaleDateString(undefined, options);
 
-  return date;
+  return formatted_date;
 }
 
 const getUpdatedAtDate = (updated_at: Date) => {
@@ -21,4 +21,4 @@ const getUpdatedAtDate = (updated_at: Date) => {
   }
 }
 
-export { getJoinedDate, getUpdatedAtDate }
+export { getCreatedAndJoinDate, getUpdatedAtDate }

@@ -4,7 +4,7 @@ import { DefaultSession } from "next-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar"
 import { avatarFallBackText } from "@/helper/fallBackText";
 import { buttonVariants } from "@/components/ui/button";
-import { getJoinedDate } from "@/helper/getDate";
+import { getCreatedAndJoinDate } from "@/helper/getDate";
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -14,7 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { FiUser, FiAlertCircle, FiCheckCircle, FiEdit, FiPhone, FiMapPin, FiInfo  } from "react-icons/fi";
-import { Building, Blocks, Car } from 'lucide-react';
+import { Building, Blocks, Car, CalendarPlus } from 'lucide-react';
 
 
 type galleryPropType = {
@@ -62,10 +62,10 @@ type galleryPropType = {
 
 
 const Gallery = ({ gallery, agent }: galleryPropType) => {
-  console.log(gallery);
   const { agent: galleryAgent, image, name, is_verified: isGalleryVerified, address, city: { name_en: city_name_en, province:{name_en: province_name_en} }, categories, phone_numbers, about, cars, createdAt, updatedAt } = gallery
   const { email, firstName, lastName ,profile, join_date, is_verified } = agent;
-  const joined_date = getJoinedDate(join_date);
+  const joined_date = getCreatedAndJoinDate(join_date);
+  const gallery_created_at = getCreatedAndJoinDate(createdAt);
 
   return (
     <div className="flex flex-col items-start md:grid grid-cols-3 gap-6">
@@ -110,7 +110,7 @@ const Gallery = ({ gallery, agent }: galleryPropType) => {
           <h5 className="text-zinc-500 text-sm ms-5">{address}</h5>
         </div>
         <div className="space-y-2">
-          <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiPhone className="me-1.5 inline" size={16}/>Phone Numbers</h3>
+          <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiPhone className="me-1.5 inline" size={16}/>Phone numbers</h3>
           {phone_numbers.map(phone_number => (
             <h5 key={phone_number.id} className="ms-5">{phone_number.number}</h5>
           ))}
@@ -125,18 +125,22 @@ const Gallery = ({ gallery, agent }: galleryPropType) => {
           <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiInfo className="me-1.5 inline" size={16}/>About</h3>
           <p className="text-zinc-500 text-sm ms-5">{about}</p>
         </div>
-        <div className="border rounded-md p-3 !mt-8 space-y-4">
+        <div className="space-y-2">
+          <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><CalendarPlus className="me-1.5 inline" size={16}/>Created At</h3>
+          <p className="text-zinc-500 text-sm ms-5">{gallery_created_at}</p>
+        </div>
+        <div className="border rounded-md p-4 !mt-8 space-y-4">
           <h3 className="flex items-center text-sm font-semibold w-fit"><Car className="bg-gray-100 rounded p-1.5 me-1.5" size={28}/>Cars</h3>
-          <div className="flex items-center justify-evenly">
-            <div className="space-y-2">
+          <div className="flex flex-col md:flex-row flex-wrap items-start md:items-center justify-around gap-4">
+            <div className="space-y-2 flex-grow">
               <h4 className="text-sm font-semibold text-gray-400">Total</h4>
               <h5 className="text-3xl">{cars.length}</h5>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 flex-grow">
               <h4 className="text-sm font-semibold text-blue-500">Rental</h4>
               <h5 className="text-3xl">{cars.filter(car => car.for_rent).length}</h5>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 flex-grow">
               <h4 className="text-sm font-semibold text-green-500">Sale</h4>
               <h5 className="text-3xl">{cars.filter(car => car.for_sale).length}</h5>
             </div>

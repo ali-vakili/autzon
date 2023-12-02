@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Add Rental Car",
 }
 
-export default async function CreateGallery() {
+export default async function CreateRentalCar() {
   const session = await getServerSession(authOptions);
   if(!session || !session.user) redirect("/sign-in");
   const user = session.user;

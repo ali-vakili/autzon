@@ -38,8 +38,7 @@ import { cn } from "@/lib/utils"
 
 import { FiX, FiPlusCircle , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
 import { Car } from 'lucide-react';
-
-import { useCreateRentalCar, createRentalCarHookType } from "@/hooks/useCreateRentalCar";
+import { createRentalCarHookType } from "@/hooks/useCreateRentalCar";
 
 
 type models = {
@@ -53,8 +52,41 @@ type models = {
   } | null;
 }
 
+type Car = {
+  id: string;
+  title: string;
+  model: { id: number; name: string; brand_id: number; fuel_type_id: number | null };
+  model_id: number;
+  build_year: { id: number; year: string };
+  build_year_id: number;
+  fuel_type: { id: number; type: string };
+  fuel_type_id: number;
+  category: { id: number; category: string; abbreviation: string | null };
+  category_id: number;
+  images: {
+    id: string;
+    url: string;
+    car_id: string | null;
+  }[];
+  description: string;
+  is_published: boolean;
+};
 
-type AddRentalCardPropType = {
+type RentalCar = {
+  id: string;
+  car_id: string;
+  price_per_day: number;
+  pick_up_place: string;
+  drop_off_place: string;
+  reservation_fee_percentage: number | null;
+  late_return_fee_per_hour: number | null;
+  extra_time: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+
+type EditRentalCarPagePropType = {
   galleryAddress: string,
   brandsAndModels: {
     id: number;
@@ -73,55 +105,71 @@ type AddRentalCardPropType = {
     id: number;
     category: string;
     abbreviation: string | null;
-  }[]
+  }[],
+  carDetail: Car,
+  rentalCarDetail: RentalCar
 }
 
 
-const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears, categories }: AddRentalCardPropType) => {
-  const [leftImageCount, setLeftImageCount] = useState<number>(3);
+const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears, categories, carDetail, rentalCarDetail }: EditRentalCarPagePropType) => {
+  const [leftImageCount, setLeftImageCount] = useState<number>(carDetail? 4 - carDetail.images.length : 3);
   const [selectedBrand , setSelectedBrand] = useState<{id:number, name: string, models: models[]}|null>(null);
+  const [carImages , setCarImages] = useState<{id: string, url: string}[]>([]);
+  const [deletedImagesId , setDeletedImagesId] = useState<string[]>([]);
 
-  const { mutate: createRentalCar, data, isLoading, isSuccess, isError, error }: createRentalCarHookType = useCreateRentalCar();
+  const { id, title, model, model_id, build_year_id, fuel_type_id, category_id, images, is_published, description } = carDetail;
+
+  const { pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, extra_time, late_return_fee_per_hour } = rentalCarDetail;
 
   useEffect(() => {
-    isSuccess === true && data?.message && (toast.success(data.message));
-    isError === true && error && toast.error(error?.response.data.error);
-  }, [isSuccess, isError])
+    const brandWithId = brandsAndModels.find((brand) => brand.id === model.brand_id);
+    brandWithId && setSelectedBrand(brandWithId);
+    const imageDetails = images.map((image) => ({
+      id: image.id,
+      url: image.url
+    }));
+    setCarImages(imageDetails);
+  }, [])
+
+  // useEffect(() => {
+  //   isSuccess === true && data?.message && (toast.success(data.message));
+  //   isError === true && error && toast.error(error?.response.data.error);
+  // }, [isSuccess, isError])
 
   const form = useForm<AddRentalCarSchemaType>({
     resolver: zodResolver(AddRentalCarSchema),
     defaultValues: {
-      title: "",
-      imagesUrl: [{ imageUrl: "" }],
-      imagesFile: [{ imageFile: null }],
-      model: "",
-      fuelType: "",
-      category: "",
-      buildYear: "",
-      description:"",
-      price_per_day: "",
-      pick_up_place: galleryAddress,
-      drop_off_place: galleryAddress,
-      reservation_fee_percentage: "",
-      late_return_fee_per_hour: "",
-      extra_time: false,
-      is_published: true,
+      title: title ?? "",
+      imagesUrl: images.map((image) => ({ imageUrl: "" })) ?? [{ imageUrl: "" }],
+      imagesFile: images.map((image) => ({ imageFile: null })) ?? [{ imageFile: null }],
+      model: `${model_id}` ?? "",
+      fuelType: `${fuel_type_id}` ?? "",
+      category: `${category_id}` ?? "",
+      buildYear: `${build_year_id}` ?? "",
+      description: description ?? "",
+      price_per_day: `${price_per_day}` ?? "",
+      pick_up_place: pick_up_place ?? galleryAddress,
+      drop_off_place: drop_off_place ?? galleryAddress,
+      reservation_fee_percentage: `${reservation_fee_percentage}` ?? "",
+      late_return_fee_per_hour: `${late_return_fee_per_hour}` ?? "",
+      extra_time: extra_time ?? false,
+      is_published: is_published ?? true,
     },
   })
-
+  
   const { fields: ImagesUrlFields, append: ImagesUrlAppend, remove: ImagesUrlRemove } = useFieldArray({
     name:"imagesUrl",
     control: form.control
   })
-
+  
   const { append: ImagesFileAppend, remove: ImagesFileRemove } = useFieldArray({
     name:"imagesFile",
     control: form.control
   })
-
+  
   const { isDirty, errors } = form.formState;
   const { watch } = form;
-
+  
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const file = e.target.files;
     if (file) {
@@ -131,9 +179,19 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
     }
   };
 
-  const onSubmit = async (values: AddRentalCarSchemaType) => {
-    createRentalCar(values);
+  const removeImageFromDetail = (index: number) => {
+    if (index >= 0 && index < carImages.length) {
+      const idToDelete = carImages[index].id;
+      setDeletedImagesId((prevDeletedImagesId) => [...prevDeletedImagesId, idToDelete]);
+      setCarImages((currentImages) => currentImages.filter((_, idx) => idx !== index));
+    }
   }
+  
+  const onSubmit = async (values: AddRentalCarSchemaType) => {
+    console.log(values)
+    // mutate(values);
+  }
+
 
   return (
     <>
@@ -155,7 +213,7 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
               {ImagesUrlFields.map((field, index) => (
                 <div className="flex flex-col items-center gap-2" key={field.id}>
                   <Avatar className="w-28 h-28 !rounded-lg">
-                    <AvatarImage className="!rounded-lg" alt="avatar" src={(watch(`imagesFile.${index}.imageFile`) && URL.createObjectURL(watch(`imagesFile.${index}.imageFile`))) ?? undefined}/>
+                    <AvatarImage className="!rounded-lg" alt="avatar" src={carImages[index] ? carImages[index].url : (watch(`imagesFile.${index}.imageFile`) && URL.createObjectURL(watch(`imagesFile.${index}.imageFile`))) ?? undefined}/>
                     <AvatarFallback className="!rounded-lg">{<Car className="text-gray-400" size={44} strokeWidth={1}/>}</AvatarFallback>
                   </Avatar>
                   <FormField
@@ -181,7 +239,7 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
                               type="button"
                               variant="destructive"
                               size="sm"
-                              onClick={() => (ImagesUrlRemove(index), setLeftImageCount(prev => prev + 1), ImagesFileRemove(index))}
+                              onClick={() => (ImagesUrlRemove(index), setLeftImageCount(prev => prev + 1), ImagesFileRemove(index), removeImageFromDetail(index))}
                             >
                               <FiX size={16} className="me-1"/>
                               Remove
@@ -553,7 +611,7 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
               )}
             />
             <div className="text-end">
-              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Creating Rental Car...' : 'Create Rental Car'}</Button>
+              <Button size="lg" type="submit" disabled={false || !isDirty} isLoading={false} className="w-fit" style={{ marginTop: "44px" }}>{false ? 'Creating Rental Car...' : 'Create Rental Car'}</Button>
             </div>
           </form>
         </Form>
@@ -562,4 +620,4 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
   )
 }
 
-export default AddRentalCarForm
+export default EditRentalCarPage

@@ -15,12 +15,12 @@ import {
 } from "@/components/ui/tooltip"
 
 import { avatarFallBackText } from "@/helper/fallBackText"
-import { getJoinedDate, getUpdatedAtDate } from "@/helper/getDate";
+import { getCreatedAndJoinDate, getUpdatedAtDate } from "@/helper/getDate";
 
 
 const Account = async ({ user } : { user: sessionUser }) => {
   const { email, profile, firstName, lastName, role, is_verified, join_date, updatedAt } = user
-  const joined_date = getJoinedDate(join_date);
+  const joined_date = getCreatedAndJoinDate(join_date);
   const updatedAt_date = getUpdatedAtDate(updatedAt);
 
   return (
