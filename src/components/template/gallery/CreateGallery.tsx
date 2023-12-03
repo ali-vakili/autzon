@@ -113,7 +113,7 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
   return (
     <>
       <h1 className="text-xl font-bold">Create Your Own Gallery</h1>
-      <div className="mt-4 px-10 py-8 bg-white rounded">
+      <div className="mt-4 px-5 SLaptop:px-10 py-8 bg-white rounded">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex items-center space-x-4">
@@ -289,7 +289,7 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
                         <FormLabel className={cn(index !== 0 && "sr-only")}>
                           Phone numbers <span className="text-destructive">*</span>
                         </FormLabel>
-                        <FormDescription className={cn(index !== 0 && "sr-only", "flex items-center justify-between")}>
+                        <FormDescription className={cn(index !== 0 && "sr-only", "flex flex-wrap items-center justify-between gap-y-2")}>
                           Add a phone number to your gallery, so it makes contact easier.
                           {leftPhoneNumbersCount === 0 ? (
                             <span className="text-destructive">
@@ -348,7 +348,7 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
                         Select the categories that suit your gallery.
                       </FormDescription>
                     </div>
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-3 md:!grid-cols-4 gap-2">
                       {categories.map((item) => (
                         <FormField
                           key={item.id}

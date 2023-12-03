@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils"
 const DashboardPanel = ({ user, hasAutoGallery }: { user: sessionUser, hasAutoGallery: boolean}) => {
   const pathname = usePathname();
   return (
-    <aside className="fixed min-w-[248px] h-full overflow-hidden w-64 transition-all left-0 border-r">
+    <aside className="fixed min-w-[248px] h-full overflow-hidden -translate-x-full md:translate-x-0 w-64 transition-all left-0 border-r">
       <ScrollArea className="h-full">
         <div className="pt-8 pb-20 px-4 h-fit">
           <ul className="space-y-4">

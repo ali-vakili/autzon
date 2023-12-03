@@ -26,9 +26,9 @@ const DashboardLayout = async ({ children } : { children: React.ReactNode }) => 
   return (
     <>
       <DashboardPanel user={user} hasAutoGallery={hasAutoGallery} />
-      <main className="flex flex-col flex-grow overflow-hidden justify-center h-full ms-64">
+      <main className="flex flex-col flex-grow overflow-hidden justify-center h-full md:ms-64 transition-all">
         <ScrollArea className="h-screen max-h-fit">
-          <div className="relative p-10 pb-28 min-h-screen">
+          <div className="relative px-5 py-10 md:p-10 !pb-28 min-h-screen">
             {children}
           </div>
         </ScrollArea>
