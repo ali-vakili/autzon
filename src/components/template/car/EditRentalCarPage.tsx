@@ -36,7 +36,7 @@ import { Textarea } from "@/ui/textarea";
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 
-import { FiX, FiPlusCircle , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
+import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
 import { Car } from 'lucide-react';
 import { createRentalCarHookType } from "@/hooks/useCreateRentalCar";
 
@@ -199,22 +199,36 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
       <div className="mt-4 px-10 py-8 bg-white rounded">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <p className="text-xs xl:text-sm mb-2">{leftImageCount === 0 ? (
-              <span className="text-destructive">
-                Can not add more
-              </span>
-            ) : (
-              <span>
-                You can add <span className="bg-slate-200 py-0.5 p-1.5 rounded-full">{ leftImageCount }</span> more
-              </span>
-            )}
-            </p>
+          <div className="flex items-center justify-between mb-2">
+              <p className="text-xs xl:text-sm">{leftImageCount === 0 ? (
+                <span className="text-destructive">
+                  Can not add more
+                </span>
+              ) : (
+                <span>
+                  You can add <span className="bg-slate-200 py-0.5 p-1.5 rounded-full">{ leftImageCount }</span> more
+                </span>
+              )}
+              </p>
+              {ImagesUrlFields.length < 4 && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="text-gray-600 my-auto"
+                  onClick={() => (ImagesUrlAppend({ imageUrl: "" }), setLeftImageCount(prev => prev - 1), ImagesFileAppend({ imageFile: null }))}
+                >
+                  <FiPlus size={16} className="me-1.5"/>
+                  Add another image
+                </Button>
+              )}
+            </div>
             <div className="flex items-start justify-around flex-wrap gap-6 border border-dashed w-fit rounded-lg p-4">
               {ImagesUrlFields.map((field, index) => (
-                <div className="flex flex-col items-center gap-2" key={field.id}>
-                  <Avatar className="w-28 h-28 !rounded-lg">
+                <div className="relative flex flex-col items-center gap-2" key={field.id}>
+                  <Avatar className="w-60 h-48 !rounded-lg">
                     <AvatarImage className="!rounded-lg" alt="avatar" src={carImages[index] ? carImages[index].url : (watch(`imagesFile.${index}.imageFile`) && URL.createObjectURL(watch(`imagesFile.${index}.imageFile`))) ?? undefined}/>
-                    <AvatarFallback className="!rounded-lg">{<Car className="text-gray-400" size={44} strokeWidth={1}/>}</AvatarFallback>
+                    <AvatarFallback className="flex flex-col !rounded-lg bg-white"><Car className="text-gray-400" size={52} strokeWidth={1}/><span className="text-gray-600 text-sm">Upload your car image</span></AvatarFallback>
                   </Avatar>
                   <FormField
                     control={form.control}
@@ -235,15 +249,18 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
                         }
                         {
                           index > 0 && (
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              size="sm"
-                              onClick={() => (ImagesUrlRemove(index), setLeftImageCount(prev => prev + 1), ImagesFileRemove(index), removeImageFromDetail(index))}
-                            >
-                              <FiX size={16} className="me-1"/>
-                              Remove
-                            </Button>
+                            <>
+                              <Button
+                                className="absolute top-0 right-2 w-8 h-8"
+                                type="button"
+                                variant="destructive"
+                                size="icon"
+                                onClick={() => (ImagesUrlRemove(index), setLeftImageCount(prev => prev + 1), ImagesFileRemove(index))}
+                              >
+                                <FiX size={16}/>
+                              </Button>
+                              <Badge variant={"secondary"} className="rounded w-fit self-center py-2 px-3">{index + 1}</Badge>
+                            </>
                           )
                         }
                         <FormMessage />
@@ -252,17 +269,6 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
                   />
                 </div>
               ))}
-              {ImagesUrlFields.length < 4 && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  className="text-gray-600 my-auto"
-                  onClick={() => (ImagesUrlAppend({ imageUrl: "" }), setLeftImageCount(prev => prev - 1), ImagesFileAppend({ imageFile: null }))}
-                >
-                  <FiPlusCircle size={28}/>
-                </Button>
-              )}
             </div>
             <p className="text-sm text-muted-foreground mt-2">
               Upload images of your car, Max size 4Mb.

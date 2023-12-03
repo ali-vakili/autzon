@@ -132,7 +132,7 @@ const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGallery
   return (
     <>
       <h1 className="text-xl font-bold">Edit Your Gallery - { name }</h1>
-      <div className="mt-4 px-10 py-8 bg-white rounded">
+      <div className="mt-4 px-5 SLaptop:px-10 py-8 bg-white rounded">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex items-center space-x-4">

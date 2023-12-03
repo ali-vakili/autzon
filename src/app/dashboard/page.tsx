@@ -2,7 +2,10 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib';
+import { Suspense } from 'react';
+import DashboardSkeletonLoading from '@/components/module/DashboardSkeletonLoading';
 import CreateGalleyWarning from '@/components/module/CreateGalleyWarning';
+import CarDetails from '@/components/module/CarDetails';
 
 import type { Metadata } from 'next'
 
@@ -31,11 +34,26 @@ export default async function Home() {
     )
   }
 
+  const cars = await prisma.car.findMany({
+    select: {
+      for_rent: {
+        select: {
+          id: true
+        }
+      },
+      for_sale: {
+        select: {
+          id: true
+        }
+      }
+    }
+  })
+
   return (
-    <div className="z-10 max-w-5xl items-center justify-center font-mono text-sm sm:flex">
-      <p className="flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 p-4 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto rounded-xl border lg:bg-gray-200 lg:dark:bg-zinc-800/30">
-        Hello autzon from dashboard!
-      </p>
+    <div className="z-10 mx-auto">
+      <Suspense fallback={<DashboardSkeletonLoading />}>
+        <CarDetails cars={cars}/>
+      </Suspense>
     </div>
   )
 }
