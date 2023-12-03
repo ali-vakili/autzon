@@ -36,6 +36,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Textarea } from "@/ui/textarea";
 import { Badge } from "@/components/ui/badge"
 
+import { avatarFallBackText } from "@/helper/fallBackText";
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 
@@ -136,11 +137,11 @@ const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGallery
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex items-center space-x-4">
-              <Avatar className="w-20 h-20">
+              <Avatar className="w-32 h-32">
                 <AvatarImage alt="avatar" src={(watch("imageFile") && URL.createObjectURL(watch("imageFile"))) ?? url ?? undefined}/>
-                <AvatarFallback>AV</AvatarFallback>
+                <AvatarFallback >{avatarFallBackText(name, null)}</AvatarFallback>
               </Avatar>
-              <div className="flex flex-col gap-2 self-end">
+              <div className="flex flex-col gap-2">
                 <FormField
                   control={form.control}
                   name="imageUrl"

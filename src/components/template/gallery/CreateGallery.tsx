@@ -117,7 +117,7 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex items-center space-x-4">
-              <Avatar className="w-20 h-20">
+              <Avatar className="w-32 h-32">
                 <AvatarImage alt="avatar" src={(watch("imageFile") && URL.createObjectURL(watch("imageFile"))) ?? undefined}/>
                 <AvatarFallback>AV</AvatarFallback>
               </Avatar>

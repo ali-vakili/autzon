@@ -1,10 +1,12 @@
 "use client";
 
+import { Separator } from "@/components/ui/separator"
 import { Car } from 'lucide-react';
 
 
 type CarDetailsPropType = {
   cars: {
+    is_published: boolean;
     for_rent: {
       id: string;
     } | null;
@@ -22,18 +24,48 @@ const CarDetails = ({ cars }: CarDetailsPropType) => {
       <div className="flex flex-wrap gap-4 md:px-10">
         <div className="flex flex-col flex-grow border p-4 rounded-md">
           <h4 className="text-lg font-semibold w-fit">Total</h4>
-          <p className="text-sm text-muted-foreground w-fit max-w-[240px] mb-3">Your Rental and Sales cars count, published and unpublished together</p>
-          <h3 className="text-3xl font-semibold w-fit self-end">{cars.length}</h3>
+          <p className="text-sm text-muted-foreground w-fit max-w-[240px] mb-4">Your Rental and Sales cars count, published and unpublished</p>
+          <div className='flex items-center justify-between gap-4'>
+            <div className='flex-grow'>
+              <h4 className="text-sm">Published</h4>
+              <h3 className="text-3xl font-semibold w-fit ms-auto">{cars.filter(car => car.is_published).length}</h3>
+            </div>
+            <Separator orientation="vertical" />
+            <div className='flex-grow'>
+              <h4 className="text-sm">Unpublished</h4>
+              <h3 className="text-3xl font-semibold w-fit  ms-auto">{cars.filter(car => !car.is_published).length}</h3>
+            </div>
+          </div>
         </div>
         <div className="flex flex-col flex-grow border p-4 rounded-md">
           <h4 className="text-lg font-semibold w-fit text-blue-500">Rental</h4>
-          <p className="text-sm text-muted-foreground w-fit max-w-[240px] mb-3">Your Rental cars count, published and unpublished together</p>
-          <h3 className="text-3xl font-semibold w-fit self-end">{cars.filter(car => car.for_rent).length}</h3>
+          <p className="text-sm text-muted-foreground w-fit max-w-[240px] mb-4">Your Rental cars count, published and unpublished</p>
+          <div className='flex items-center justify-between gap-4'>
+            <div className='flex-grow'>
+              <h4 className="text-sm">Published</h4>
+              <h3 className="text-3xl font-semibold w-fit ms-auto">{cars.filter(car => car.is_published && car.for_rent).length}</h3>
+            </div>
+            <Separator orientation="vertical" />
+            <div className='flex-grow'>
+              <h4 className="text-sm">Unpublished</h4>
+              <h3 className="text-3xl font-semibold w-fit  ms-auto">{cars.filter(car => !car.is_published && car.for_rent).length}</h3>
+            </div>
+          </div>
         </div>
         <div className="flex flex-col flex-grow border p-4 rounded-md">
           <h4 className="text-lg font-semibold w-fit text-green-500">Sales</h4>
-          <p className="text-sm text-muted-foreground w-fit max-w-[240px] mb-3">Your Sales cars count, published and unpublished together</p>
-          <h3 className="text-3xl font-semibold w-fit self-end">{cars.filter(car => car.for_sale).length}</h3>
+          <p className="text-sm text-muted-foreground w-fit max-w-[240px] mb-4">Your Sales cars count, published and unpublished</p>
+          <div className='flex items-center justify-between gap-4'>
+            <div className='flex-grow'>
+              <h4 className="text-sm">Published</h4>
+              <h3 className="text-3xl font-semibold w-fit ms-auto">{cars.filter(car => car.is_published && car.for_sale).length}</h3>
+            </div>
+            <Separator orientation="vertical" />
+            <div className='flex-grow'>
+              <h4 className="text-sm">Unpublished</h4>
+              <h3 className="text-3xl font-semibold w-fit  ms-auto">{cars.filter(car => !car.is_published && car.for_sale).length}</h3>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -45,7 +45,8 @@ export default async function Home() {
         select: {
           id: true
         }
-      }
+      },
+      is_published: true
     }
   })
 
