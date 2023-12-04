@@ -121,7 +121,7 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
                 <AvatarImage alt="avatar" src={(watch("imageFile") && URL.createObjectURL(watch("imageFile"))) ?? undefined}/>
                 <AvatarFallback>AV</AvatarFallback>
               </Avatar>
-              <div className="flex flex-col gap-2 self-end">
+              <div className="flex flex-col gap-2">
                 <FormField
                   control={form.control}
                   name="imageUrl"

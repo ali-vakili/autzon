@@ -136,13 +136,13 @@ const GalleryCreateAndUpdateSchema = z
 
 
 // Car
-
 const CarCommonSchema = z
   .object({
     title: z.string().min(1, "Title is required"),
     model: z.string().min(1, "Car model is required"),
     buildYear: z.string().min(1, "Build Year is required"),
     fuelType: z.string().min(1, "Fuel Type is required"),
+    seats: z.string().min(1, "Car seats is required"),
     imagesUrl: z.array(
       z.object({
         imageUrl: z.any()

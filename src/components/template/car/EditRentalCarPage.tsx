@@ -57,6 +57,8 @@ type Car = {
   title: string;
   model: { id: number; name: string; brand_id: number; fuel_type_id: number | null };
   model_id: number;
+  car_seat: { id: number; seats: string; seats_count: string }
+  car_seat_id: number;
   build_year: { id: number; year: string };
   build_year_id: number;
   fuel_type: { id: number; type: string };
@@ -101,6 +103,11 @@ type EditRentalCarPagePropType = {
     id: number;
     type: string;
   }[],
+  carSeats: {
+    id: number;
+    seats: string;
+    seats_count: string;
+  }[]
   categories: {
     id: number;
     category: string;
@@ -111,13 +118,13 @@ type EditRentalCarPagePropType = {
 }
 
 
-const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears, categories, carDetail, rentalCarDetail }: EditRentalCarPagePropType) => {
+const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears, categories, carDetail, rentalCarDetail, carSeats }: EditRentalCarPagePropType) => {
   const [leftImageCount, setLeftImageCount] = useState<number>(carDetail? 4 - carDetail.images.length : 3);
   const [selectedBrand , setSelectedBrand] = useState<{id:number, name: string, models: models[]}|null>(null);
   const [carImages , setCarImages] = useState<{id: string, url: string}[]>([]);
   const [deletedImagesId , setDeletedImagesId] = useState<string[]>([]);
 
-  const { id, title, model, model_id, build_year_id, fuel_type_id, category_id, images, is_published, description } = carDetail;
+  const { id, title, model, model_id, car_seat_id, build_year_id, fuel_type_id, category_id, images, is_published, description } = carDetail;
 
   const { pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, extra_time, late_return_fee_per_hour } = rentalCarDetail;
 
@@ -143,6 +150,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
       imagesUrl: images.map((image) => ({ imageUrl: "" })) ?? [{ imageUrl: "" }],
       imagesFile: images.map((image) => ({ imageFile: null })) ?? [{ imageFile: null }],
       model: `${model_id}` ?? "",
+      seats: `${car_seat_id}` ?? "",
       fuelType: `${fuel_type_id}` ?? "",
       category: `${category_id}` ?? "",
       buildYear: `${build_year_id}` ?? "",
@@ -410,6 +418,31 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
                   </Dialog>
                   <FormDescription>
                     Select which model your car is.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="seats"
+              render={({ field }) => (
+                <FormItem className="mt-8">
+                  <FormLabel>Car seats <span className="text-destructive">*</span></FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a car seats" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {carSeats.map(seat => (
+                        <SelectItem key={seat.id} value={`${seat.id}`}>{seat.seats}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Select how many seats your car have.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

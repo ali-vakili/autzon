@@ -69,6 +69,11 @@ type AddRentalCardPropType = {
     id: number;
     type: string;
   }[],
+  carSeats: {
+    id: number;
+    seats: string;
+    seats_count: string;
+  }[]
   categories: {
     id: number;
     category: string;
@@ -77,7 +82,7 @@ type AddRentalCardPropType = {
 }
 
 
-const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears, categories }: AddRentalCardPropType) => {
+const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears, categories, carSeats }: AddRentalCardPropType) => {
   const [leftImageCount, setLeftImageCount] = useState<number>(3);
   const [selectedBrand , setSelectedBrand] = useState<{id:number, name: string, models: models[]}|null>(null);
 
@@ -95,6 +100,7 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
       imagesUrl: [{ imageUrl: "" }],
       imagesFile: [{ imageFile: null }],
       model: "",
+      seats: "",
       fuelType: "",
       category: "",
       buildYear: "",
@@ -352,6 +358,31 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
                   </Dialog>
                   <FormDescription>
                     Select which model your car is.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="seats"
+              render={({ field }) => (
+                <FormItem className="mt-8">
+                  <FormLabel>Car seats <span className="text-destructive">*</span></FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a car seats" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {carSeats.map(seat => (
+                        <SelectItem key={seat.id} value={`${seat.id}`}>{seat.seats}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Select how many seats your car have.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

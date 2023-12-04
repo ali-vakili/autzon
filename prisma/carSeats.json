@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "seats": "Two Seats (2)",
+    "seats_count": "2"
+  },
+  {
+    "id": 2,
+    "seats": "Four Seats (4)",
+    "seats_count": "4"
+  },
+  {
+    "id": 3,
+    "seats": "Five Seats (5)",
+    "seats_count": "5"
+  },
+  {
+    "id": 4,
+    "seats": "Seven Seats (7)",
+    "seats_count": "7"
+  },
+  {
+    "id": 5,
+    "seats": "Eight Seats (8)",
+    "seats_count": "8"
+  },
+  {
+    "id": 6,
+    "seats": "Nine Seats (9)",
+    "seats_count": "9"
+  },
+  {
+    "id": 7,
+    "seats": "More than nine seats (+9)",
+    "seats_count": "+9"
+  }
+]

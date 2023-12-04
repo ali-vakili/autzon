@@ -13,7 +13,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { FiUser, FiAlertCircle, FiCheckCircle, FiEdit, FiPhone, FiMapPin, FiInfo  } from "react-icons/fi";
+import { FiUser, FiAlertCircle, FiCheckCircle, FiEdit, FiPhone, FiMapPin, FiInfo, FiPlus  } from "react-icons/fi";
 import { Building, Blocks, Car, CalendarPlus } from 'lucide-react';
 
 
@@ -69,10 +69,10 @@ const Gallery = ({ gallery, agent }: galleryPropType) => {
 
   return (
     <div className="flex flex-col items-start md:grid grid-cols-3 gap-6">
-      <div className="flex flex-col lg:col-span-2 col-span-3 bg-white rounded-md p-5 space-y-5">
+      <div className="flex flex-col w-full lg:col-span-2 col-span-3 bg-white rounded-md p-5 space-y-5">
         <h2 className="flex items-center text-sm font-semibold text-muted-foreground self-start"><Building size={28} className="bg-gray-100 rounded p-1.5 me-1.5" />Gallery Details</h2>
         <div className="flex items-center space-x-4">
-          <Avatar className="w-24 h-24">
+          <Avatar className="w-32 h-32">
             <AvatarImage alt="agent_avatar" src={image?.url ?? undefined}/>
             <AvatarFallback>{avatarFallBackText(name, null)}</AvatarFallback>
           </Avatar>
@@ -100,49 +100,56 @@ const Gallery = ({ gallery, agent }: galleryPropType) => {
             </TooltipProvider>
           </div>
         </div>
-        <div className="space-y-2">
-          <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiUser className="me-1.5 inline" size={16}/>Owner</h3>
-          <h5 className="text-zinc-500 text-sm ms-5">{firstName} {lastName}</h5>
-        </div>
-        <div className="space-y-2">
-          <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiMapPin className="me-1.5 inline" size={16}/>Location and address</h3>
-          <h5 className="text-zinc-500 text-sm ms-5">{province_name_en}, {city_name_en}</h5>
-          <h5 className="text-zinc-500 text-sm ms-5">{address}</h5>
-        </div>
-        <div className="space-y-2">
-          <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiPhone className="me-1.5 inline" size={16}/>Phone numbers</h3>
-          {phone_numbers.map(phone_number => (
-            <h5 key={phone_number.id} className="ms-5">{phone_number.number}</h5>
-          ))}
-        </div>
-        <div className="space-x-3 space-y-2">
-          <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><Blocks className="me-1.5 inline" size={16}/>Categories</h3>
-          {categories.map(category => (
-            <Badge key={category.id} variant={"secondary"} className="rounded">{category.category}</Badge>
-          ))}
-        </div>
-        <div className="space-y-2">
-          <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiInfo className="me-1.5 inline" size={16}/>About</h3>
-          <p className="text-zinc-500 text-sm ms-5">{about}</p>
-        </div>
-        <div className="space-y-2">
-          <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><CalendarPlus className="me-1.5 inline" size={16}/>Created At</h3>
-          <p className="text-zinc-500 text-sm ms-5">{gallery_created_at}</p>
+        <div className="px-6 space-y-5">
+          <div className="space-y-2">
+            <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiUser className="me-1.5 inline" size={16}/>Owner</h3>
+            <h5 className="text-zinc-500 text-sm ms-5">{firstName} {lastName}</h5>
+          </div>
+          <div className="space-y-2">
+            <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiMapPin className="me-1.5 inline" size={16}/>Location and address</h3>
+            <h5 className="text-zinc-500 text-sm ms-5">{city_name_en}, {province_name_en}</h5>
+            <h5 className="text-zinc-500 text-sm ms-5">{address}</h5>
+          </div>
+          <div className="space-y-2">
+            <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiPhone className="me-1.5 inline" size={16}/>Phone numbers</h3>
+            {phone_numbers.map(phone_number => (
+              <h5 key={phone_number.id} className="ms-5">{phone_number.number}</h5>
+            ))}
+          </div>
+          <div className="space-x-3 space-y-2">
+            <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><Blocks className="me-1.5 inline" size={16}/>Categories</h3>
+            {categories.map(category => (
+              <Badge key={category.id} variant={"secondary"} className="rounded">{category.category}</Badge>
+            ))}
+          </div>
+          <div className="space-y-2">
+            <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiInfo className="me-1.5 inline" size={16}/>About</h3>
+            <p className="text-zinc-500 text-sm ms-5">{about}</p>
+          </div>
+          <div className="space-y-2">
+            <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><CalendarPlus className="me-1.5 inline" size={16}/>Created At</h3>
+            <p className="text-zinc-500 text-sm ms-5">{gallery_created_at}</p>
+          </div>
         </div>
         <div className="border rounded-md p-4 !mt-8 space-y-4">
-          <h3 className="flex items-center text-sm font-semibold w-fit"><Car className="bg-gray-100 rounded p-1.5 me-1.5" size={28}/>Cars</h3>
-          <div className="flex flex-col md:flex-row flex-wrap items-start md:items-center justify-around gap-4">
-            <div className="space-y-2 flex-grow">
+          <div className="flex items-center justify-between">
+            <h3 className="flex items-center text-sm font-semibold w-fit"><Car className="bg-gray-100 rounded p-1.5 me-1.5" size={28}/>Cars</h3>
+            <Link href={"/dashboard/cars"} className={buttonVariants({ variant: "link", size: "sm" })}>
+              See all cars
+            </Link>
+          </div>
+          <div className="flex flex-wrap items-start md:items-center justify-around gap-4">
+            <div className="space-y-2 flex-grow border rounded-md p-4">
               <h4 className="text-sm font-semibold text-gray-400">Total</h4>
-              <h5 className="text-3xl">{cars.length}</h5>
+              <h5 className="text-3xl ms-auto w-fit">{cars.length}</h5>
             </div>
-            <div className="space-y-2 flex-grow">
+            <div className="space-y-2 flex-grow border rounded-md p-4">
               <h4 className="text-sm font-semibold text-blue-500">Rental</h4>
-              <h5 className="text-3xl">{cars.filter(car => car.for_rent).length}</h5>
+              <h5 className="text-3xl ms-auto w-fit">{cars.filter(car => car.for_rent).length}</h5>
             </div>
-            <div className="space-y-2 flex-grow">
+            <div className="space-y-2 flex-grow border rounded-md p-4">
               <h4 className="text-sm font-semibold text-green-500">Sale</h4>
-              <h5 className="text-3xl">{cars.filter(car => car.for_sale).length}</h5>
+              <h5 className="text-3xl ms-auto w-fit">{cars.filter(car => car.for_sale).length}</h5>
             </div>
           </div>
         </div>

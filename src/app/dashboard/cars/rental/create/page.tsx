@@ -65,7 +65,15 @@ export default async function CreateRentalCar() {
     }
   })
 
+  const carSeats = await prisma.carSeat.findMany({
+    select: {
+      id: true,
+      seats: true,
+      seats_count: true
+    }
+  })
+
   return (
-    <AddRentalCarForm galleryAddress={gallery.address} brandsAndModels={brandsAndModels} fuelTypes={fuelTypes} buildYears={buildYears} categories={categories} />
+    <AddRentalCarForm galleryAddress={gallery.address} brandsAndModels={brandsAndModels} fuelTypes={fuelTypes} buildYears={buildYears} categories={categories} carSeats={carSeats} />
   )
 }

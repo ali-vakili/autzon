@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 const createRentalCar = async (values: AddRentalCarSchemaType) => {
-  const { imagesFile, title, buildYear, model, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description, extra_time, late_return_fee_per_hour, is_published } = values;
+  const { imagesFile, title, buildYear, model, seats, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description, extra_time, late_return_fee_per_hour, is_published } = values;
 
   const formData = new FormData();
   if (imagesFile) {
@@ -18,6 +18,7 @@ const createRentalCar = async (values: AddRentalCarSchemaType) => {
   formData.append('title', title);
   formData.append('buildYear', buildYear);
   formData.append('model', model);
+  formData.append('seats', seats);
   formData.append('fuelType', fuelType);
   formData.append('category', category);
   formData.append('pick_up_place',  pick_up_place);

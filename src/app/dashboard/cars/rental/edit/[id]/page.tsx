@@ -50,6 +50,8 @@ export default async function EditRentalCar({ params: { id } }: requestProps) {
       title: true,
       model: true,
       model_id: true,
+      car_seat: true,
+      car_seat_id: true,
       build_year: true,
       build_year_id: true,
       fuel_type: true,
@@ -119,7 +121,15 @@ export default async function EditRentalCar({ params: { id } }: requestProps) {
     }
   })
 
+  const carSeats = await prisma.carSeat.findMany({
+    select: {
+      id: true,
+      seats: true,
+      seats_count: true
+    }
+  })
+
   return (
-    <EditRentalCarPage galleryAddress={gallery.address} brandsAndModels={brandsAndModels} fuelTypes={fuelTypes} buildYears={buildYears} categories={categories} carDetail={car} rentalCarDetail={rentalCar} />
+    <EditRentalCarPage galleryAddress={gallery.address} brandsAndModels={brandsAndModels} fuelTypes={fuelTypes} buildYears={buildYears} categories={categories} carDetail={car} rentalCarDetail={rentalCar} carSeats={carSeats} />
   )
 }

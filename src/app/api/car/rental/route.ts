@@ -34,9 +34,9 @@ export const POST = async (req: Request) => {
       throw zodError;
     }
 
-    const { title, buildYear, model, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description, extra_time, late_return_fee_per_hour, is_published } = formDataObject;
+    const { title, buildYear, model, seats, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description, extra_time, late_return_fee_per_hour, is_published } = formDataObject;
 
-    if (!title || !buildYear || !model || !fuelType || !pick_up_place || !drop_off_place || !price_per_day ) {
+    if (!title || !buildYear || !model || !seats || !fuelType || !pick_up_place || !drop_off_place || !price_per_day ) {
       return NextResponse.json(
         { error: "Please fill all required fields" },
         { status: 422 }
@@ -70,6 +70,7 @@ export const POST = async (req: Request) => {
         title: title.toString(),
         build_year_id: +buildYear,
         model_id: +model,
+        car_seat_id: +seats,
         fuel_type_id: +fuelType,
         category_id: +category,
         description: description.toString(),

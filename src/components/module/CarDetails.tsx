@@ -1,7 +1,10 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator"
+import { buttonVariants } from "@/ui/button";
 import { Car } from 'lucide-react';
+import Link from "next/link";
+import { FiPlus } from "react-icons/fi";
 
 
 type CarDetailsPropType = {
@@ -18,8 +21,20 @@ type CarDetailsPropType = {
 
 const CarDetails = ({ cars }: CarDetailsPropType) => {
   return (
-    <div className="bg-white w-full rounded p-4 space-y-4">
-      <h2 className="flex items-center font-semibold w-fit"><Car className="bg-gray-100 rounded p-1.5 me-1.5" size={36}/>Cars</h2>
+    <div className="bg-white w-full rounded p-5 space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="flex items-center font-semibold w-fit"><Car className="bg-gray-100 rounded p-1.5 me-1.5" size={36}/>Cars</h2>
+        <div className="space-x-2">
+          <Link href={"/dashboard/cars/rental/create"} className={`${buttonVariants({ variant: "outline", size: "sm" })} text-blue-500`}>
+            <FiPlus size={16} className="me-1.5"/>
+            Add a rental car
+          </Link>
+          <Link href={"/dashboard/cars/sale/create"} className={`${buttonVariants({ variant: "outline", size: "sm" })} text-green-500`}>
+            <FiPlus size={16} className="me-1.5"/>
+            Add a sale car
+          </Link>
+        </div>
+      </div>
 
       <div className="flex flex-wrap gap-4 md:px-10">
         <div className="flex flex-col flex-grow border p-4 rounded-md">

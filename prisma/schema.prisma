@@ -108,12 +108,21 @@ model FuelType {
   Model Model[]
 }
 
+model CarSeat {
+  id          Int    @id
+  seats       String
+  seats_count String
+  cars        Car[]
+}
+
 model Car {
   id                 String                    @id @default(uuid())
   title              String                    @db.VarChar(30)
   model              Model                     @relation(fields: [model_id], references: [id])
   model_id           Int
   build_year         BuildYear                 @relation(fields: [build_year_id], references: [id])
+  car_seat           CarSeat                   @relation(fields: [car_seat_id], references: [id])
+  car_seat_id        Int
   build_year_id      Int
   fuel_type          FuelType                  @relation(fields: [fuel_type_id], references: [id])
   fuel_type_id       Int
