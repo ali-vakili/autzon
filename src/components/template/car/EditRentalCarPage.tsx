@@ -38,7 +38,7 @@ import { cn } from "@/lib/utils"
 
 import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
 import { Car } from 'lucide-react';
-import { createRentalCarHookType } from "@/hooks/useCreateRentalCar";
+import { useUpdateRentalCar, updateRentalCarHookType } from "@/hooks/useUpdateRentalCar";
 
 
 type models = {
@@ -128,6 +128,9 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
 
   const { pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, extra_time, late_return_fee_per_hour } = rentalCarDetail;
 
+
+  const { mutate: updateRentalCar, data, isLoading, isSuccess, isError, error }: updateRentalCarHookType = useUpdateRentalCar();
+
   useEffect(() => {
     const brandWithId = brandsAndModels.find((brand) => brand.id === model.brand_id);
     brandWithId && setSelectedBrand(brandWithId);
@@ -138,10 +141,10 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
     setCarImages(imageDetails);
   }, [])
 
-  // useEffect(() => {
-  //   isSuccess === true && data?.message && (toast.success(data.message));
-  //   isError === true && error && toast.error(error?.response.data.error);
-  // }, [isSuccess, isError])
+  useEffect(() => {
+    isSuccess === true && data?.message && (toast.success(data.message));
+    isError === true && error && toast.error(error?.response.data.error);
+  }, [isSuccess, isError])
 
   const form = useForm<AddRentalCarSchemaType>({
     resolver: zodResolver(AddRentalCarSchema),
@@ -159,7 +162,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
       pick_up_place: pick_up_place ?? galleryAddress,
       drop_off_place: drop_off_place ?? galleryAddress,
       reservation_fee_percentage: `${reservation_fee_percentage}` ?? "",
-      late_return_fee_per_hour: `${late_return_fee_per_hour}` ?? "",
+      late_return_fee_per_hour: late_return_fee_per_hour ? `${late_return_fee_per_hour}` : "",
       extra_time: extra_time ?? false,
       is_published: is_published ?? true,
     },
@@ -196,14 +199,14 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
   }
   
   const onSubmit = async (values: AddRentalCarSchemaType) => {
-    console.log(values)
-    // mutate(values);
+    updateRentalCar({ values, deletedImagesId, car_id: id });
   }
 
 
   return (
     <>
-      <h1 className="text-xl font-bold">Add A Rental Car</h1>
+      <h1 className="text-xl font-bold">Edit Rental Car - {title}</h1>
+      {console.log(deletedImagesId)}
       <div className="mt-4 px-10 py-8 bg-white rounded">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -263,7 +266,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
                                 type="button"
                                 variant="destructive"
                                 size="icon"
-                                onClick={() => (ImagesUrlRemove(index), setLeftImageCount(prev => prev + 1), ImagesFileRemove(index))}
+                                onClick={() => (ImagesUrlRemove(index), setLeftImageCount(prev => prev + 1), ImagesFileRemove(index), removeImageFromDetail(index))}
                               >
                                 <FiX size={16}/>
                               </Button>
@@ -650,7 +653,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
               )}
             />
             <div className="text-end">
-              <Button size="lg" type="submit" disabled={false || !isDirty} isLoading={false} className="w-fit" style={{ marginTop: "44px" }}>{false ? 'Creating Rental Car...' : 'Create Rental Car'}</Button>
+              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Creating Rental Car...' : 'Create Rental Car'}</Button>
             </div>
           </form>
         </Form>

@@ -7,7 +7,13 @@ import { carsBucketUrl } from "@/constants/supabaseStorage";
 import supabase from "@/lib/supabase";
 
 
-export const POST = async (req: Request) => {
+type requestProps = {
+  params: {
+    id: string
+  }
+}
+
+export const PATCH = async (req: Request, { params }: requestProps) => {
   try {
     connectDB();
 
@@ -18,6 +24,9 @@ export const POST = async (req: Request) => {
     const allImagesFile = body.getAll("imagesFile");
 
     const formDataObject = Object.fromEntries(body.entries());
+    if (formDataObject.deleted_images_id) {
+      formDataObject.deleted_images_id = JSON.parse(formDataObject.deleted_images_id as string);
+    }
     if (formDataObject.is_published) {
       formDataObject.is_published = JSON.parse(formDataObject.is_published as string);
     }
@@ -34,7 +43,7 @@ export const POST = async (req: Request) => {
       throw zodError;
     }
 
-    const { title, buildYear, model, seats, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description, extra_time, late_return_fee_per_hour, is_published } = formDataObject;
+    const { title, buildYear, model, seats, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description, extra_time, late_return_fee_per_hour, is_published, deleted_images_id } = formDataObject;
 
     if (!title || !buildYear || !model || !seats || !fuelType || !pick_up_place || !drop_off_place || !price_per_day ) {
       return NextResponse.json(
@@ -64,29 +73,36 @@ export const POST = async (req: Request) => {
       )
     }
 
-    const newRentalCar = await prisma.car.create({
-      data: {
-        gallery_id: existingAutoGallery.id,
-        title: title.toString(),
-        build_year_id: +buildYear,
-        model_id: +model,
-        car_seat_id: +seats,
-        fuel_type_id: +fuelType,
-        category_id: +category,
-        description: description.toString(),
-        for_rent: {
-          create: {
-            price_per_day: +price_per_day,
-            pick_up_place: pick_up_place.toString(),
-            drop_off_place: drop_off_place.toString(),
-            reservation_fee_percentage: +reservation_fee_percentage,
-            late_return_fee_per_hour: !!extra_time ? +late_return_fee_per_hour : null,
-            extra_time: !!extra_time
-          }
-        },
-        is_published: !!is_published
-      },
+    const existingCar = await prisma.car.findUnique({
+      where: {
+        id: params.id,
+        AND: {
+          gallery_id: existingAutoGallery.id
+        }
+      }
     })
+
+    if (!existingCar) {
+      return NextResponse.json(
+        { error: "Requested car not found." },
+        { status: 404 }
+      )
+    }
+
+    if (deleted_images_id) {
+      const deleted_images_id_array = Array.isArray(deleted_images_id)
+      ? deleted_images_id.map((value) => value.toString())
+      : [deleted_images_id.toString()];
+
+      await prisma.image.deleteMany({
+        where: {
+          id: {
+            in: deleted_images_id_array,
+          },
+          car_id: existingCar.id,
+        },
+      });
+    }
 
     if (allImagesFile !== undefined && allImagesFile.length > 0) {
       allImagesFile.forEach(async (image) => {
@@ -102,12 +118,39 @@ export const POST = async (req: Request) => {
           await prisma.image.create({
             data: {
               url: carsBucketUrl + data.path,
-              car_id: newRentalCar.id
+              car_id: existingCar.id
             }
           })
         }
       });
     }
+
+    await prisma.car.update({
+      where: {
+        id: existingCar.id
+      },
+      data: {
+        gallery_id: existingAutoGallery.id,
+        title: title.toString(),
+        build_year_id: +buildYear,
+        model_id: +model,
+        car_seat_id: +seats,
+        fuel_type_id: +fuelType,
+        category_id: +category,
+        description: description.toString(),
+        for_rent: {
+          update: {
+            price_per_day: +price_per_day,
+            pick_up_place: pick_up_place.toString(),
+            drop_off_place: drop_off_place.toString(),
+            reservation_fee_percentage: +reservation_fee_percentage,
+            late_return_fee_per_hour: !!extra_time ? +late_return_fee_per_hour : null,
+            extra_time: !!extra_time
+          }
+        },
+        is_published: !!is_published
+      },
+    })
 
     return NextResponse.json(
       {
