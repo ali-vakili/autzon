@@ -1,6 +1,6 @@
 "use client"
 
-import { AddRentalCarSchema, AddRentalCarSchemaType } from "@/validation/validations"
+import { AddAndUpdateRentalCarSchema, AddAndUpdateRentalCarSchemaType } from "@/validation/validations"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
 import { toast } from "sonner";
@@ -146,8 +146,8 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
     isError === true && error && toast.error(error?.response.data.error);
   }, [isSuccess, isError])
 
-  const form = useForm<AddRentalCarSchemaType>({
-    resolver: zodResolver(AddRentalCarSchema),
+  const form = useForm<AddAndUpdateRentalCarSchemaType>({
+    resolver: zodResolver(AddAndUpdateRentalCarSchema),
     defaultValues: {
       title: title ?? "",
       imagesUrl: images.map((image) => ({ imageUrl: "" })) ?? [{ imageUrl: "" }],
@@ -198,7 +198,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
     }
   }
   
-  const onSubmit = async (values: AddRentalCarSchemaType) => {
+  const onSubmit = async (values: AddAndUpdateRentalCarSchemaType) => {
     updateRentalCar({ values, deletedImagesId, car_id: id });
   }
 

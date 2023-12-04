@@ -165,7 +165,7 @@ const CarCommonSchema = z
     is_published: z.boolean().default(true),
   })
 
-const AddRentalCarSchema = CarCommonSchema.merge(
+const AddAndUpdateRentalCarSchema = CarCommonSchema.merge(
   z
   .object({
       price_per_day: z
@@ -239,7 +239,7 @@ type ChangePasswordSchemaType = z.infer<typeof ChangePasswordSchema>;
 type GalleryCreateAndUpdateSchemaType = z.infer<
   typeof GalleryCreateAndUpdateSchema
 >;
-type AddRentalCarSchemaType = z.infer<typeof AddRentalCarSchema>;
+type AddAndUpdateRentalCarSchemaType = z.infer<typeof AddAndUpdateRentalCarSchema>;
 type SignInFormSchemaType = z.infer<typeof SignInFormSchema>;
 type RestPasswordSchemaType = z.infer<typeof RestPasswordSchema>; 
 type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
@@ -250,7 +250,7 @@ export {
   AccountManagementSchema,
   ChangePasswordSchema,
   GalleryCreateAndUpdateSchema,
-  AddRentalCarSchema,
+  AddAndUpdateRentalCarSchema,
   SignInFormSchema,
   RestPasswordSchema,
   ForgotPasswordSchema
@@ -261,7 +261,7 @@ export type {
   AccountManagementSchemaType,
   ChangePasswordSchemaType,
   GalleryCreateAndUpdateSchemaType,
-  AddRentalCarSchemaType,
+  AddAndUpdateRentalCarSchemaType,
   SignInFormSchemaType,
   RestPasswordSchemaType,
   ForgotPasswordSchemaType

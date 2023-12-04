@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { connectDB, validateSession, prisma, checkAgent } from "@/lib";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { AddRentalCarSchema } from "@/validation/validations";
+import { AddAndUpdateRentalCarSchema } from "@/validation/validations";
 import { carsBucketUrl } from "@/constants/supabaseStorage";
 import supabase from "@/lib/supabase";
 
@@ -37,7 +37,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
       formDataObject.imagesFile = allImagesFile as any;
     }
 
-    const validData = AddRentalCarSchema.safeParse(formDataObject);
+    const validData = AddAndUpdateRentalCarSchema.safeParse(formDataObject);
     if (!validData.success) {
       const zodError = new ZodError(validData.error.errors);
       throw zodError;
@@ -154,7 +154,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
 
     return NextResponse.json(
       {
-        message: "Rental car created successfully"
+        message: "Rental car updated successfully"
       },
       { status: 201 }
     )

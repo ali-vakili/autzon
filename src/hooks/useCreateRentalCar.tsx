@@ -1,9 +1,9 @@
 import { UseMutateFunction, useMutation } from "@tanstack/react-query";
-import { AddRentalCarSchemaType } from "@/validation/validations"
+import { AddAndUpdateRentalCarSchemaType } from "@/validation/validations"
 import axios from "axios";
 
 
-const createRentalCar = async (values: AddRentalCarSchemaType) => {
+const createRentalCar = async (values: AddAndUpdateRentalCarSchemaType) => {
   const { imagesFile, title, buildYear, model, seats, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description, extra_time, late_return_fee_per_hour, is_published } = values;
 
   const formData = new FormData();
@@ -55,7 +55,7 @@ export const useCreateRentalCar = () => {
 
 
 export type createRentalCarHookType = {
-  mutate: UseMutateFunction<any, unknown, AddRentalCarSchemaType, unknown>
+  mutate: UseMutateFunction<any, unknown, AddAndUpdateRentalCarSchemaType, unknown>
   data: any,
   error: any,
   isLoading: boolean,
