@@ -105,11 +105,13 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
         phone_numbers: {
           deleteMany: {},
           createMany: {
+            //@ts-ignore
             data: phone_numbers.map(phone_number => ({ number: phone_number.number }))
           }
         },
         categories: {
           set: [],
+          //@ts-ignore
           connect: categories.map(categoryId => ({ id: +categoryId }))
         },
         about: about.toString()

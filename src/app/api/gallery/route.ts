@@ -141,10 +141,12 @@ export const POST = async (req: Request) => {
         agent_id: agent.id,
         phone_numbers: {
           createMany:{
+            //@ts-ignore
             data: phone_numbers.map(phone_number => ({ number: phone_number.number }))
           } 
         },
         categories: {
+          //@ts-ignore
           connect: categories.map(categoryId => ({ id: +categoryId }))
         },
         about: about.toString(),
