@@ -152,7 +152,7 @@ const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGallery
                         <Input type="file" name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), onFileChange(event)}} className="w-fit hidden" accept=".png, .jpg, .jpeg"/>
                       </FormControl>
                       <FormMessage />
-                      {errors.imageFile ? <p className="text-sm font-medium text-destructive">{errors.imageFile.message as string }</p> : null}
+                      {errors.imageFile ? <p className="text-sm font-medium text-destructive">{ errors.imageFile.message as string }</p> : null}
                     </FormItem>
                   )}
                 />
@@ -321,7 +321,7 @@ const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGallery
                             </span>
                           )}
                         </FormDescription>
-                        <div className="flex items-center gap-4 !mt-3">
+                        <div className="flex items-center gap-2 !mt-3">
                           <FormControl>
                             <Input type="tel" placeholder="000 000 0000" {...field} className="px-4 py-2 bg-secondary focus:bg-gray-50"/>
                           </FormControl>

@@ -23,6 +23,7 @@ import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 import { USER } from "@/constants/roles";
+import logoIcon from "../../../public/logo-icon.svg";
 import Image from "next/image";
 
 import "@/scss/Common.scss"
@@ -91,7 +92,8 @@ const SignIn = () => {
     <div className="flex flex-col flex-1 items-center flex-shrink-0 md:grid lg:max-w-none lg:grid-cols-5 px-4 lg:my-8 lg:mx-24 lg:px-0 lg:border rounded">
       <div className="relative col-span-2 hidden h-full flex-col bg-muted p-10 text-white lg:flex">
         <div className="absolute inset-0 bg-primary rounded" />
-        <div className="relative z-20 flex items-center text-lg font-medium">
+        <div className="relative z-20 flex items-center text-lg font-medium gap-2">
+          <Image src={logoIcon} alt="logo-icon" width={32} height={32}/>
           autzon
         </div>
         <div className="relative z-20 mt-auto">

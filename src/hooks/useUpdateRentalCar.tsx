@@ -3,7 +3,7 @@ import { AddAndUpdateRentalCarSchemaType } from "@/validation/validations"
 import axios from "axios";
 
 
-const updateRentalCar = async ({ values, deletedImagesId, car_id }: {values: AddAndUpdateRentalCarSchemaType, deletedImagesId: string[], car_id: string}) => {
+const updateRentalCar = async ({ values, deletedImagesId, updatedImagesIdAndIndex, car_id }: {values: AddAndUpdateRentalCarSchemaType, deletedImagesId: string[], updatedImagesIdAndIndex: {id: string, index: number}[],  car_id: string}) => {
   const { imagesFile, title, buildYear, model, seats, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description, extra_time, late_return_fee_per_hour, is_published } = values;
 
   const formData = new FormData();
@@ -17,6 +17,9 @@ const updateRentalCar = async ({ values, deletedImagesId, car_id }: {values: Add
   }
   if (deletedImagesId.length > 0) {
     formData.append('deleted_images_id', JSON.stringify(deletedImagesId));
+  }
+  if (updatedImagesIdAndIndex.length > 0) {
+    formData.append('updated_images_id_and_index', JSON.stringify(updatedImagesIdAndIndex));
   }
   formData.append('title', title);
   formData.append('buildYear', buildYear);
@@ -61,6 +64,7 @@ export type updateRentalCarHookType = {
   mutate: UseMutateFunction<any, unknown,{
     values: AddAndUpdateRentalCarSchemaType;
     deletedImagesId: string[];
+    updatedImagesIdAndIndex: {id: string, index: number}[];
     car_id: string;
   }, unknown>
   data: any,

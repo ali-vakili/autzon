@@ -123,6 +123,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
   const [selectedBrand , setSelectedBrand] = useState<{id:number, name: string, models: models[]}|null>(null);
   const [carImages , setCarImages] = useState<{id: string, url: string}[]>([]);
   const [deletedImagesId , setDeletedImagesId] = useState<string[]>([]);
+  const [updatedImagesIdAndIndex , setUpdatedImagesIdAndIndex] = useState<{id: string, index: number}[]>([]);
 
   const { id, title, model, model_id, car_seat_id, build_year_id, fuel_type_id, category_id, images, is_published, description } = carDetail;
 
@@ -186,6 +187,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
     if (file) {
       if (file.length > 0){
         form.setValue(`imagesFile.${index}.imageFile`, file[0]);
+        updateImageFromDetail(index);
       }
     }
   };
@@ -197,16 +199,22 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
       setCarImages((currentImages) => currentImages.filter((_, idx) => idx !== index));
     }
   }
+
+  const updateImageFromDetail = (index: number) => {
+    if (index >= 0 && index < carImages.length) {
+      const idToUpdate = carImages[index].id;
+      setUpdatedImagesIdAndIndex((prevUpdatedImagesId) => [...prevUpdatedImagesId, { id:idToUpdate, index }]);
+    }
+  }
   
   const onSubmit = async (values: AddAndUpdateRentalCarSchemaType) => {
-    updateRentalCar({ values, deletedImagesId, car_id: id });
+    updateRentalCar({ values, deletedImagesId, updatedImagesIdAndIndex, car_id: id });
   }
 
 
   return (
     <>
       <h1 className="text-xl font-bold">Edit Rental Car - {title}</h1>
-      {console.log(deletedImagesId)}
       <div className="mt-4 px-10 py-8 bg-white rounded">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -238,7 +246,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
               {ImagesUrlFields.map((field, index) => (
                 <div className="relative flex flex-col items-center gap-2" key={field.id}>
                   <Avatar className="w-60 h-48 !rounded-lg">
-                    <AvatarImage className="!rounded-lg" alt="avatar" src={carImages[index] ? carImages[index].url : (watch(`imagesFile.${index}.imageFile`) && URL.createObjectURL(watch(`imagesFile.${index}.imageFile`))) ?? undefined}/>
+                    <AvatarImage className="!rounded-lg" alt="avatar" src={(watch(`imagesFile.${index}.imageFile`) ? URL.createObjectURL(watch(`imagesFile.${index}.imageFile`)) : carImages[index] && carImages[index].url) ?? undefined}/>
                     <AvatarFallback className="flex flex-col !rounded-lg bg-white"><Car className="text-gray-400" size={52} strokeWidth={1}/><span className="text-gray-600 text-sm">Upload your car image</span></AvatarFallback>
                   </Avatar>
                   <FormField
@@ -653,7 +661,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
               )}
             />
             <div className="text-end">
-              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Creating Rental Car...' : 'Create Rental Car'}</Button>
+              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Editing Rental Car...' : 'Edit Rental Car'}</Button>
             </div>
           </form>
         </Form>

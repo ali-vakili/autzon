@@ -24,8 +24,12 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
     const allImagesFile = body.getAll("imagesFile");
 
     const formDataObject = Object.fromEntries(body.entries());
+
     if (formDataObject.deleted_images_id) {
       formDataObject.deleted_images_id = JSON.parse(formDataObject.deleted_images_id as string);
+    }
+    if (formDataObject.updated_images_id_and_index) {
+      formDataObject.updated_images_id_and_index = JSON.parse(formDataObject.updated_images_id_and_index as string);
     }
     if (formDataObject.is_published) {
       formDataObject.is_published = JSON.parse(formDataObject.is_published as string);
@@ -43,7 +47,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
       throw zodError;
     }
 
-    const { title, buildYear, model, seats, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description, extra_time, late_return_fee_per_hour, is_published, deleted_images_id } = formDataObject;
+    const { title, buildYear, model, seats, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description, extra_time, late_return_fee_per_hour, is_published, deleted_images_id, updated_images_id_and_index } = formDataObject;
 
     if (!title || !buildYear || !model || !seats || !fuelType || !pick_up_place || !drop_off_place || !price_per_day ) {
       return NextResponse.json(
@@ -105,6 +109,33 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
     }
 
     if (allImagesFile !== undefined && allImagesFile.length > 0) {
+      // if (updated_images_id_and_index !== undefined && updated_images_id_and_index.length > 0) {
+      //   updated_images_id_and_index.forEach(async (updatedImage: { id: string, index: number }) => {
+      //     const index = updatedImage.index;
+      //     if (index < allImagesFile.length) {
+      //       const imageToUpdate = allImagesFile[index];
+      //       const { data, error } = await supabase.storage.from("cars").upload(`car_${existingAutoGallery.id}` + "/rental" + `/${Date.now()}_image`, imageToUpdate, { cacheControl: '3600', upsert: true });
+      
+      //       if (error) {
+      //         return NextResponse.json(
+      //           { error: "Error uploading image" },
+      //           { status: 500 }
+      //         );
+      //       } else if (data) {
+      //         await prisma.image.update({
+      //           where: { id: updatedImage.id },
+      //           data: {
+      //             url: carsBucketUrl + data.path,
+      //             car_id: existingCar.id
+      //           }
+      //         });
+      //       }
+      
+      //       allImagesFile.splice(index, 1);
+      //     }
+      //   });
+      // }
+
       allImagesFile.forEach(async (image) => {
         const { data, error } = await supabase.storage.from("cars").upload(`car_${existingAutoGallery.id}` + "/rental" + `/${Date.now()}_image`, image, {cacheControl: '3600', upsert: true});
         
@@ -161,6 +192,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
 
   }
   catch(err) {
+    console.log(err);
     if (err instanceof ZodError) {
       const errorMessages = fromZodError(err);
       const messages = [...errorMessages.details];
