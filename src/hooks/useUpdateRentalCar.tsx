@@ -9,9 +9,14 @@ const updateRentalCar = async ({ values, deletedImagesId, updatedImagesIdAndInde
   const formData = new FormData();
   if (imagesFile) {
     imagesFile.forEach((fileObj) => {
-      const { imageFile } = fileObj;
-      if (imageFile) {
-        formData.append('imagesFile', imageFile);
+      if (fileObj && fileObj.imageFile) {
+        const { imageFile } = fileObj;
+        if (imageFile) {
+          formData.append('imagesFile', imageFile);
+        }
+      }
+      else {
+        formData.append('imagesFile', JSON.stringify({ imageFile: null }));
       }
     });
   }

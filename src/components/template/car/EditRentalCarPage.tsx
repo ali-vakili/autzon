@@ -203,7 +203,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
   const updateImageFromDetail = (index: number) => {
     if (index >= 0 && index < carImages.length) {
       const idToUpdate = carImages[index].id;
-      setUpdatedImagesIdAndIndex((prevUpdatedImagesId) => [...prevUpdatedImagesId, { id:idToUpdate, index }]);
+      setUpdatedImagesIdAndIndex((prevUpdatedImagesId) => [...prevUpdatedImagesId, { id:idToUpdate, index: index + 1 }]);
     }
   }
   
@@ -215,6 +215,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
   return (
     <>
       <h1 className="text-xl font-bold">Edit Rental Car - {title}</h1>
+      <p>{JSON.stringify(watch("imagesFile"))}</p>
       <div className="mt-4 px-10 py-8 bg-white rounded">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

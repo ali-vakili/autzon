@@ -63,6 +63,9 @@ export default async function EditRentalCar({ params: { id } }: requestProps) {
           id: true,
           url: true,
           car_id: true
+        },
+        orderBy: {
+          createdAt: 'asc'
         }
       },
       description: true,

@@ -154,6 +154,7 @@ const CarCommonSchema = z
       z.object({
         imageFile: imageFileSchema
       })
+      .nullable()
     )
     .max(4, "Can not add more than 4 images")
     .nullable()

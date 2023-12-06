@@ -22,7 +22,13 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
 
     const body = await req.formData();
     const allImagesFile = body.getAll("imagesFile");
-
+    const parsedImagesFile = allImagesFile.map((file) => {
+      if (typeof file === 'string') {
+        return JSON.parse(file);
+      }
+      return file;
+    });
+  
     const formDataObject = Object.fromEntries(body.entries());
 
     if (formDataObject.deleted_images_id) {
@@ -38,7 +44,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
       formDataObject.extra_time = JSON.parse(formDataObject.extra_time as string);
     }
     if (formDataObject.imagesFile) {
-      formDataObject.imagesFile = allImagesFile as any;
+      formDataObject.imagesFile = parsedImagesFile as any;
     }
 
     const validData = AddAndUpdateRentalCarSchema.safeParse(formDataObject);
@@ -108,50 +114,54 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
       });
     }
 
-    if (allImagesFile !== undefined && allImagesFile.length > 0) {
-      // if (updated_images_id_and_index !== undefined && updated_images_id_and_index.length > 0) {
-      //   updated_images_id_and_index.forEach(async (updatedImage: { id: string, index: number }) => {
-      //     const index = updatedImage.index;
-      //     if (index < allImagesFile.length) {
-      //       const imageToUpdate = allImagesFile[index];
-      //       const { data, error } = await supabase.storage.from("cars").upload(`car_${existingAutoGallery.id}` + "/rental" + `/${Date.now()}_image`, imageToUpdate, { cacheControl: '3600', upsert: true });
+    if (parsedImagesFile !== undefined && parsedImagesFile.length > 0) {
+      const updated_images_id_and_index_array = Array.isArray(updated_images_id_and_index) && updated_images_id_and_index.length > 0
+      ? updated_images_id_and_index
+      : [];
       
-      //       if (error) {
-      //         return NextResponse.json(
-      //           { error: "Error uploading image" },
-      //           { status: 500 }
-      //         );
-      //       } else if (data) {
-      //         await prisma.image.update({
-      //           where: { id: updatedImage.id },
-      //           data: {
-      //             url: carsBucketUrl + data.path,
-      //             car_id: existingCar.id
-      //           }
-      //         });
-      //       }
+      if (updated_images_id_and_index_array !== undefined && updated_images_id_and_index_array.length > 0) {
+        updated_images_id_and_index_array.forEach(async (updatedImage: { id: string, index: number }) => {
+          const index = updatedImage.index;
+          if (index < parsedImagesFile.length + 1) {
+            const imageToUpdate = index <= 1 ? parsedImagesFile[index] : parsedImagesFile[index-1];
+            const { data, error } = await supabase.storage.from("cars").upload(`car_${existingAutoGallery.id}` + "/rental" + `/${Date.now()}_image`, imageToUpdate, { cacheControl: '3600', upsert: true });
       
-      //       allImagesFile.splice(index, 1);
-      //     }
-      //   });
-      // }
-
-      allImagesFile.forEach(async (image) => {
-        const { data, error } = await supabase.storage.from("cars").upload(`car_${existingAutoGallery.id}` + "/rental" + `/${Date.now()}_image`, image, {cacheControl: '3600', upsert: true});
-        
-        if (error) {
-          return NextResponse.json(
-            { error: "Error uploading image" },
-            { status: 500 }
-          );
-        }
-        else if (data) {
-          await prisma.image.create({
-            data: {
-              url: carsBucketUrl + data.path,
-              car_id: existingCar.id
+            if (error) {
+              return NextResponse.json(
+                { error: "Error uploading image" },
+                { status: 500 }
+              );
+            } else if (data) {
+              await prisma.image.update({
+                where: { id: updatedImage.id },
+                data: {
+                  url: carsBucketUrl + data.path,
+                  car_id: existingCar.id
+                }
+              });
             }
-          })
+          }
+        });
+      }
+
+      parsedImagesFile.forEach(async (image, index) => {
+        if (!updated_images_id_and_index_array.some((obj) => obj.index === parsedImagesFile.length <= 2 ? index : index + 1)) {
+          const { data, error } = await supabase.storage.from("cars").upload(`car_${existingAutoGallery.id}` + "/rental" + `/${Date.now()}_image`, image, {cacheControl: '3600', upsert: true});
+          
+          if (error) {
+            return NextResponse.json(
+              { error: "Error uploading image" },
+              { status: 500 }
+            );
+          }
+          else if (data) {
+            await prisma.image.create({
+              data: {
+                url: carsBucketUrl + data.path,
+                car_id: existingCar.id
+              }
+            })
+          }
         }
       });
     }
@@ -192,7 +202,6 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
 
   }
   catch(err) {
-    console.log(err);
     if (err instanceof ZodError) {
       const errorMessages = fromZodError(err);
       const messages = [...errorMessages.details];
