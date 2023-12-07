@@ -174,7 +174,7 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
             <div className="flex items-start flex-wrap gap-4 border border-dashed w-fit rounded-lg p-4">
               {ImagesUrlFields.map((field, index) => (
                 <div className="relative flex flex-col items-center gap-2" key={field.id}>
-                  <Avatar className="w-60 h-48 !rounded-lg">
+                  <Avatar className="w-64 h-48 !rounded-lg">
                     <AvatarImage className="!rounded-lg" alt="avatar" src={(watch(`imagesFile.${index}.imageFile`) && URL.createObjectURL(watch(`imagesFile.${index}.imageFile`))) ?? undefined}/>
                     <AvatarFallback className="flex flex-col !rounded-lg bg-white"><Car className="text-gray-400" size={52} strokeWidth={1}/><span className="text-gray-600 text-sm">Upload your car image</span></AvatarFallback>
                   </Avatar>

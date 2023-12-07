@@ -215,7 +215,6 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
   return (
     <>
       <h1 className="text-xl font-bold">Edit Rental Car - {title}</h1>
-      <p>{JSON.stringify(watch("imagesFile"))}</p>
       <div className="mt-4 px-10 py-8 bg-white rounded">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -246,7 +245,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
             <div className="flex items-start flex-wrap gap-4 border border-dashed w-fit rounded-lg p-4">
               {ImagesUrlFields.map((field, index) => (
                 <div className="relative flex flex-col items-center gap-2" key={field.id}>
-                  <Avatar className="w-60 h-48 !rounded-lg">
+                  <Avatar className="w-64 h-48 !rounded-lg">
                     <AvatarImage className="!rounded-lg" alt="avatar" src={(watch(`imagesFile.${index}.imageFile`) ? URL.createObjectURL(watch(`imagesFile.${index}.imageFile`)) : carImages[index] && carImages[index].url) ?? undefined}/>
                     <AvatarFallback className="flex flex-col !rounded-lg bg-white"><Car className="text-gray-400" size={52} strokeWidth={1}/><span className="text-gray-600 text-sm">Upload your car image</span></AvatarFallback>
                   </Avatar>

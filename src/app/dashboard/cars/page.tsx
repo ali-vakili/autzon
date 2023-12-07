@@ -2,8 +2,6 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib';
-import { Suspense } from 'react';
-import DashboardSkeletonLoading from '@/components/module/DashboardSkeletonLoading';
 import AllCars from '@/components/template/car/AllCars';
 
 import type { Metadata } from 'next'
@@ -40,7 +38,8 @@ export default async function Home() {
       },
       for_sale: {
         select: {
-          id: true
+          id: true,
+          price: true,
         }
       },
       id: true,
@@ -64,15 +63,19 @@ export default async function Home() {
           seats_count: true
         }
       },
+      fuel_type: {
+        select: {
+          id: true,
+          type: true
+        }
+      },
       is_published: true
     }
   })
 
   return (
     <div className="z-10 mx-auto">
-      <Suspense fallback={<DashboardSkeletonLoading />}>
-        <AllCars />
-      </Suspense>
+      <AllCars cars={cars}/> 
     </div>
   )
 }
