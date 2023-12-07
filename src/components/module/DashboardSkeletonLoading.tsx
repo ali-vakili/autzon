@@ -7,7 +7,7 @@ const DashboardSkeletonLoading = () => {
         <Skeleton className="h-8 w-full rounded-md" />
         <Skeleton className="h-8 w-full rounded-md" />
       </div>
-      <div className="flex gap-4 w-full ">
+      <div className="flex flex-col md:flex-row gap-4 w-full">
         <Skeleton className="h-40 flex-grow rounded-md" />
         <Skeleton className="h-40 flex-grow rounded-md" />
         <Skeleton className="h-40 flex-grow rounded-md" />

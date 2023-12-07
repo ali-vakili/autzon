@@ -590,7 +590,7 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
               )}
             />
             <div className="text-end">
-              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Creating Rental Car...' : 'Create Rental Car'}</Button>
+              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Adding Rental Car...' : 'Add Rental Car'}</Button>
             </div>
           </form>
         </Form>

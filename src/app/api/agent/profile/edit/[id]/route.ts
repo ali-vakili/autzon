@@ -41,7 +41,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
     const { user } = session;
       
     if (user.id === params.id) {
-      let imageUrl = null
+      let imageUrl = session.user.profile;
 
       if (imageFile && imageFile !== undefined && imageFile !== null && imageFile !== 'null') {
         const { data, error } = await supabase.storage.from("agents").upload(`agent_${session.user.id}` + "/" + Date.now() + "/profile", imageFile!);

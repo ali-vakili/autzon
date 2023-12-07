@@ -191,7 +191,7 @@ const Gallery = ({ gallery, agent }: galleryPropType) => {
           <h4 className="mb-1 font-semibold text-sm text-primary mt-3">Join Date</h4>
           <h5 className="text-zinc-500 text-sm ms-3">{joined_date}</h5>
         </div>
-        <Link href="account/profile" className={`${buttonVariants({variant: "secondary"})} w-full`}><FiEdit size={16} className="me-1.5"/> Edit Profile</Link>
+        <Link href="/account/profile" className={`${buttonVariants({variant: "secondary"})} w-full`}><FiEdit size={16} className="me-1.5"/> Edit Profile</Link>
       </div>
     </div>
   )

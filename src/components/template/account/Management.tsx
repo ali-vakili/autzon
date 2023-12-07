@@ -131,7 +131,7 @@ const Management = ({ user }: managementPropType) => {
       </Form>
       <Form {...changePasswordForm}>
         <div className="mt-8">
-          <h4 className="text-sm w-fit">Password <span className="text-gray-400">• Private</span></h4>
+          <h4 className="text-sm font-medium w-fit">Password <span className="text-gray-400">• Private</span></h4>
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="default" className="block mt-2">Change your password</Button>

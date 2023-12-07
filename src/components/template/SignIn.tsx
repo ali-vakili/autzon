@@ -89,7 +89,7 @@ const SignIn = () => {
   })
 
   return (
-    <div className="flex flex-col flex-1 items-center flex-shrink-0 md:grid lg:max-w-none lg:grid-cols-5 px-4 lg:my-8 lg:mx-24 lg:px-0 lg:border rounded">
+    <div className="flex flex-col flex-1 items-center flex-shrink-0 md:grid lg:max-w-none lg:grid-cols-5 px-4 lg:min-h-[680px] lg:my-8 lg:mx-24 lg:px-0 lg:border rounded">
       <div className="relative col-span-2 hidden h-full flex-col bg-muted p-10 text-white lg:flex">
         <div className="absolute inset-0 bg-primary rounded" />
         <div className="relative z-20 flex items-center text-lg font-medium gap-2">
@@ -97,7 +97,7 @@ const SignIn = () => {
           autzon
         </div>
         <div className="relative z-20 mt-auto">
-          <div className="absolute select-none -top-10 -left-4">
+          <div className="absolute select-none -top-12 -left-4">
             <span className="text-[160px] leading-none text-muted-foreground/30">“</span>
           </div>
           <div className="!backdrop-blur-sm bg-white/95 shadow-lg rounded-xl supports-[backdrop-filter]:bg-white/10 p-4">

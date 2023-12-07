@@ -243,7 +243,7 @@ const EditRentalCarPage = ({ galleryAddress, brandsAndModels, fuelTypes, buildYe
                 </Button>
               )}
             </div>
-            <div className="flex items-start justify-around flex-wrap gap-6 border border-dashed w-fit rounded-lg p-4">
+            <div className="flex items-start flex-wrap gap-4 border border-dashed w-fit rounded-lg p-4">
               {ImagesUrlFields.map((field, index) => (
                 <div className="relative flex flex-col items-center gap-2" key={field.id}>
                   <Avatar className="w-60 h-48 !rounded-lg">
