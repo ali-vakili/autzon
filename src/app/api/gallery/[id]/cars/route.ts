@@ -1,21 +1,60 @@
 import { NextResponse } from "next/server"
-import { connectDB, prisma } from "@/lib"
+import { connectDB, prisma, validateSession } from "@/lib"
 
 
-export const GET = async () => {
+type requestProps = {
+  params: {
+    id: string
+  }
+}
+
+export const GET = async (req: Request, { params }: requestProps) => {
   try {
     connectDB();
 
-    const cars = await prisma.car.findMany(
+    const session = await validateSession();
+    if (session instanceof NextResponse) return session;
+
+    const { user } = session;
+
+    const gallery = await prisma.autoGallery.findUnique({
+      where: { 
+        id: params.id,
+        AND: { agent_id: user.id }
+      }
+    });
+
+    if (!gallery) {
+      return NextResponse.json(
+        {
+          error: "auto gallery does not found",
+        },
+        { status: 404 }
+      );
+    }
+
+    const car = await prisma.car.findMany(
       {
+        where: { gallery_id: gallery.id },
         select: {
           id: true,
           title: true,
-          build_year: true,
           fuel_type: {
             select: {
               id: true,
               type: true
+            }
+          },
+          category: {
+            select: {
+              id: true,
+              category: true,
+              abbreviation: true
+            }
+          },
+          car_seat:{
+            select: {
+              seats_count: true
             }
           },
           images: {
@@ -34,22 +73,10 @@ export const GET = async () => {
           for_sale: {
             select: {
               id: true,
-              price: true,
+              price: true
             }
           },
           is_car_rented: true,
-          category: {
-            select: {
-              id: true,
-              category: true,
-              abbreviation: true
-            }
-          },
-          car_seat:{
-            select: {
-              seats_count: true
-            }
-          },
           description: true,
           is_published: true,
           createdAt: true,
@@ -60,7 +87,7 @@ export const GET = async () => {
 
     return NextResponse.json(
       {
-        data: cars
+        data: car
       },
       { status: 200 }
     )

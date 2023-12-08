@@ -42,6 +42,7 @@ const ImageBadge = ({ viewTo, isPublished, for_rent, for_sale }: ImageBadgeProps
 
 
 type ImageSectionProps = {
+  title: string
   images: {
     id: string;
     url: string;
@@ -59,10 +60,10 @@ type ImageSectionProps = {
   } | null;
 };
 
-const ImageSection = ({ images, viewTo, isPublished, for_rent, for_sale }: ImageSectionProps) => (
+const ImageSection = ({ title, images, viewTo, isPublished, for_rent, for_sale }: ImageSectionProps) => (
   <div className="relative w-full h-40">
     <ImageBadge viewTo={viewTo} isPublished={isPublished} for_rent={for_rent} for_sale={for_sale} />
-    <Image src={images[0].url} className="rounded-md object-cover" alt="car_image_cover" fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images[0].url}/>
+    <Image src={images[0].url} quality={100} className="rounded-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images[0].url}/>
   </div>
 );
 
@@ -71,17 +72,15 @@ type DetailsSectionProps = {
   title: string;
   category: { category: string };
   price: string | undefined;
-  fuelType: string;
-  seatCount: string;
 };
 
-const DetailsSection = ({ title, category, price, fuelType, seatCount }: DetailsSectionProps) => (
+const DetailsSection = ({ title, category, price }: DetailsSectionProps) => (
   <div className="flex items-center justify-between">
     <div className="space-y-1">
       <h3 className="text-base font-medium">{title}</h3>
       <Badge variant="secondary" className="!rounded-md">{category.category}</Badge>
     </div>
-    <h4 className="font-semibold">${price} <span className="text-sm text-muted-foreground">/day</span></h4>
+    <h4 className="flex gap-1 items-center font-semibold">${price} <span className="text-sm text-muted-foreground">/day</span></h4>
   </div>
 );
 
@@ -105,13 +104,11 @@ type EditLinkProps = {
 };
 
 const EditLink = ({ viewTo, id }: EditLinkProps) => (
-  <>
-    {viewTo === 'AGENT' && (
-      <Link href={`/dashboard/cars/rental/edit/${id}`} className={`${buttonVariants({ variant: 'default' })} !mt-3`}>
-        <FiEdit size={16} className="me-1.5"/>Edit Car
-      </Link>
-    )}
-  </>
+  viewTo === 'AGENT' && (
+    <Link href={`/dashboard/cars/rental/edit/${id}`} className={`${buttonVariants({ variant: 'default' })} !mt-4`}>
+      <FiEdit size={16} className="me-1.5"/>Edit Car
+    </Link>
+  )
 );
 
 
@@ -162,10 +159,12 @@ type carCardPropType = {
 }
 
 const CarCard = ({ car, view_to }: carCardPropType) => {
-  const { id, title, images, category, fuel_type, car_seat, for_rent, for_sale, is_published, is_car_rented } = car
+  const { id, title, images, category, fuel_type, car_seat, for_rent, for_sale, is_published, is_car_rented } = car;
+
   return (
-    <div className={cn("relative flex flex-col justify-start h-fit w-full border rounded-md p-3 space-y-2")}>
+    <div className={cn("relative flex flex-col justify-start h-fit max-h-[340px] w-full border bg-white rounded-md p-2 space-y-2")}>
       <ImageSection
+        title={title}
         images={images}
         viewTo={view_to}
         isPublished={is_published}
@@ -177,8 +176,6 @@ const CarCard = ({ car, view_to }: carCardPropType) => {
         title={title}
         category={category}
         price={for_rent ? for_rent.price_per_day.toFixed(2) : for_sale?.price.toFixed(2)}
-        fuelType={fuel_type.type}
-        seatCount={car_seat.seats_count}
       />
 
       <Separator />

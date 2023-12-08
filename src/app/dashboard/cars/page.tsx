@@ -28,6 +28,7 @@ export default async function Home() {
   if (!gallery) redirect("/dashboard/gallery/create");
 
   const cars = await prisma.car.findMany({
+    where: { gallery_id: gallery.id },
     select: {
       for_rent: {
         select: {
@@ -75,7 +76,7 @@ export default async function Home() {
 
   return (
     <div className="z-10 mx-auto">
-      <AllCars cars={cars}/> 
+      <AllCars cars={cars} gallery_id={gallery.id}/> 
     </div>
   )
 }
