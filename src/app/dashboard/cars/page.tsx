@@ -41,6 +41,7 @@ export default async function Home() {
         select: {
           id: true,
           price: true,
+          color: true,
         }
       },
       id: true,
@@ -70,7 +71,10 @@ export default async function Home() {
           type: true
         }
       },
-      is_published: true
+      description: true,
+      is_published: true,
+      createdAt: true,
+      updatedAt: true,
     }
   })
 

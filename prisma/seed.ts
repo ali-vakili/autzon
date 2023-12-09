@@ -5,6 +5,7 @@ import citiesData from './cities.json'
 import categories from './categories.json'
 import buildYear from "./buildYear.json"
 import carSeats from "./carSeats.json"
+import colors from "./colors.json"
 import fuels from "./fuels.json"
 
 const prisma = new PrismaClient()
@@ -43,6 +44,12 @@ async function main() {
   for (const year of buildYear) {
     await prisma.buildYear.create({
       data: year
+    })
+  }
+
+  for (const color of colors) {
+    await prisma.carColor.create({
+      data: color
     })
   }
 

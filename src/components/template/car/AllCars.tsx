@@ -29,12 +29,14 @@ import { useGetGalleryCars } from "@/hooks/useGetGalleryCars";
 
 import { FiFilter, FiPlus, FiRefreshCw  } from "react-icons/fi";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 
 type cars = {
   id: string;
   title: string;
   is_published: boolean;
+  description: string;
   car_seat: {
     seats_count: string;
   };
@@ -59,6 +61,11 @@ type cars = {
   for_sale: {
     id: string;
     price: number;
+    color: {
+      id: number,
+      color_name: string,
+      color_code: string
+    }
   } | null;
   is_car_rented: {
     id: string;
@@ -72,6 +79,8 @@ type cars = {
     createdAt: Date;
     updatedAt: Date;
   }[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 type allCarsPropType = {
@@ -92,10 +101,12 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
   const hasCarsForSale = hasNonNullProperty(cars, 'for_sale');
   const [carsData, setCarsData] = useState<cars[]>(cars);
 
-  const { data, isSuccess, isLoading, isFetching, isError, refetch } = useGetGalleryCars(gallery_id);
+  const { data, isSuccess, isLoading, isFetching, isError, error, refetch } = useGetGalleryCars(gallery_id);
 
   useEffect(() => {
     isSuccess && setCarsData(data.data);
+    //@ts-ignore
+    isError === true && error && toast.error(error?.response.data.error);
   }, [data])
 
   return (
@@ -114,7 +125,7 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
           <div className="flex flex-col items-start md:grid grid-cols-3 gap-6">
             <TabsContent
               value="all_cars"
-              className="bg-white lg:col-span-2 col-span-3 rounded-md p-5"
+              className="bg-white w-full lg:col-span-2 col-span-3 rounded-md p-5"
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
@@ -126,7 +137,7 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
                 <Badge variant={"outline"} className="gap-2 text-base w-fit">{carsData.length} Cars</Badge>
               </div>
               <Button onClick={() => refetch()} size="sm" variant={"outline"} type="button" disabled={isFetching} isLoading={isFetching} className="w-fit text-xs h-8" style={{ marginBottom: "24px" }}>{isFetching ? 'Refreshing' : <><FiRefreshCw className="me-1.5" />Refresh</>}</Button>
-              <div className={`grid ${carsData && carsData.length > 0 && 'grid-cols-[repeat(auto-fill,minmax(224px,1fr))]'} gap-3`}>
+              <div className={`grid ${((carsData && carsData.length > 0) || isLoading) && 'grid-cols-[repeat(auto-fill,minmax(224px,1fr))]'} gap-3`}>
               {isLoading ? (
                 <>
                   <Skeleton className="h-72 w-full rounded-md"/>
@@ -138,7 +149,7 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
                   carsData.map(car => (
                     <Dialog key={car.id}>
                       <DialogTrigger asChild>
-                        <CarCard car={car} view_to={AGENT}/>
+                        <CarCard car={car} view_to={AGENT} forCard={car.for_rent ? "RENTAL" : car.for_sale ? "SALE" : "NONE"}/>
                       </DialogTrigger>
                     </Dialog>
                   ))
@@ -157,7 +168,7 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
             </TabsContent>
             <TabsContent
               value="rental"
-              className="bg-white lg:col-span-2 col-span-3 rounded-md p-5 h-full flex-col border-none data-[state=active]:flex"
+              className="bg-white w-full lg:col-span-2 col-span-3 rounded-md p-5 h-full flex-col border-none data-[state=active]:flex"
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
@@ -173,7 +184,7 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
                 {carsData.filter(car => car.for_rent).length > 0 ? carsData.filter(car => car.for_rent).map(car => (
                   <Dialog key={car.id}>
                     <DialogTrigger asChild>
-                      <CarCard car={car} view_to={AGENT}/>
+                      <CarCard car={car} view_to={AGENT} forCard={"RENTAL"}/>
                     </DialogTrigger>
                   </Dialog> 
                 )) : (
@@ -189,7 +200,7 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
             </TabsContent>
             <TabsContent
               value="sale"
-              className="bg-white lg:col-span-2 col-span-3 rounded-md p-5 h-full flex-col border-none data-[state=active]:flex"
+              className="bg-white w-full lg:col-span-2 col-span-3 rounded-md p-5 h-full flex-col border-none data-[state=active]:flex"
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
@@ -205,7 +216,7 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
                 {carsData.filter(car => car.for_sale).length > 0 ? carsData.filter(car => car.for_sale).map(car => (
                   <Dialog key={car.id}>
                     <DialogTrigger asChild>
-                      <CarCard car={car} view_to={"AGENT"}/>
+                      <CarCard car={car} view_to={"AGENT"} forCard={"SALE"}/>
                     </DialogTrigger>
                   </Dialog> 
                 )) : (

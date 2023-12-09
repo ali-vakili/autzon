@@ -169,33 +169,55 @@ const CarCommonSchema = z
 const AddAndUpdateRentalCarSchema = CarCommonSchema.merge(
   z
   .object({
-      price_per_day: z
-        .string()
-        .min(0.01, "Price per day must be a positive number")
-        .refine(value => Number.isFinite(parseFloat(value)) && !Number.isNaN(parseFloat(value)), {
-          message: "Price per day must be a number",
-        }),
-      pick_up_place: z.string().min(1, "Pick up place is required"),
-      drop_off_place: z.string().min(1, "Drop off place is required"),
-      reservation_fee_percentage: z
+    price_per_day: z
       .string()
-      .refine(value => value === "" || (Number.isFinite(parseFloat(value)) && !Number.isNaN(parseFloat(value))), {
-        message: "Reservation fee percentage must be a number",
-      })
-      .optional(),
-      late_return_fee_per_hour: z
-      .string()
-      .refine(value => value === "" || (Number.isFinite(parseFloat(value)) && !Number.isNaN(parseFloat(value))), {
-        message: "Late return fee per hour must be a number",
-      })
-      .optional(),
-      extra_time: z.boolean().default(false),
-      })
-    )
-    .refine(data => !data.extra_time || !!data.late_return_fee_per_hour, {
-      message: "Late return fee per hour is required if extra time is enabled",
-      path: ["late_return_fee_per_hour"],
+      .min(0.01, "Price per day must be a positive number")
+      .refine(value => Number.isFinite(parseFloat(value)) && !Number.isNaN(parseFloat(value)), {
+        message: "Price per day must be a number",
+      }),
+    pick_up_place: z.string().min(1, "Pick up place is required"),
+    drop_off_place: z.string().min(1, "Drop off place is required"),
+    reservation_fee_percentage: z
+    .string()
+    .refine(value => value === "" || (Number.isFinite(parseFloat(value)) && !Number.isNaN(parseFloat(value))), {
+      message: "Reservation fee percentage must be a number",
     })
+    .optional(),
+    late_return_fee_per_hour: z
+    .string()
+    .refine(value => value === "" || (Number.isFinite(parseFloat(value)) && !Number.isNaN(parseFloat(value))), {
+      message: "Late return fee per hour must be a number",
+    })
+    .optional(),
+    extra_time: z.boolean().default(false),
+    })
+  )
+  .refine(data => !data.extra_time || !!data.late_return_fee_per_hour, {
+    message: "Late return fee per hour is required if extra time is enabled",
+    path: ["late_return_fee_per_hour"],
+  })
+
+  
+const AddAndUpdateSaleCarSchema = CarCommonSchema.merge(
+  z
+  .object({
+    price: z
+      .string()
+      .min(0.01, "Price must be a positive number")
+      .refine(value => Number.isFinite(parseFloat(value)) && !Number.isNaN(parseFloat(value)), {
+        message: "Price must be a number",
+      }),
+    mileage: z
+      .string()
+      .min(0.01, "Mileage must be a positive number")
+      .refine(value => value === "" || (Number.isFinite(parseFloat(value)) && !Number.isNaN(parseFloat(value))), {
+        message: "Mileage must be a number",
+      }),
+    color: z
+      .string()
+      .min(1, "Color must be selected"),
+    })
+  )
 
 
 
@@ -241,6 +263,7 @@ type GalleryCreateAndUpdateSchemaType = z.infer<
   typeof GalleryCreateAndUpdateSchema
 >;
 type AddAndUpdateRentalCarSchemaType = z.infer<typeof AddAndUpdateRentalCarSchema>;
+type AddAndUpdateSaleCarSchemaType = z.infer<typeof AddAndUpdateSaleCarSchema>;
 type SignInFormSchemaType = z.infer<typeof SignInFormSchema>;
 type RestPasswordSchemaType = z.infer<typeof RestPasswordSchema>; 
 type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
@@ -252,6 +275,7 @@ export {
   ChangePasswordSchema,
   GalleryCreateAndUpdateSchema,
   AddAndUpdateRentalCarSchema,
+  AddAndUpdateSaleCarSchema,
   SignInFormSchema,
   RestPasswordSchema,
   ForgotPasswordSchema
@@ -263,6 +287,7 @@ export type {
   ChangePasswordSchemaType,
   GalleryCreateAndUpdateSchemaType,
   AddAndUpdateRentalCarSchemaType,
+  AddAndUpdateSaleCarSchemaType,
   SignInFormSchemaType,
   RestPasswordSchemaType,
   ForgotPasswordSchemaType

@@ -9,9 +9,11 @@ const createRentalCar = async (values: AddAndUpdateRentalCarSchemaType) => {
   const formData = new FormData();
   if (imagesFile) {
     imagesFile.forEach((fileObj) => {
-      const { imageFile } = fileObj;
-      if (imageFile) {
-        formData.append('imagesFile', imageFile);
+      if (fileObj && fileObj.imageFile) {
+        const { imageFile } = fileObj;
+        if (imageFile) {
+          formData.append('imagesFile', imageFile);
+        }
       }
     });
   }

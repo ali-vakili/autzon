@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { connectDB, validateSession, prisma, checkAgent } from "@/lib";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { AddAndUpdateRentalCarSchema } from "@/validation/validations";
+import { AddAndUpdateSaleCarSchema } from "@/validation/validations";
 import { carsBucketUrl } from "@/constants/supabaseStorage";
 import supabase from "@/lib/supabase";
 
@@ -21,22 +21,21 @@ export const POST = async (req: Request) => {
     if (formDataObject.is_published) {
       formDataObject.is_published = JSON.parse(formDataObject.is_published as string);
     }
-    if (formDataObject.extra_time) {
-      formDataObject.extra_time = JSON.parse(formDataObject.extra_time as string);
-    }
     if (formDataObject.imagesFile) {
       formDataObject.imagesFile = allImagesFile as any;
     }
 
-    const validData = AddAndUpdateRentalCarSchema.safeParse(formDataObject);
+    const validData = AddAndUpdateSaleCarSchema.safeParse(formDataObject);
     if (!validData.success) {
       const zodError = new ZodError(validData.error.errors);
       throw zodError;
     }
 
-    const { title, buildYear, model, seats, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description="", extra_time, late_return_fee_per_hour, is_published } = formDataObject;
+    console.log(formDataObject);
 
-    if (!title || !buildYear || !model || !seats || !fuelType || !pick_up_place || !drop_off_place || !price_per_day ) {
+    const { title, buildYear, model, seats, fuelType, category, price, mileage, color, description="", is_published } = formDataObject;
+
+    if (!title || !buildYear || !model || !seats || !fuelType || !price || !mileage || !color ) {
       return NextResponse.json(
         { error: "Please fill all required fields" },
         { status: 422 }
@@ -64,7 +63,7 @@ export const POST = async (req: Request) => {
       )
     }
 
-    const newRentalCar = await prisma.car.create({
+    const newSaleCar = await prisma.car.create({
       data: {
         gallery_id: existingAutoGallery.id,
         title: title.toString(),
@@ -74,14 +73,11 @@ export const POST = async (req: Request) => {
         fuel_type_id: +fuelType,
         category_id: +category,
         description: description.toString(),
-        for_rent: {
+        for_sale: {
           create: {
-            price_per_day: +price_per_day,
-            pick_up_place: pick_up_place.toString() ?? existingAutoGallery.address,
-            drop_off_place: drop_off_place.toString() ?? existingAutoGallery.address,
-            reservation_fee_percentage: +reservation_fee_percentage,
-            late_return_fee_per_hour: !!extra_time ? +late_return_fee_per_hour : null,
-            extra_time: !!extra_time
+            price: +price,
+            mileage: +mileage,
+            color_id: +color 
           }
         },
         is_published: !!is_published
@@ -90,7 +86,7 @@ export const POST = async (req: Request) => {
 
     if (allImagesFile !== undefined && allImagesFile.length > 0) {
       allImagesFile.forEach(async (image) => {
-        const { data, error } = await supabase.storage.from("cars").upload(`car_${existingAutoGallery.id}` + "/rental" + `/${Date.now()}_image`, image, {cacheControl: '3600', upsert: true});
+        const { data, error } = await supabase.storage.from("cars").upload(`car_${existingAutoGallery.id}` + "/sale" + `/${Date.now()}_image`, image, {cacheControl: '3600', upsert: true});
         
         if (error) {
           return NextResponse.json(
@@ -102,7 +98,7 @@ export const POST = async (req: Request) => {
           await prisma.image.create({
             data: {
               url: carsBucketUrl + data.path,
-              car_id: newRentalCar.id
+              car_id: newSaleCar.id
             }
           })
         }
@@ -111,13 +107,14 @@ export const POST = async (req: Request) => {
 
     return NextResponse.json(
       {
-        message: "Rental car created successfully"
+        message: "Sale car created successfully"
       },
       { status: 201 }
     )
 
   }
   catch(err) {
+    console.log(err)
     if (err instanceof ZodError) {
       const errorMessages = fromZodError(err);
       const messages = [...errorMessages.details];

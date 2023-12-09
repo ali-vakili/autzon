@@ -53,7 +53,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
       throw zodError;
     }
 
-    const { title, buildYear, model, seats, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description, extra_time, late_return_fee_per_hour, is_published, deleted_images_id, updated_images_id_and_index } = formDataObject;
+    const { title, buildYear, model, seats, fuelType, category, pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, description="", extra_time, late_return_fee_per_hour, is_published, deleted_images_id, updated_images_id_and_index } = formDataObject;
 
     if (!title || !buildYear || !model || !seats || !fuelType || !pick_up_place || !drop_off_place || !price_per_day ) {
       return NextResponse.json(
@@ -182,8 +182,8 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
         for_rent: {
           update: {
             price_per_day: +price_per_day,
-            pick_up_place: pick_up_place.toString(),
-            drop_off_place: drop_off_place.toString(),
+            pick_up_place: pick_up_place.toString() ?? existingAutoGallery.address,
+            drop_off_place: drop_off_place.toString() ?? existingAutoGallery.address,
             reservation_fee_percentage: +reservation_fee_percentage,
             late_return_fee_per_hour: !!extra_time ? +late_return_fee_per_hour : null,
             extra_time: !!extra_time
@@ -197,7 +197,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
       {
         message: "Rental car updated successfully"
       },
-      { status: 201 }
+      { status: 200 }
     )
 
   }

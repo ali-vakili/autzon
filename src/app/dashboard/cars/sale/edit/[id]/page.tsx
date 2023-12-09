@@ -1,4 +1,4 @@
-import EditRentalCarForm from "@/components/template/car/EditRentalCarPage";
+import EditSaleCarForm from "@/components/template/car/EditSaleCar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib";
@@ -75,13 +75,13 @@ export default async function EditRentalCar({ params: { id } }: requestProps) {
 
   if (!car) redirect("/dashboard");
 
-  const rentalCar = await prisma.rentalCar.findFirst({
+  const saleCar = await prisma.saleCar.findFirst({
     where: {
       car_id: car.id,
     }
   })
 
-  if (!rentalCar) redirect("/dashboard");
+  if (!saleCar) redirect("/dashboard");
 
   const brandsAndModels = await prisma.brand.findMany({
     select: {
@@ -132,7 +132,15 @@ export default async function EditRentalCar({ params: { id } }: requestProps) {
     }
   })
 
+  const colors = await prisma.carColor.findMany({
+    select: {
+      id: true,
+      color_name: true,
+      color_code: true
+    }
+  })
+
   return (
-    <EditRentalCarForm brandsAndModels={brandsAndModels} fuelTypes={fuelTypes} buildYears={buildYears} categories={categories} carDetail={car} rentalCarDetail={rentalCar} carSeats={carSeats} />
+    <EditSaleCarForm brandsAndModels={brandsAndModels} fuelTypes={fuelTypes} buildYears={buildYears} categories={categories} carDetail={car} saleCarDetail={saleCar} carSeats={carSeats} colors={colors} />
   )
 }

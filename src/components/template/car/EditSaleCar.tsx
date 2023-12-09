@@ -1,6 +1,6 @@
 "use client"
 
-import { AddAndUpdateRentalCarSchema, AddAndUpdateRentalCarSchemaType } from "@/validation/validations"
+import { AddAndUpdateSaleCarSchema, AddAndUpdateSaleCarSchemaType } from "@/validation/validations"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
 import { toast } from "sonner";
@@ -37,9 +37,12 @@ import { useEffect, useState } from "react"
 import { redirect } from "next/navigation";
 import { cn } from "@/lib/utils"
 
+import formatPrice from "@/helper/formatPrice";
+
 import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
 import { Car } from 'lucide-react';
-import { useUpdateRentalCar, updateRentalCarHookType } from "@/hooks/useUpdateRentalCar";
+import { useUpdateSaleCar, updateSaleCarHookType } from "@/hooks/useUpdateSaleCar";
+
 
 
 type models = {
@@ -75,15 +78,12 @@ type Car = {
   is_published: boolean;
 };
 
-type RentalCar = {
+type SaleCar = {
   id: string;
   car_id: string;
-  price_per_day: number;
-  pick_up_place: string;
-  drop_off_place: string;
-  reservation_fee_percentage: number | null;
-  late_return_fee_per_hour: number | null;
-  extra_time: boolean;
+  price: number;
+  mileage: number;
+  color_id: number;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -113,24 +113,31 @@ type EditRentalCarPagePropType = {
     category: string;
     abbreviation: string | null;
   }[],
+  colors: {
+    id: number;
+    color_name: string;
+    color_code: string;
+  }[]
   carDetail: Car,
-  rentalCarDetail: RentalCar
+  saleCarDetail: SaleCar
 }
 
 
-const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories, carDetail, rentalCarDetail, carSeats }: EditRentalCarPagePropType) => {
+const EditSaleCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories, carDetail, saleCarDetail, carSeats, colors }: EditRentalCarPagePropType) => {
   const [leftImageCount, setLeftImageCount] = useState<number>(carDetail? 4 - carDetail.images.length : 3);
   const [selectedBrand , setSelectedBrand] = useState<{id:number, name: string, models: models[]}|null>(null);
   const [carImages , setCarImages] = useState<{id: string, url: string}[]>([]);
   const [deletedImagesId , setDeletedImagesId] = useState<string[]>([]);
   const [updatedImagesIdAndIndex , setUpdatedImagesIdAndIndex] = useState<{id: string, index: number}[]>([]);
+  const [formattedPriceValue, setFormattedPriceValue] = useState<JSX.Element | null>(null);
+  const [formattedMileageValue, setFormattedMileageValue] = useState<JSX.Element | null>(null);
 
   const { id, title, model, model_id, car_seat_id, build_year_id, fuel_type_id, category_id, images, is_published, description } = carDetail;
 
-  const { pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, extra_time, late_return_fee_per_hour } = rentalCarDetail;
+  const { price, mileage, color_id } = saleCarDetail;
 
 
-  const { mutate: updateRentalCar, data, isLoading, isSuccess, isError, error }: updateRentalCarHookType = useUpdateRentalCar();
+  const { mutate: updateSaleCar, data, isLoading, isSuccess, isError, error }: updateSaleCarHookType = useUpdateSaleCar();
 
   useEffect(() => {
     const brandWithId = brandsAndModels.find((brand) => brand.id === model.brand_id);
@@ -147,8 +154,8 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
     isError === true && error && toast.error(error?.response.data.error);
   }, [isSuccess, isError])
 
-  const form = useForm<AddAndUpdateRentalCarSchemaType>({
-    resolver: zodResolver(AddAndUpdateRentalCarSchema),
+  const form = useForm<AddAndUpdateSaleCarSchemaType>({
+    resolver: zodResolver(AddAndUpdateSaleCarSchema),
     defaultValues: {
       title: title ?? "",
       imagesUrl: images.map((image) => ({ imageUrl: "" })) ?? [{ imageUrl: "" }],
@@ -159,12 +166,9 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
       category: `${category_id}` ?? "",
       buildYear: `${build_year_id}` ?? "",
       description: description ?? "",
-      price_per_day: `${price_per_day}` ?? "",
-      pick_up_place: pick_up_place,
-      drop_off_place: drop_off_place,
-      reservation_fee_percentage: `${reservation_fee_percentage}` ?? "",
-      late_return_fee_per_hour: late_return_fee_per_hour ? `${late_return_fee_per_hour}` : "",
-      extra_time: extra_time ?? false,
+      price: `${price}` ?? "",
+      color: `${color_id}` ?? "",
+      mileage: `${mileage}` ?? "",
       is_published: is_published ?? true,
     },
   })
@@ -206,15 +210,43 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
       setUpdatedImagesIdAndIndex((prevUpdatedImagesId) => [...prevUpdatedImagesId, { id:idToUpdate, index: index + 1 }]);
     }
   }
+
+  const formatMileage = (mileage: string) => {
+    const isValidNumber = /^\d+(\.\d+)?$/.test(mileage);
   
-  const onSubmit = async (values: AddAndUpdateRentalCarSchemaType) => {
-    updateRentalCar({ values, deletedImagesId, updatedImagesIdAndIndex, car_id: id });
+    if (isValidNumber) {
+      const floatValue = parseFloat(mileage);
+  
+      const formattedValue = floatValue.toLocaleString('en-US', {
+        style: 'unit',
+        unit: 'kilometer',
+      });
+  
+      return (<p className="text-sm text-muted-foreground">{formattedValue}</p>);
+
+    } else {
+      return (<p className="text-sm text-destructive">Invalid value</p>);
+    }
+  }
+
+  const getFormattedPrice = (price: string) => {
+    const { formattedValue, isValid } = formatPrice(price);
+
+    if (isValid) {
+      return <p className="text-sm text-muted-foreground">{formattedValue}</p>;
+    } else {
+      return <p className="text-sm text-destructive">{formattedValue}</p>;
+    }
+  }
+  
+  const onSubmit = async (values: AddAndUpdateSaleCarSchemaType) => {
+    updateSaleCar({ values, deletedImagesId, updatedImagesIdAndIndex, car_id: id });
   }
 
 
   return (
     <>
-      <h1 className="text-xl font-bold">Edit Rental Car - {title}</h1>
+      <h1 className="text-xl font-bold">Edit Sale Car - {title}</h1>
       <div className="mt-4 px-10 py-8 bg-white rounded">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -483,6 +515,31 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
             />
             <FormField
               control={form.control}
+              name="color"
+              render={({ field }) => (
+                <FormItem className="mt-8">
+                  <FormLabel>Color <span className="text-destructive">*</span></FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select the car color" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="h-60">
+                      {colors.map(color => (
+                        <SelectItem key={color.id} value={`${color.id}`}><div className="inline-block h-4 w-4 rounded-full me-2 border border-muted align-middle" style={{backgroundColor: `${color.color_code}`}}></div>{color.color_name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Provide your car color.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="category"
               render={({ field }) => (
                 <FormItem className="mt-8">
@@ -514,50 +571,20 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
               )}
             />
             <Separator className="my-8" />
-            <div>
-              <h2 className="text-lg font-semibold">Pick Up And Drop Off Place</h2>
-              <p className="text-sm text-gray-400 mt-2">First value for each field is your gallery located address.</p>
+            <>
+              <h2 className="text-lg font-semibold">Sale Price and Mileage</h2>
               <FormField
                 control={form.control}
-                name="pick_up_place"
-                render={({ field }) => (
-                  <FormItem className="mt-8">
-                    <FormLabel>Pick up place <span className="text-destructive">*</span></FormLabel>
-                    <FormControl>
-                      <Input placeholder="" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="drop_off_place"
+                name="price"
                 render={({ field }) => (
                   <FormItem className="mt-4">
-                    <FormLabel>Drop off place <span className="text-destructive">*</span></FormLabel>
+                    <FormLabel>Price <span className="text-destructive">*</span></FormLabel>
                     <FormControl>
-                      <Input placeholder="" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
+                      <Input placeholder="$" name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), setFormattedPriceValue(getFormattedPrice(event.target.value))}} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <Separator className="my-8" />
-            <div>
-              <h2 className="text-lg font-semibold">Renting Price And Fee</h2>
-              <FormField
-                control={form.control}
-                name="price_per_day"
-                render={({ field }) => (
-                  <FormItem className="mt-4">
-                    <FormLabel>Price per day <span className="text-destructive">*</span></FormLabel>
-                    <FormControl>
-                      <Input placeholder="$" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
-                    </FormControl>
+                    {formattedPriceValue}
                     <FormDescription>
-                      Provide the amount of money($) for a renting day.
+                      Provide the amount of money($) for sale.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -565,22 +592,22 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
               />
               <FormField
                 control={form.control}
-                name="reservation_fee_percentage"
+                name="mileage"
                 render={({ field }) => (
                   <FormItem className="mt-4">
-                    <FormLabel>Reservation fee percentage</FormLabel>
+                    <FormLabel>Mileage <span className="text-destructive">*</span></FormLabel>
                     <FormControl>
-                      <Input placeholder="%" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
+                      <Input placeholder="" name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), setFormattedMileageValue(formatMileage(event.target.value))}} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
                     </FormControl>
+                    {formattedMileageValue}
                     <FormDescription>
-                      Provide the  percentage amount(%) for a reservation fee.
+                      Provide the amount of mileage(kilometer).
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
-            <Separator className="my-8" />
+            </>
             <FormField
               control={form.control}
               name="description"
@@ -598,43 +625,6 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
                 </FormItem>
               )}
             />
-            <div className="flex flex-col items-start rounded-lg border p-4 mt-8">
-              <FormField
-                control={form.control}
-                name="extra_time"
-                render={({ field }) => (
-                  <FormItem className="flex items-center justify-between w-full">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">
-                        Extra Time
-                      </FormLabel>
-                      <FormDescription>
-                        Enables Extra time price for the rented car per hour.
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="late_return_fee_per_hour"
-                render={({ field }) => (
-                  <FormItem className="mt-8 w-full">
-                    <FormLabel>Late return fee per hour <span className="text-destructive">{watch("extra_time") && '*'}</span></FormLabel>
-                    <FormControl>
-                      <Input disabled={!watch("extra_time")} placeholder="$" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
             <FormField
               control={form.control}
               name="is_published"
@@ -661,7 +651,7 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
               )}
             />
             <div className="text-end">
-              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Editing Rental Car...' : 'Edit Rental Car'}</Button>
+              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Editing Sale Car...' : 'Edit Sale Car'}</Button>
             </div>
           </form>
         </Form>
@@ -670,4 +660,4 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
   )
 }
 
-export default EditRentalCarForm
+export default EditSaleCarForm

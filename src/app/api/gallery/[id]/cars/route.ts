@@ -73,7 +73,8 @@ export const GET = async (req: Request, { params }: requestProps) => {
           for_sale: {
             select: {
               id: true,
-              price: true
+              price: true,
+              color: true
             }
           },
           is_car_rented: true,
@@ -94,7 +95,7 @@ export const GET = async (req: Request, { params }: requestProps) => {
 
   }
   catch(err) {
-    return NextResponse.json({ error: "Something went wrong please try again later" }, { status: 500 })
+    return NextResponse.json({ error: "Something went wrong fetching your gallery cars please try again later" }, { status: 500 })
   }
   finally {
     await prisma.$disconnect()

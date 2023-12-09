@@ -1,0 +1,154 @@
+[
+  {
+    "id": 1,
+    "color_name": "Alpine White",
+    "color_code": "#E9E2D5"
+  },
+  {
+    "id": 2,
+    "color_name": "Oxford White",
+    "color_code": "#F1F3F1"
+  },
+  {
+    "id": 3,
+    "color_name": "Super White",
+    "color_code": "#FAFDFF"
+  },
+  {
+    "id": 4,
+    "color_name": "Pure White",
+    "color_code": "#FFFFFF"
+  },
+  {
+    "id": 5,
+    "color_name": "Summit White",
+    "color_code": "#F3F8EF"
+  },
+  {
+    "id": 6,
+    "color_name": "Celestial Silver Metallic",
+    "color_code": "#BFC0BF"
+  },
+  {
+    "id": 7,
+    "color_name": "Reflex Silver Metallic",
+    "color_code": "#CDD2D2"
+  },
+  {
+    "id": 8,
+    "color_name": "Silver Ice Metallic",
+    "color_code": "#D6D6D6"
+  },
+  {
+    "id": 9,
+    "color_name": "Steel Metallic",
+    "color_code": "#43464B"
+  },
+  {
+    "id": 10,
+    "color_name": "Silver Metallic",
+    "color_code": "#AAA9AD"
+  },
+  {
+    "id": 11,
+    "color_name": "Jet Black",
+    "color_code": "#343434"
+  },
+  {
+    "id": 12,
+    "color_name": "Shadow Black",
+    "color_code": "#0A0A0A"
+  },
+  {
+    "id": 13,
+    "color_name": "Midnight Black Metallic",
+    "color_code": "#1D1D1D"
+  },
+  {
+    "id": 14,
+    "color_name": "Crystal Black Pearl",
+    "color_code": "#1C1C1C"
+  },
+  {
+    "id": 15,
+    "color_name": "Deep Black Pearl",
+    "color_code": "#080C12"
+  },
+  {
+    "id": 16,
+    "color_name": "Black Metallic",
+    "color_code": "#2C2C2B"
+  },
+  {
+    "id": 17,
+    "color_name": "Pure Black",
+    "color_code": "#000000"
+  },
+  {
+    "id": 18,
+    "color_name": "Mineral Grey",
+    "color_code": "#BDBDBD"
+  },
+  {
+    "id": 19,
+    "color_name": "Magnetic",
+    "color_code": "#3C3D3E"
+  },
+  {
+    "id": 20,
+    "color_name": "Cherry Red",
+    "color_code": "#CC252C"
+  },
+  {
+    "id": 21,
+    "color_name": "Lava Red",
+    "color_code": "#F7342B"
+  },
+  {
+    "id": 22,
+    "color_name": "Hot Pink",
+    "color_code": "#FF69B4"
+  },
+  {
+    "id": 23,
+    "color_name": "Racing Green",
+    "color_code": "#004225"
+  },
+  {
+    "id": 24,
+    "color_name": "Lime Green",
+    "color_code": "#7AB226"
+  },
+  {
+    "id": 25,
+    "color_name": "Rich Electric Blue",
+    "color_code": "#0892D0"
+  },
+  {
+    "id": 26,
+    "color_name": "Sapphire Blue",
+    "color_code": "#263855"
+  },
+  {
+    "id": 27,
+    "color_name": "Deep Purple",
+    "color_code": "#570861"
+  },
+  {
+    "id": 28,
+    "color_name": "Tangerine",
+    "color_code": "#F28500"
+  },
+  {
+    "id": 29,
+    "color_name": "Sunset Orange",
+    "color_code": "#FD5E53"
+  },
+  {
+    "id": 30,
+    "color_name": "Golden Yellow",
+    "color_code": "#FFCB05"
+  }
+]
+
+
