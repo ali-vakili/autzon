@@ -34,7 +34,7 @@ import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/ui/textarea";
 
 import { useEffect, useState } from "react"
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils"
 
 import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
@@ -87,10 +87,12 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
   const [leftImageCount, setLeftImageCount] = useState<number>(3);
   const [selectedBrand , setSelectedBrand] = useState<{id:number, name: string, models: models[]}|null>(null);
 
+  const router = useRouter();
+
   const { mutate: createRentalCar, data, isLoading, isSuccess, isError, error }: createRentalCarHookType = useCreateRentalCar();
 
   useEffect(() => {
-    isSuccess === true && data?.message && (toast.success(data.message)) && redirect("/dashboard/cars");
+    isSuccess === true && data?.message && (toast.success(data.message)) && router.push("/dashboard/cars");
     isError === true && error && toast.error(error?.response.data.error);
   }, [isSuccess, isError])
 

@@ -83,6 +83,9 @@ export const GET = async (req: Request, { params }: requestProps) => {
           createdAt: true,
           updatedAt: true,
         },
+        orderBy: {
+          updatedAt: 'desc',
+        }
       }
     )
 

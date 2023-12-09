@@ -29,20 +29,19 @@ import {
 } from "@/components/ui/command"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox"
-import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/ui/textarea";
 
 import { useEffect, useState } from "react"
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils"
 
 import formatPrice from "@/helper/formatPrice";
 
 import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
 import { Car } from 'lucide-react';
-import { useUpdateSaleCar, updateSaleCarHookType } from "@/hooks/useUpdateSaleCar";
 
+import { useUpdateSaleCar, updateSaleCarHookType } from "@/hooks/useUpdateSaleCar";
 
 
 type models = {
@@ -132,6 +131,8 @@ const EditSaleCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories, c
   const [formattedPriceValue, setFormattedPriceValue] = useState<JSX.Element | null>(null);
   const [formattedMileageValue, setFormattedMileageValue] = useState<JSX.Element | null>(null);
 
+  const router = useRouter();
+
   const { id, title, model, model_id, car_seat_id, build_year_id, fuel_type_id, category_id, images, is_published, description } = carDetail;
 
   const { price, mileage, color_id } = saleCarDetail;
@@ -150,7 +151,7 @@ const EditSaleCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories, c
   }, [])
 
   useEffect(() => {
-    isSuccess === true && data?.message && (toast.success(data.message)) && redirect("/dashboard/cars");
+    isSuccess === true && data?.message && (toast.success(data.message)) && router.push("/dashboard/cars");
     isError === true && error && toast.error(error?.response.data.error);
   }, [isSuccess, isError])
 

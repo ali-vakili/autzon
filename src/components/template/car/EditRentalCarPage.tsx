@@ -34,11 +34,12 @@ import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/ui/textarea";
 
 import { useEffect, useState } from "react"
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils"
 
 import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
 import { Car } from 'lucide-react';
+
 import { useUpdateRentalCar, updateRentalCarHookType } from "@/hooks/useUpdateRentalCar";
 
 
@@ -125,6 +126,8 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
   const [deletedImagesId , setDeletedImagesId] = useState<string[]>([]);
   const [updatedImagesIdAndIndex , setUpdatedImagesIdAndIndex] = useState<{id: string, index: number}[]>([]);
 
+  const router = useRouter();
+
   const { id, title, model, model_id, car_seat_id, build_year_id, fuel_type_id, category_id, images, is_published, description } = carDetail;
 
   const { pick_up_place, drop_off_place, price_per_day, reservation_fee_percentage, extra_time, late_return_fee_per_hour } = rentalCarDetail;
@@ -143,7 +146,7 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
   }, [])
 
   useEffect(() => {
-    isSuccess === true && data?.message && (toast.success(data.message)) && redirect("/dashboard/cars");
+    isSuccess === true && data?.message && (toast.success(data.message)) && router.push("/dashboard/cars");
     isError === true && error && toast.error(error?.response.data.error);
   }, [isSuccess, isError])
 

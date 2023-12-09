@@ -33,7 +33,7 @@ import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/ui/textarea";
 
 import { useEffect, useState } from "react"
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils"
 
 import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
@@ -95,10 +95,12 @@ const AddSaleCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears
   const [formattedPriceValue, setFormattedPriceValue] = useState<JSX.Element | null>(null);
   const [formattedMileageValue, setFormattedMileageValue] = useState<JSX.Element | null>(null);
 
+  const router = useRouter();
+
   const { mutate: createSaleCar, data, isLoading, isSuccess, isError, error }: createSaleCarHookType = useCreateSaleCar();
 
   useEffect(() => {
-    isSuccess === true && data?.message && (toast.success(data.message)) && redirect("/dashboard/cars");
+    isSuccess === true && data?.message && (toast.success(data.message)) && router.push("/dashboard/cars");
     isError === true && error && toast.error(error?.response.data.error);
   }, [isSuccess, isError])
 
