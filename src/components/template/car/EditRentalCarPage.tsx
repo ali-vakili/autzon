@@ -237,6 +237,7 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
                   type="button"
                   variant="outline"
                   size="sm"
+                  disabled={isLoading}
                   className="text-gray-600 my-auto"
                   onClick={() => (ImagesUrlAppend({ imageUrl: "" }), setLeftImageCount(prev => prev - 1), ImagesFileAppend({ imageFile: null }))}
                 >

@@ -1,20 +1,39 @@
+"use client"
+
 import Link from "next/link";
 import Image from "next/image";
 import formatPrice from "@/helper/formatPrice";
+import DeleteDialog from "./DeleteDialog";
 import { Badge } from "@/components/ui/badge"
-import { buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
-import { FiUsers, FiEdit } from "react-icons/fi";
+import { FiUsers, FiEdit, FiTrash2, FiAlertOctagon } from "react-icons/fi";
 import { Fuel } from 'lucide-react';
 import { cn } from "@/lib/utils";
+
+import { useDeleteCar, deleteCarHookType } from "@/hooks/useDeleteCar";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 
 type viewTo = "AGENT" | "USER";
 
 
 type ImageBadgeProps = {
+  id: string;
   viewTo: viewTo;
+  title: string;
   isPublished?: boolean;
   for_rent: {
     id: string;
@@ -25,24 +44,63 @@ type ImageBadgeProps = {
     id: string;
     price: number;
   } | null;
+  refetchCarData : () => void;
 };
 
-const ImageBadge = ({ viewTo, isPublished, for_rent, for_sale }: ImageBadgeProps) => (
-  <div className="absolute right-2 bottom-2 z-20 space-x-1">
-    {viewTo === "AGENT" && (
-      isPublished ? (
-        <Badge variant="default">Published</Badge>
-      ) : (
-        <Badge variant="destructive">Unpublished</Badge>
-      )
-    )}
-    {for_rent && <Badge variant="outline" className="text-blue-500 bg-white border-blue-500">Rental</Badge>}
-    {for_sale && <Badge variant="outline" className="text-green-500 bg-white border-green-500">Sale</Badge>}
-  </div>
-);
+const useDialog = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openDialog = () => setIsOpen(true);
+  const closeDialog = () => setIsOpen(false);
+
+  return { isOpen, openDialog, closeDialog };
+};
+
+const ImageBadge = ({ id, title, viewTo, isPublished, for_rent, for_sale, refetchCarData }: ImageBadgeProps) => {
+  const { mutate: deleteCar, data, isSuccess, isLoading, isError, error }: deleteCarHookType = useDeleteCar();
+  const { isOpen, openDialog, closeDialog } = useDialog();
+
+  useEffect(() => {
+    if (isSuccess && data?.message) {
+      toast.success(data.message);
+      refetchCarData();
+      closeDialog();
+    } else if (isError && error) {
+      toast.error(error?.response.data.error);
+    }
+  }, [isSuccess, isError]);
+
+  return (
+    <>
+      <div className="absolute right-2 top-2 z-20">
+        <DeleteDialog
+          isOpen={isOpen}
+          closeDialog={closeDialog}
+          onDelete={() => deleteCar(id)}
+          openDialog={openDialog}
+          isLoading={isLoading}
+          title={title}
+          subText="Are you sure you want to delete the car?"
+        />
+      </div>
+      <div className="absolute right-2 bottom-2 z-20 space-x-1">
+        {viewTo === "AGENT" && (
+          isPublished ? (
+            <Badge variant="default">Published</Badge>
+          ) : (
+            <Badge variant="destructive">Unpublished</Badge>
+          )
+        )}
+        {for_rent && <Badge variant="outline" className="text-blue-500 bg-white border-blue-500">Rental</Badge>}
+        {for_sale && <Badge variant="outline" className="text-green-500 bg-white border-green-500">Sale</Badge>}
+      </div>
+    </>
+  )
+};
 
 
 type ImageSectionProps = {
+  id: string
   title: string
   images: {
     id: string;
@@ -59,11 +117,12 @@ type ImageSectionProps = {
     id: string;
     price: number;
   } | null;
+  refetchCarData : () => void;
 };
 
-const ImageSection = ({ title, images, viewTo, isPublished, for_rent, for_sale }: ImageSectionProps) => (
-  <div className="relative w-full h-40">
-    <ImageBadge viewTo={viewTo} isPublished={isPublished} for_rent={for_rent} for_sale={for_sale} />
+const ImageSection = ({ id, title, images, viewTo, isPublished, for_rent, for_sale, refetchCarData }: ImageSectionProps) => (
+  <div className="relative w-full min-h-[160px]">
+    <ImageBadge id={id} title={title} viewTo={viewTo} isPublished={isPublished} for_rent={for_rent} for_sale={for_sale} refetchCarData={refetchCarData}/>
     <Image src={images[0].url} quality={100} className="rounded-t-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images[0].url}/>
   </div>
 );
@@ -152,6 +211,7 @@ const EditLink = ({ viewTo, id, forCarLink }: EditLinkProps) => (
 type carCardPropType = {
   view_to: viewTo;
   forCard: "RENTAL" | "SALE" | "NONE";
+  refetchCarData : () => void;
   car: {
     id: string;
     title: string;
@@ -202,18 +262,20 @@ type carCardPropType = {
   }
 }
 
-const CarCard = ({ car, view_to, forCard }: carCardPropType) => {
+const CarCard = ({ car, view_to, forCard, refetchCarData }: carCardPropType) => {
   const { id, title, images, category, fuel_type, car_seat, for_rent, for_sale, is_published, is_car_rented, description } = car;
 
   return (
-    <div className={cn("relative flex flex-col justify-start h-fit max-h-[340px] w-full border bg-white rounded-md pb-2 space-y-2 overflow-hidden")}>
+    <div className={cn("relative flex flex-col justify-start h-fit w-full border bg-white rounded-md pb-2 space-y-2 overflow-hidden")}>
       <ImageSection
+        id={id}
         title={title}
         images={images}
         viewTo={view_to}
         isPublished={is_published}
         for_rent={for_rent}
         for_sale={for_sale}
+        refetchCarData = {refetchCarData}
       />
       
       {forCard === "RENTAL" && for_rent && (

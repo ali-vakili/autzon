@@ -42,7 +42,7 @@ export const DELETE = async (req: Request, { params }: requestProps) => {
 
   }
   catch(err) {
-    return NextResponse.json({ error: "Something went wrong please try again later" }, { status: 500 })
+    return NextResponse.json({ error: "Something went wrong when deleting account please try again later" }, { status: 500 })
   }
   finally {
     await prisma.$disconnect()

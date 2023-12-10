@@ -10,6 +10,8 @@ const emailSchema = z
   .min(1, "Email is required")
   .email();
 
+const phoneNumberRegex = /^(98\d{10}|9\d{8}|09\d{9}|\+98\d{10})$/;
+
 const phoneNumberSchema = z
   .string()
   .min(1, "Phone number is required")
@@ -18,7 +20,10 @@ const phoneNumberSchema = z
   .refine(
     (value) => /^\d+$/.test(value),
     "Phone number can only contain digits"
-  );
+  )
+  .refine((value) => phoneNumberRegex.test(value), {
+    message: "Invalid Mobile number format",
+  });
 
 const passwordSchema = z
   .string()

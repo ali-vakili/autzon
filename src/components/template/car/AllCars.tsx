@@ -109,6 +109,10 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
     isError === true && error && toast.error(error?.response.data.error);
   }, [data])
 
+  const refetchCarData = () => {
+    refetch();
+  }
+
   return (
     <div>
       <div className="h-full">
@@ -149,7 +153,7 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
                   carsData.map(car => (
                     <Dialog key={car.id}>
                       <DialogTrigger asChild>
-                        <CarCard car={car} view_to={AGENT} forCard={car.for_rent ? "RENTAL" : car.for_sale ? "SALE" : "NONE"}/>
+                        <CarCard car={car} view_to={AGENT} forCard={car.for_rent ? "RENTAL" : car.for_sale ? "SALE" : "NONE"} refetchCarData={refetchCarData}/>
                       </DialogTrigger>
                     </Dialog>
                   ))
@@ -184,7 +188,7 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
                 {carsData.filter(car => car.for_rent).length > 0 ? carsData.filter(car => car.for_rent).map(car => (
                   <Dialog key={car.id}>
                     <DialogTrigger asChild>
-                      <CarCard car={car} view_to={AGENT} forCard={"RENTAL"}/>
+                      <CarCard car={car} view_to={AGENT} forCard={"RENTAL"} refetchCarData={refetchCarData}/>
                     </DialogTrigger>
                   </Dialog> 
                 )) : (
@@ -216,7 +220,7 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
                 {carsData.filter(car => car.for_sale).length > 0 ? carsData.filter(car => car.for_sale).map(car => (
                   <Dialog key={car.id}>
                     <DialogTrigger asChild>
-                      <CarCard car={car} view_to={"AGENT"} forCard={"SALE"}/>
+                      <CarCard car={car} view_to={"AGENT"} forCard={"SALE"} refetchCarData={refetchCarData}/>
                     </DialogTrigger>
                   </Dialog> 
                 )) : (
