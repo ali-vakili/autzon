@@ -9,13 +9,14 @@ import { buttonVariants } from "../ui/button";
 import { Separator } from "@/components/ui/separator";
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 
-import { FiUsers, FiEdit, FiTrash2, FiAlertOctagon } from "react-icons/fi";
+import { FiUsers, FiEdit } from "react-icons/fi";
 import { Fuel } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 import { useDeleteCar, deleteCarHookType } from "@/hooks/useDeleteCar";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Button } from "@/ui/button";
 
 
 type viewTo = "AGENT" | "USER";
@@ -164,7 +165,7 @@ const SaleCarDetailsSection = ({ title, category, price, color }: SaleCarDetails
         </div>
         <h3 className="flex gap-1 items-center font-bold">{formattedValue}</h3>
       </div>
-      <div className="flex items-center px-2">
+      <div className="flex items-center px-2 !mt-3">
         <span className="w-4 h-4 rounded-full border border-muted me-1.5" style={{backgroundColor: `${color_code}`}}></span>
         <h5 className="text-muted-foreground text-xs">{color_name}</h5>
       </div>
@@ -190,13 +191,20 @@ type EditLinkProps = {
   viewTo: viewTo;
   id: string;
   forCarLink: string;
+  disabled: boolean
 };
 
-const EditLink = ({ viewTo, id, forCarLink }: EditLinkProps) => (
+const EditLink = ({ viewTo, id, forCarLink, disabled }: EditLinkProps) => (
   viewTo === 'AGENT' && (
-    <Link href={`/dashboard/cars/${forCarLink}/edit/${id}`} className={`${buttonVariants({ variant: 'default' })} !mt-4 mx-2`}>
-      <FiEdit size={16} className="me-1.5"/>Edit Car
-    </Link>
+    disabled ? (
+      <Button disabled className="!mt-4 mx-2">
+        <FiEdit size={16} className="me-1.5"/>Edit Car
+      </Button>
+    ) : (
+      <Link href={`/dashboard/cars/${forCarLink}/edit/${id}`} className={`${buttonVariants({ variant: 'default' })} !mt-4 mx-2`}>
+        <FiEdit size={16} className="me-1.5"/>Edit Car
+      </Link>
+    )
   )
 );
 
@@ -204,6 +212,7 @@ const EditLink = ({ viewTo, id, forCarLink }: EditLinkProps) => (
 type carCardPropType = {
   view_to: viewTo;
   forCard: "RENTAL" | "SALE" | "NONE";
+  isFetching: boolean;
   refetchCarData : () => void;
   car: {
     id: string;
@@ -255,7 +264,7 @@ type carCardPropType = {
   }
 }
 
-const CarCard = ({ car, view_to, forCard, refetchCarData }: carCardPropType) => {
+const CarCard = ({ car, view_to, forCard, isFetching, refetchCarData, }: carCardPropType) => {
   const { id, title, images, category, fuel_type, car_seat, for_rent, for_sale, is_published, is_car_rented, description } = car;
   return (
     <div className={cn("relative flex flex-col justify-start h-fit w-full border bg-white rounded-md pb-2 space-y-2 overflow-hidden")}>
@@ -287,7 +296,7 @@ const CarCard = ({ car, view_to, forCard, refetchCarData }: carCardPropType) => 
         />
       )}
 
-      {description && (<p className="text-xs text-muted-foreground w-full overflow-hidden overflow-ellipsis whitespace-nowrap h-5 !mt-3 px-2">{description}</p>)}
+      {description && (<p className="text-xs text-muted-foreground w-full overflow-hidden overflow-ellipsis whitespace-nowrap h-4 !mt-3 px-2">{description}</p>)}
 
       <Separator />
 
@@ -296,7 +305,7 @@ const CarCard = ({ car, view_to, forCard, refetchCarData }: carCardPropType) => 
         seatCount={car_seat.seats_count}
       />
 
-      <EditLink viewTo={view_to} id={id} forCarLink={forCard === "RENTAL" ? "rental" : forCard === "SALE" ? "sale" : ""}/>
+      <EditLink viewTo={view_to} id={id} disabled={isFetching} forCarLink={forCard === "RENTAL" ? "rental" : forCard === "SALE" ? "sale" : ""}/>
     </div>
   )
 }

@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { connectDB, prisma, validateSession } from "@/lib"
+import { Prisma } from '@prisma/client';
 
 
 type requestProps = {
@@ -8,7 +9,8 @@ type requestProps = {
   }
 }
 
-export const GET = async (req: Request, { params }: requestProps) => {
+export const GET = async (req: NextRequest, { params }: requestProps) => {
+  const searchParam = req.nextUrl.searchParams.get("order-by");
   try {
     connectDB();
 
@@ -31,6 +33,21 @@ export const GET = async (req: Request, { params }: requestProps) => {
         },
         { status: 404 }
       );
+    }
+
+    let orderByOption: Prisma.CarOrderByWithRelationInput;
+    switch (searchParam) {
+      case 'newest':
+        orderByOption = { createdAt: 'desc' };
+        break;
+      case 'oldest':
+        orderByOption = { createdAt: 'asc' };
+        break;
+      case 'last-updated':
+        orderByOption = { updatedAt: 'desc' };
+        break;
+      default:
+        orderByOption = { createdAt: 'desc' };
     }
 
     const car = await prisma.car.findMany(
@@ -83,9 +100,7 @@ export const GET = async (req: Request, { params }: requestProps) => {
           createdAt: true,
           updatedAt: true,
         },
-        orderBy: {
-          createdAt: 'desc',
-        }
+        orderBy: orderByOption
       }
     )
 
