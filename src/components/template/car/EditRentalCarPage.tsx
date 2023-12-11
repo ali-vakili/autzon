@@ -218,7 +218,7 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
   return (
     <>
       <h1 className="text-xl font-bold">Edit Rental Car - {title}</h1>
-      <div className="mt-4 px-10 py-8 bg-white rounded">
+      <div className="mt-4 md:px-10 px-5 py-8 bg-white rounded">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex items-center justify-between mb-2">
