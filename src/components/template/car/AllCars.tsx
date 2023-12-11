@@ -15,6 +15,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/ui/select"
+import {
   Tabs,
   TabsContent,
   TabsList,
@@ -140,7 +147,19 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
                 </div>
                 <Badge variant={"outline"} className="gap-2 text-base w-fit">{carsData.length} Cars</Badge>
               </div>
-              <Button onClick={() => refetch()} size="sm" variant={"outline"} type="button" disabled={isFetching} isLoading={isFetching} className="w-fit text-xs h-8" style={{ marginBottom: "24px" }}>{isFetching ? 'Refreshing' : <><FiRefreshCw className="me-1.5" />Refresh</>}</Button>
+              <div className="flex items-center justify-between mb-6">
+                <Button onClick={() => refetch()} size="sm" variant={"outline"} type="button" disabled={isFetching} isLoading={isFetching} className="w-fit text-xs h-8">{isFetching ? 'Refreshing' : <><FiRefreshCw className="me-1.5" />Refresh</>}</Button>
+                <Select defaultValue="newest" disabled={isFetching || (carsData.length > 0 ? false : true)}>
+                  <SelectTrigger className="ml-auto w-fit gap-3 rounded-full h-8 text-xs">
+                    <SelectValue placeholder="Select your gallery state" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">Newest</SelectItem>
+                    <SelectItem value="oldest">Oldest</SelectItem>
+                    <SelectItem value="last_updated">Last Updated</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <div className={`grid ${((carsData && carsData.length > 0) || isLoading) && 'grid-cols-[repeat(auto-fill,minmax(224px,1fr))]'} gap-3`}>
               {isLoading ? (
                 <>
@@ -151,11 +170,7 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
               ) : (
                 carsData && carsData.length > 0 ? (
                   carsData.map(car => (
-                    <Dialog key={car.id}>
-                      <DialogTrigger asChild>
-                        <CarCard car={car} view_to={AGENT} forCard={car.for_rent ? "RENTAL" : car.for_sale ? "SALE" : "NONE"} refetchCarData={refetchCarData}/>
-                      </DialogTrigger>
-                    </Dialog>
+                    <CarCard key={car.id} car={car} view_to={AGENT} forCard={car.for_rent ? "RENTAL" : car.for_sale ? "SALE" : "NONE"} refetchCarData={refetchCarData}/>
                   ))
                 ) : (
                   <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
@@ -222,6 +237,22 @@ const AllCars = ({ cars, gallery_id }: allCarsPropType) => {
                     <DialogTrigger asChild>
                       <CarCard car={car} view_to={"AGENT"} forCard={"SALE"} refetchCarData={refetchCarData}/>
                     </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px] gap-4">
+                    <DialogHeader>
+                      <DialogTitle>
+                        Car Details - {car.title}
+                      </DialogTitle>
+                    </DialogHeader>
+                    <DialogDescription className="rounded-md border py-4 px-6 flex space-x-4 items-start bg-red-200 border-destructive">
+                    </DialogDescription>
+                    <DialogFooter className="!mt-2">
+                      <DialogClose asChild>
+                        <Button type="button" variant="secondary" >
+                          Close
+                        </Button>
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
                   </Dialog> 
                 )) : (
                   <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">

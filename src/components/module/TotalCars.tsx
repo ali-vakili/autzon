@@ -19,7 +19,7 @@ type CarDetailsPropType = {
   }[]
 }
 
-const CarDetails = ({ cars }: CarDetailsPropType) => {
+const TotalCars = ({ cars }: CarDetailsPropType) => {
   return (
     <div className="bg-white w-full rounded p-5 space-y-4">
       <div className="flex items-center justify-between">
@@ -87,4 +87,4 @@ const CarDetails = ({ cars }: CarDetailsPropType) => {
   )
 }
 
-export default CarDetails
+export default TotalCars

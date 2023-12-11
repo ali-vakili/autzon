@@ -5,18 +5,9 @@ import Image from "next/image";
 import formatPrice from "@/helper/formatPrice";
 import DeleteDialog from "./DeleteDialog";
 import { Badge } from "@/components/ui/badge"
-import { Button, buttonVariants } from "../ui/button";
+import { buttonVariants } from "../ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
 
 import { FiUsers, FiEdit, FiTrash2, FiAlertOctagon } from "react-icons/fi";
 import { Fuel } from 'lucide-react';
@@ -121,9 +112,11 @@ type ImageSectionProps = {
 };
 
 const ImageSection = ({ id, title, images, viewTo, isPublished, for_rent, for_sale, refetchCarData }: ImageSectionProps) => (
-  <div className="relative w-full min-h-[160px]">
-    <ImageBadge id={id} title={title} viewTo={viewTo} isPublished={isPublished} for_rent={for_rent} for_sale={for_sale} refetchCarData={refetchCarData}/>
-    <Image src={images[0].url} quality={100} className="rounded-t-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images[0].url}/>
+  <div className="w-full min-h-[160px]">
+    <AspectRatio ratio={16 / 9} className="bg-muted">
+      <ImageBadge id={id} title={title} viewTo={viewTo} isPublished={isPublished} for_rent={for_rent} for_sale={for_sale} refetchCarData={refetchCarData}/>
+      <Image src={images[0].url} quality={100} className="rounded-t-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images[0].url}/>
+    </AspectRatio>
   </div>
 );
 
@@ -264,7 +257,6 @@ type carCardPropType = {
 
 const CarCard = ({ car, view_to, forCard, refetchCarData }: carCardPropType) => {
   const { id, title, images, category, fuel_type, car_seat, for_rent, for_sale, is_published, is_car_rented, description } = car;
-
   return (
     <div className={cn("relative flex flex-col justify-start h-fit w-full border bg-white rounded-md pb-2 space-y-2 overflow-hidden")}>
       <ImageSection

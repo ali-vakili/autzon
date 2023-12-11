@@ -20,7 +20,7 @@ const Navbar = () => {
   const isDashboardPage = pathname.startsWith("/dashboard");
 
   return (
-    <header className="w-100 relative bg-background border-b">
+    <header className={`w-100 ${isDashboardPage && '!fixed top-0 z-10 w-full'} relative bg-background border-b`}>
       <nav className={`grid ${isDashboardPage ? 'grid-cols-2' : 'grid-cols-3'} p-4 items-center`}>
         <div className="flex items-center gap-4 w-fit">
           <Link href={"/"}>

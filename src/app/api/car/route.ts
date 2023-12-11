@@ -55,6 +55,9 @@ export const GET = async () => {
           createdAt: true,
           updatedAt: true,
         },
+        orderBy: {
+          createdAt: "desc"
+        }
       }
     )
 

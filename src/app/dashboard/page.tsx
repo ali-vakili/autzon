@@ -5,7 +5,7 @@ import { prisma } from '@/lib';
 import { Suspense } from 'react';
 import DashboardSkeletonLoading from '@/components/module/DashboardSkeletonLoading';
 import CreateGalleyWarning from '@/components/module/CreateGalleyWarning';
-import CarDetails from '@/components/module/CarDetails';
+import TotalCars from '@/components/module/TotalCars';
 
 import type { Metadata } from 'next'
 
@@ -53,7 +53,7 @@ export default async function Home() {
   return (
     <div className="z-10 mx-auto">
       <Suspense fallback={<DashboardSkeletonLoading />}>
-        <CarDetails cars={cars}/>
+        <TotalCars cars={cars}/>
       </Suspense>
     </div>
   )

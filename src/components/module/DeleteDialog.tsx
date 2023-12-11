@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button";
 import { FiAlertOctagon, FiTrash2 } from "react-icons/fi";
-import { is } from "date-fns/locale";
 
 
 
@@ -35,7 +34,8 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({ isOpen, closeDialog, onDele
       <DialogContent className="sm:max-w-[425px] gap-4">
         <DialogHeader>
           <DialogTitle>
-            Confirm deletion of - {title}
+            Confirm deletion of
+            <span className="text-muted-foreground"> {title}</span>
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="rounded-md border py-4 px-6 flex space-x-4 items-start bg-red-200 border-destructive">

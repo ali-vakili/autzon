@@ -77,7 +77,7 @@ export default async function Home() {
       updatedAt: true,
     },
     orderBy: {
-      updatedAt: 'desc',
+      createdAt: 'desc',
     }
   })
 
