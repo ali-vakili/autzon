@@ -56,6 +56,8 @@ export const GET = async (req: NextRequest, { params }: requestProps) => {
         select: {
           id: true,
           title: true,
+          model_id: true,
+          build_year_id: true,
           fuel_type: {
             select: {
               id: true,

@@ -45,6 +45,7 @@ import Seats from "@/components/module/filters/Seats";
 import FuelType from "@/components/module/filters/FuelType";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Published from "@/components/module/filters/Published";
+import Unpublished from "@/components/module/filters/Unpublished";
 
 
 
@@ -147,6 +148,8 @@ type allCarsPropType = {
 }
 
 export type filterOptionsType = {
+  published: boolean,
+  unpublished: boolean,
   buildYearId: string;
   model_id: string;
   category_id: string;
@@ -169,6 +172,8 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
   const [carsData, setCarsData] = useState<cars[]>(cars);
   const [searchParam, setSearchParam] = useState<string>("newest");
   const [filterOptions, setFilterOptions] = useState<filterOptionsType>({
+    published: true,
+    unpublished: false,
     buildYearId: "",
     category_id: "",
     color_id: "",
@@ -177,13 +182,13 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
     fuel_type_id: "",
   });
 
-  const { data, isSuccess, isLoading, isFetching, isError, error, refetch } = useGetGalleryCars(gallery_id, searchParam);
+  const { data: carsFromApi, isSuccess, isLoading, isFetching, isError, error, refetch } = useGetGalleryCars(gallery_id, searchParam);
 
   useEffect(() => {
-    isSuccess && setCarsData(data.data);
+    isSuccess && setCarsData(carsFromApi.data);
     //@ts-ignore
     isError === true && error && toast.error(error?.response.data.error);
-  }, [data])
+  }, [carsFromApi])
 
   const refetchCarData = () => {
     refetch();
@@ -191,6 +196,8 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
 
   const resetFilters = () => {
     setFilterOptions({
+      published: true,
+      unpublished: false,
       buildYearId: "",
       category_id: "",
       color_id: "",
@@ -198,7 +205,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
       care_seats_id: "",
       fuel_type_id: "",
     });
-    setCarsData(data.data);
+    setCarsData(carsFromApi.data);
   }
 
   useEffect(() => {
@@ -206,9 +213,10 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
   },[searchParam])
 
   useEffect(() => {
-    console.log(data);
-    const filteredCars = data ? data.data.filter((car: any) => {
+    const filteredCars = carsFromApi && carsFromApi.data.length > 0 ? carsFromApi.data.filter((car: any) => {
       return (
+        (filterOptions.published || car.is_published === filterOptions.published) &&
+        (!filterOptions.unpublished || car.is_published === filterOptions.unpublished) &&
         (!filterOptions.buildYearId || car.build_year_id === Number(filterOptions.buildYearId)) &&
         (!filterOptions.category_id || car.category.id === Number(filterOptions.category_id)) &&
         (!filterOptions.color_id || (car.for_sale && car.for_sale.color.id === Number(filterOptions.color_id))) &&
@@ -219,7 +227,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
     }) : cars;
 
     setCarsData(filteredCars);
-  }, [filterOptions, data]);
+  }, [filterOptions, carsFromApi]);
 
   return (
     <Tabs defaultValue="all_cars" className="h-full space-y-6">
@@ -340,14 +348,15 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
             )}
           </div>
         </TabsContent>
-        <div className="lg:flex flex-col sticky top-6 hidden col-span-1 max-w-xs bg-white rounded-md py-5 mt-2">
+        <div className="lg:flex flex-col sticky top-5 hidden col-span-1 max-w-xs bg-white rounded-md py-5 mt-2">
           <div className="flex items-center justify-between mb-5 px-5">
             <h2 className="flex items-center text-sm font-semibold text-muted-foreground self-start"><FiFilter size={28} className="bg-gray-100 rounded p-1.5 me-1.5"/> Filter by</h2>
             <Button variant={"ghost"} size={"icon"} className="h-8 w-8" onClick={resetFilters}><FiRotateCw size={16}/></Button>
           </div>
           <ScrollArea className="h-96">
             <div className="space-y-3 px-5 py-3">
-              <Published />
+              <Published defaultValue={filterOptions.published} setFilterOptions={setFilterOptions}/>
+              <Unpublished defaultValue={filterOptions.unpublished} setFilterOptions={setFilterOptions}/>
               <BuildYear buildYears={buildYears} defaultValue={filterOptions.buildYearId} setFilterOptions={setFilterOptions}/>
               <Category categories={categories} defaultValue={filterOptions.category_id} setFilterOptions={setFilterOptions}/>
               <Color colors={colors} defaultValue={filterOptions.color_id} setFilterOptions={setFilterOptions}/>

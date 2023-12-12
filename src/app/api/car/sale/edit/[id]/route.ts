@@ -44,8 +44,6 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
       formDataObject.imagesFile = parsedImagesFile as any;
     }
 
-    console.log(formDataObject);
-
     const validData = AddAndUpdateSaleCarSchema.safeParse(formDataObject);
     if (!validData.success) {
       const zodError = new ZodError(validData.error.errors);

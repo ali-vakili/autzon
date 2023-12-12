@@ -3,35 +3,35 @@ import { Dispatch, SetStateAction } from "react";
 import { filterOptionsType } from "@/components/template/car/AllCars";
 
 
-type publishedPropType = {
+type unpublishedPropType = {
   defaultValue: boolean;
   setFilterOptions: Dispatch<SetStateAction<filterOptionsType>>
 }
 
-const Published = ({ defaultValue, setFilterOptions }: publishedPropType) => {
-  const handlePublishedChange = (checkValue: boolean) => {
+const Unpublished = ({ defaultValue, setFilterOptions }: unpublishedPropType) => {
+  const handleUnpublishedChange = (checkValue: boolean) => {
     setFilterOptions((prevOptions) => ({
       ...prevOptions,
-      published: checkValue,
+      unpublished: !checkValue,
     }));
   };
 
   return (
     <div className="items-top flex space-x-2">
-      <Checkbox checked={defaultValue} onCheckedChange={(value) => handlePublishedChange(!!value)}/>
+      <Checkbox checked={!defaultValue} onCheckedChange={(value) => handleUnpublishedChange(!!value)}/>
       <div className="grid gap-1.5 leading-none">
         <label
           htmlFor="terms1"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
-          Published
+          Unpublished
         </label>
         <p className="text-sm text-muted-foreground">
-          Cars that you have published.
+          Cars that you have not published.
         </p>
       </div>
     </div>
   )
 }
 
-export default Published
+export default Unpublished
