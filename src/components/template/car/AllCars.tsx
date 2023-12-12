@@ -198,6 +198,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
       care_seats_id: "",
       fuel_type_id: "",
     });
+    setCarsData(data.data);
   }
 
   useEffect(() => {
@@ -205,7 +206,8 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
   },[searchParam])
 
   useEffect(() => {
-    const filteredCars = cars.filter((car) => {
+    console.log(data);
+    const filteredCars = data ? data.data.filter((car: any) => {
       return (
         (!filterOptions.buildYearId || car.build_year_id === Number(filterOptions.buildYearId)) &&
         (!filterOptions.category_id || car.category.id === Number(filterOptions.category_id)) &&
@@ -214,10 +216,10 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
         (!filterOptions.care_seats_id || car.car_seat.id === Number(filterOptions.care_seats_id)) &&
         (!filterOptions.fuel_type_id || car.fuel_type.id === Number(filterOptions.fuel_type_id))
       );
-    });
+    }) : cars;
 
     setCarsData(filteredCars);
-  }, [filterOptions]);
+  }, [filterOptions, data]);
 
   return (
     <Tabs defaultValue="all_cars" className="h-full space-y-6">
@@ -274,8 +276,8 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
                 <h3 className="text-lg font-semibold">You don't have any cars to show</h3>
                 <h4 className="text-sm font-medium">Add one</h4>
                 <div className="space-x-2">
-                  <Link href={"/dashboard/cars/rental/create"} className={`${buttonVariants({ variant:"secondary" })} !text-blue-500`}><FiPlus size={16} className="me-1.5"/>Add rental car</Link>
-                  <Link href={"/dashboard/cars/sale/create"} className={`${buttonVariants({ variant:"secondary" })} !text-green-500`}><FiPlus size={16} className="me-1.5"/>Add sale car</Link>
+                  <Link href={"/dashboard/cars/rental/create"} className={`${buttonVariants({ variant:"secondary" })} !text-blue-600`}><FiPlus size={16} className="me-1.5"/>Add rental car</Link>
+                  <Link href={"/dashboard/cars/sale/create"} className={`${buttonVariants({ variant:"secondary" })} !text-green-600`}><FiPlus size={16} className="me-1.5"/>Add sale car</Link>
                 </div>
               </div>
             )
@@ -295,7 +297,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
             </div>
             <Badge variant={"outline"} className="gap-2 text-base">{carsData.filter(car => car.for_rent).length} Cars</Badge>
           </div>
-          <Button onClick={() => refetch()} size="sm" variant={"outline"} type="button" disabled={isFetching} isLoading={isFetching} className="w-fit text-xs h-8" style={{ marginBottom: "24px" }}>{isFetching ? 'Refreshing' : <><FiRefreshCw className="me-1.5" />Refresh</>}</Button>
+          <Button onClick={refetchCarData} size="sm" variant={"outline"} type="button" disabled={isFetching} isLoading={isFetching} className="w-fit text-xs h-8" style={{ marginBottom: "24px" }}>{isFetching ? 'Refreshing' : <><FiRefreshCw className="me-1.5" />Refresh</>}</Button>
           <div className={cn('grid gap-3', {'grid-cols-[repeat(auto-fill,minmax(224px,1fr))]': hasCarsForRent})}>
             {carsData.filter(car => car.for_rent).length > 0 ? carsData.filter(car => car.for_rent).map(car => (
               <CarCard key={car.id} car={car} view_to={AGENT} forCard={"RENTAL"} refetchCarData={refetchCarData} isFetching={isFetching}/>
@@ -304,7 +306,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
                 <h3 className="text-lg font-semibold">You don't have any rental cars to show</h3>
                 <h4 className="text-sm font-medium">Add one</h4>
                 <div className="space-x-2">
-                  <Link href={"/dashboard/cars/rental/create"} className={`${buttonVariants({ variant:"secondary" })} !text-blue-500`}><FiPlus size={16} className="me-1.5"/>Add rental car</Link>
+                  <Link href={"/dashboard/cars/rental/create"} className={`${buttonVariants({ variant:"secondary" })} !text-blue-600`}><FiPlus size={16} className="me-1.5"/>Add rental car</Link>
                 </div>
               </div>
             )}
@@ -332,13 +334,13 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
                 <h3 className="text-lg font-semibold">You don't have any sale cars to show</h3>
                 <h4 className="text-sm font-medium">Add one</h4>
                 <div className="space-x-2">
-                  <Link href={"/dashboard/cars/sale/create"} className={`${buttonVariants({ variant:"secondary" })} !text-green-500`}><FiPlus size={16} className="me-1.5"/>Add sale car</Link>
+                  <Link href={"/dashboard/cars/sale/create"} className={`${buttonVariants({ variant:"secondary" })} !text-green-600`}><FiPlus size={16} className="me-1.5"/>Add sale car</Link>
                 </div>
               </div>
             )}
           </div>
         </TabsContent>
-        <div className="lg:flex flex-col sticky top-24 hidden col-span-1 max-w-xs bg-white rounded-md py-5 mt-2">
+        <div className="lg:flex flex-col sticky top-6 hidden col-span-1 max-w-xs bg-white rounded-md py-5 mt-2">
           <div className="flex items-center justify-between mb-5 px-5">
             <h2 className="flex items-center text-sm font-semibold text-muted-foreground self-start"><FiFilter size={28} className="bg-gray-100 rounded p-1.5 me-1.5"/> Filter by</h2>
             <Button variant={"ghost"} size={"icon"} className="h-8 w-8" onClick={resetFilters}><FiRotateCw size={16}/></Button>

@@ -50,7 +50,7 @@ export const GET = async (req: NextRequest, { params }: requestProps) => {
         orderByOption = { createdAt: 'desc' };
     }
 
-    const car = await prisma.car.findMany(
+    const cars = await prisma.car.findMany(
       {
         where: { gallery_id: gallery.id },
         select: {
@@ -71,6 +71,7 @@ export const GET = async (req: NextRequest, { params }: requestProps) => {
           },
           car_seat:{
             select: {
+              id: true,
               seats_count: true
             }
           },
@@ -106,7 +107,7 @@ export const GET = async (req: NextRequest, { params }: requestProps) => {
 
     return NextResponse.json(
       {
-        data: car
+        data: cars
       },
       { status: 200 }
     )

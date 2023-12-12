@@ -25,11 +25,11 @@ const TotalCars = ({ cars }: CarDetailsPropType) => {
       <div className="flex items-center justify-between">
         <h2 className="flex items-center font-semibold w-fit"><Car className="bg-gray-100 rounded p-1.5 me-1.5" size={36}/>Cars</h2>
         <div className="space-x-2">
-          <Link href={"/dashboard/cars/rental/create"} className={`${buttonVariants({ variant: "outline", size: "sm" })} text-blue-500`}>
+          <Link href={"/dashboard/cars/rental/create"} className={`${buttonVariants({ variant: "outline", size: "sm" })} text-blue-600`}>
             <FiPlus size={16} className="me-1.5"/>
             Add a rental car
           </Link>
-          <Link href={"/dashboard/cars/sale/create"} className={`${buttonVariants({ variant: "outline", size: "sm" })} text-green-500`}>
+          <Link href={"/dashboard/cars/sale/create"} className={`${buttonVariants({ variant: "outline", size: "sm" })} text-green-600`}>
             <FiPlus size={16} className="me-1.5"/>
             Add a sale car
           </Link>
@@ -53,7 +53,7 @@ const TotalCars = ({ cars }: CarDetailsPropType) => {
           </div>
         </div>
         <div className="flex flex-col flex-grow border p-4 rounded-md">
-          <h4 className="text-lg font-semibold w-fit text-blue-500">Rental</h4>
+          <h4 className="text-lg font-semibold w-fit text-blue-600">Rental</h4>
           <p className="text-sm text-muted-foreground w-fit max-w-[240px] mb-4">Your Rental cars count, published and unpublished</p>
           <div className='flex items-center justify-between gap-4'>
             <div className='flex-grow'>
@@ -68,7 +68,7 @@ const TotalCars = ({ cars }: CarDetailsPropType) => {
           </div>
         </div>
         <div className="flex flex-col flex-grow border p-4 rounded-md">
-          <h4 className="text-lg font-semibold w-fit text-green-500">Sales</h4>
+          <h4 className="text-lg font-semibold w-fit text-green-600">Sales</h4>
           <p className="text-sm text-muted-foreground w-fit max-w-[240px] mb-4">Your Sales cars count, published and unpublished</p>
           <div className='flex items-center justify-between gap-4'>
             <div className='flex-grow'>

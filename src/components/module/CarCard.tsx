@@ -83,8 +83,8 @@ const ImageBadge = ({ id, title, viewTo, isPublished, for_rent, for_sale, refetc
             <Badge variant="destructive">Unpublished</Badge>
           )
         )}
-        {for_rent && <Badge variant="outline" className="text-blue-500 bg-white border-blue-500">Rental</Badge>}
-        {for_sale && <Badge variant="outline" className="text-green-500 bg-white border-green-500">Sale</Badge>}
+        {for_rent && <Badge variant="outline" className="text-white bg-blue-600 border-blue-700">Rental</Badge>}
+        {for_sale && <Badge variant="outline" className="text-white bg-green-600 border-green-700">Sale</Badge>}
       </div>
     </>
   )

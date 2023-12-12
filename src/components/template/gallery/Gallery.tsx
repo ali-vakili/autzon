@@ -144,11 +144,11 @@ const Gallery = ({ gallery, agent }: galleryPropType) => {
               <h5 className="text-3xl ms-auto w-fit">{cars.length}</h5>
             </div>
             <div className="space-y-2 flex-grow border rounded-md p-4">
-              <h4 className="text-sm font-semibold text-blue-500">Rental</h4>
+              <h4 className="text-sm font-semibold text-blue-600">Rental</h4>
               <h5 className="text-3xl ms-auto w-fit">{cars.filter(car => car.for_rent).length}</h5>
             </div>
             <div className="space-y-2 flex-grow border rounded-md p-4">
-              <h4 className="text-sm font-semibold text-green-500">Sale</h4>
+              <h4 className="text-sm font-semibold text-green-600">Sale</h4>
               <h5 className="text-3xl ms-auto w-fit">{cars.filter(car => car.for_sale).length}</h5>
             </div>
           </div>
