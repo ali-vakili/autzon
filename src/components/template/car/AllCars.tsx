@@ -5,16 +5,6 @@ import CarCard from "@/components/module/CarCard";
 import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -29,7 +19,6 @@ import {
 } from "@/components/ui/tabs"
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { cn } from "@/lib/utils";
 import { AGENT } from "@/constants/roles";
 
 import { useGetGalleryCars } from "@/hooks/useGetGalleryCars";
@@ -37,15 +26,8 @@ import { useGetGalleryCars } from "@/hooks/useGetGalleryCars";
 import { FiFilter, FiPlus, FiRefreshCw, FiRotateCw  } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import BuildYear from "@/components/module/filters/BuildYear";
-import Category from "@/components/module/filters/Category";
-import Color from "@/components/module/filters/Color";
-import Model from "@/components/module/filters/Model";
-import Seats from "@/components/module/filters/Seats";
-import FuelType from "@/components/module/filters/FuelType";
+import { BuildYear, Category, Color, Model, Seats, FuelType, Published, Unpublished } from "@/components/module/filters";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Published from "@/components/module/filters/Published";
-import Unpublished from "@/components/module/filters/Unpublished";
 
 
 
@@ -167,10 +149,10 @@ const hasNonNullProperty = <T extends Record<string, any>, K extends keyof T>(
 };
 
 const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fuelTypes, carSeats, colors }: allCarsPropType) => {
-  const hasCarsForRent = hasNonNullProperty(cars, 'for_rent');
-  const hasCarsForSale = hasNonNullProperty(cars, 'for_sale');
   const [carsData, setCarsData] = useState<cars[]>(cars);
   const [searchParam, setSearchParam] = useState<string>("newest");
+  const hasCarsForRent = hasNonNullProperty(carsData, 'for_rent');
+  const hasCarsForSale = hasNonNullProperty(carsData, 'for_sale');
   const [filterOptions, setFilterOptions] = useState<filterOptionsType>({
     published: true,
     unpublished: false,
@@ -279,7 +261,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
               carsData.map(car => (
                 <CarCard key={car.id} car={car} view_to={AGENT} forCard={car.for_rent ? "RENTAL" : car.for_sale ? "SALE" : "NONE"} isFetching={isFetching} refetchCarData={refetchCarData}/>
               ))
-            ) : (
+            ) : cars.length === 0 ? (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
                 <h3 className="text-lg font-semibold">You don't have any cars to show</h3>
                 <h4 className="text-sm font-medium">Add one</h4>
@@ -287,6 +269,11 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
                   <Link href={"/dashboard/cars/rental/create"} className={`${buttonVariants({ variant:"secondary" })} !text-blue-600`}><FiPlus size={16} className="me-1.5"/>Add rental car</Link>
                   <Link href={"/dashboard/cars/sale/create"} className={`${buttonVariants({ variant:"secondary" })} !text-green-600`}><FiPlus size={16} className="me-1.5"/>Add sale car</Link>
                 </div>
+              </div>
+            ) : (
+              <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">
+                <h3 className="text-lg font-semibold">Couldn't find any car!</h3>
+                <h4 className="text-sm font-medium">Try to change your filters</h4>
               </div>
             )
           )}
@@ -305,17 +292,34 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
             </div>
             <Badge variant={"outline"} className="gap-2 text-base">{carsData.filter(car => car.for_rent).length} Cars</Badge>
           </div>
-          <Button onClick={refetchCarData} size="sm" variant={"outline"} type="button" disabled={isFetching} isLoading={isFetching} className="w-fit text-xs h-8" style={{ marginBottom: "24px" }}>{isFetching ? 'Refreshing' : <><FiRefreshCw className="me-1.5" />Refresh</>}</Button>
-          <div className={cn('grid gap-3', {'grid-cols-[repeat(auto-fill,minmax(224px,1fr))]': hasCarsForRent})}>
+          <div className="flex items-center justify-between mb-6">
+            <Button onClick={() => refetch()} size="sm" variant={"outline"} type="button" disabled={isFetching} isLoading={isFetching} className="w-fit text-xs h-8">{isFetching ? 'Refreshing' : <><FiRefreshCw className="me-1.5" />Refresh</>}</Button>
+            <Select defaultValue="newest" value={searchParam} onValueChange={(param) => setSearchParam(param)} disabled={isFetching || (carsData.length > 0 ? false : true)}>
+              <SelectTrigger className="ml-auto w-fit gap-3 rounded-full h-8 text-xs">
+                <SelectValue placeholder="Select your gallery state" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest</SelectItem>
+                <SelectItem value="oldest">Oldest</SelectItem>
+                <SelectItem value="last-updated">Last Updated</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className={`grid ${(hasCarsForRent || isLoading) && 'grid-cols-[repeat(auto-fill,minmax(224px,1fr))]'} gap-3`}>
             {carsData.filter(car => car.for_rent).length > 0 ? carsData.filter(car => car.for_rent).map(car => (
               <CarCard key={car.id} car={car} view_to={AGENT} forCard={"RENTAL"} refetchCarData={refetchCarData} isFetching={isFetching}/>
-            )) : (
+            )) : cars.length === 0 ? (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
                 <h3 className="text-lg font-semibold">You don't have any rental cars to show</h3>
                 <h4 className="text-sm font-medium">Add one</h4>
                 <div className="space-x-2">
                   <Link href={"/dashboard/cars/rental/create"} className={`${buttonVariants({ variant:"secondary" })} !text-blue-600`}><FiPlus size={16} className="me-1.5"/>Add rental car</Link>
                 </div>
+              </div>
+            ) : (
+              <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">
+                <h3 className="text-lg font-semibold">Couldn't find any car!</h3>
+                <h4 className="text-sm font-medium">Try to change your filters</h4>
               </div>
             )}
           </div>
@@ -333,17 +337,34 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
             </div>
             <Badge variant={"outline"} className="gap-2 text-base">{carsData.filter(car => car.for_sale).length} Cars</Badge>
           </div>
-          <Button onClick={() => refetch()} size="sm" variant={"outline"} type="button" disabled={isFetching} isLoading={isFetching} className="w-fit text-xs h-8" style={{ marginBottom: "24px" }}>{isFetching ? 'Refreshing' : <><FiRefreshCw className="me-1.5" />Refresh</>}</Button>
-          <div className={cn('grid gap-3', {'grid-cols-[repeat(auto-fill,minmax(224px,1fr))]': hasCarsForSale})}>
+          <div className="flex items-center justify-between mb-6">
+            <Button onClick={() => refetch()} size="sm" variant={"outline"} type="button" disabled={isFetching} isLoading={isFetching} className="w-fit text-xs h-8">{isFetching ? 'Refreshing' : <><FiRefreshCw className="me-1.5" />Refresh</>}</Button>
+            <Select defaultValue="newest" value={searchParam} onValueChange={(param) => setSearchParam(param)} disabled={isFetching || (carsData.length > 0 ? false : true)}>
+              <SelectTrigger className="ml-auto w-fit gap-3 rounded-full h-8 text-xs">
+                <SelectValue placeholder="Select your gallery state" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest</SelectItem>
+                <SelectItem value="oldest">Oldest</SelectItem>
+                <SelectItem value="last-updated">Last Updated</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className={`grid ${(hasCarsForSale || isLoading) && 'grid-cols-[repeat(auto-fill,minmax(224px,1fr))]'} gap-3`}>
             {carsData.filter(car => car.for_sale).length > 0 ? carsData.filter(car => car.for_sale).map(car => (
               <CarCard key={car.id} car={car} view_to={"AGENT"} forCard={"SALE"} refetchCarData={refetchCarData} isFetching={isFetching}/>
-            )) : (
+            )) : cars.length === 0 ? (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
                 <h3 className="text-lg font-semibold">You don't have any sale cars to show</h3>
                 <h4 className="text-sm font-medium">Add one</h4>
                 <div className="space-x-2">
                   <Link href={"/dashboard/cars/sale/create"} className={`${buttonVariants({ variant:"secondary" })} !text-green-600`}><FiPlus size={16} className="me-1.5"/>Add sale car</Link>
                 </div>
+              </div>
+            ) : (
+              <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">
+                <h3 className="text-lg font-semibold">Couldn't find any car!</h3>
+                <h4 className="text-sm font-medium">Try to change your filters</h4>
               </div>
             )}
           </div>
