@@ -97,7 +97,7 @@ const SignIn = () => {
           autzon
         </div>
         <div className="relative z-20 mt-auto">
-          <div className="absolute select-none -top-12 -left-4">
+          <div className="absolute select-none -top-10 -left-4">
             <span className="text-[160px] leading-none text-muted-foreground/30">“</span>
           </div>
           <div className="!backdrop-blur-sm bg-white/95 shadow-lg rounded-xl supports-[backdrop-filter]:bg-white/10 p-4">

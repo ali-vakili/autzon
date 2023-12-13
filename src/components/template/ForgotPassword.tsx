@@ -1,10 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { Button } from "@/ui/button"
 import { AxiosError } from "axios"
 import { useEffect, useState } from "react"
 
+import { Button } from "@/ui/button"
 import {
   Form,
   FormControl,
@@ -20,14 +20,15 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { ForgotPasswordSchema, ForgotPasswordSchemaType } from "@/validation/validations"
 import { useForgotPassword } from "@/hooks/useForgotPassword";
 
-import { FiCheckCircle, FiInfo } from "react-icons/fi";
+import { FiArrowLeft, FiCheckCircle, FiInfo } from "react-icons/fi";
 
 import { useSession } from "next-auth/react"
-import { redirect } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 
 
 const ForgotPassword = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const router = useRouter();
 
   const { data } = useSession();
   if (data?.user) {
@@ -60,8 +61,9 @@ const ForgotPassword = () => {
 
   return (
     <div className="flex flex-col flex-1 items-center flex-shrink-0 px-5">
-      <div className="flex flex-col flex-1 max-w-sm mt-16">
-        <h1 className="mt-8 mb-2 text-2xl font-semibold">Reset Your Password</h1>
+      <div className="flex flex-col flex-1 max-w-sm mt-14">
+        <Button onClick={router.back} variant={"link"} size={"sm"} className="w-fit p-0"><FiArrowLeft size={24} className="me-1.5"/>Back</Button>
+        <h1 className="mt-4 mb-2 text-2xl font-semibold">Reset Your Password</h1>
         <h2 className="text-sm text-foreground-light mb-10">Type in your email and we'll send you a link to reset your password</h2>
         {isError && (
           <div className="w-full bg-destructive/80 rounded mb-3">
