@@ -85,7 +85,7 @@ const SignUpUser = () => {
               <p className="text-2xl">
                 &ldquo;With autzon's, renting a car from this auto gallery feels effortless, promising a smooth experience and top-notch service as a customer..&rdquo;
               </p>
-              <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://supabase.com/images/twitter-profiles/6f1O8ZOW_400x400.jpg'} width={48} height={48} alt="user" className="rounded-full me-3"/><h5 className="font-semibold">louis barclay</h5></footer>
+              <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://i.pravatar.cc/400?img=52'} width={48} height={48} alt="user" className="rounded-full me-3"/><h5 className="font-semibold">louis barclay</h5></footer>
             </blockquote>
           </div>
         </div>
