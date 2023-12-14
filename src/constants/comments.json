@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "author": "John Davis",
+    "image": "https://supabase.com/images/twitter-profiles/66VSV9Mm_400x400.png",
+    "comment": "autzon has saved me countless hours of work and helped me managing my auto gallery to have work with amazing clients better than ever before"
+  },
+  {
+    "id": 2,
+    "author": "Frank Ravin",
+    "image": "https://randomuser.me/api/portraits/men/33.jpg",
+    "comment": "Thanks to autzon, renting a car from this gallery is a breeze, promising not just a vehicle but a seamless, customer-focused experience that's truly exceptional"
+  },
+  {
+    "id": 3,
+    "author": "louis barclay",
+    "image": "https://supabase.com/images/twitter-profiles/6f1O8ZOW_400x400.jpg",
+    "comment": "With autzon's, renting a car from this auto gallery feels effortless, promising a smooth experience and top-notch service as a customer"
+  }
+]

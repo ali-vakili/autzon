@@ -1,11 +1,24 @@
 import Link from "next/link"
+import Image from "next/image";
+import Marquee from "react-fast-marquee";
 import { buttonVariants } from "../ui/button"
 import { FiArrowRight } from "react-icons/fi";
+import audiLogo from "../../../public/audi-logo.svg"
+import bmwLogo from "../../../public/bmw-logo.svg"
+import ferrariLogo from "../../../public/ferrari-logo.svg"
+import lamborghiniLogo from "../../../public/lamborghini-logo.svg"
+import mercedesBenzLogo from "../../../public/mercedes-benz-logo.svg"
+import nissanNextLogo from "../../../public/nissan-next-logo.svg"
+import renaultLogo from "../../../public/renault-logo.svg"
+import teslaLogo from "../../../public/tesla-logo.svg"
+import volkswagenLogo from "../../../public/volkswagen-logo.svg"
+import quote from "../../../public/quote.svg"
+import comments from "@/constants/comments.json"
 
 const Landing = () => {
   return (
     <>
-      <section id="hero" className="grid grid-cols-2 md:grid-cols-12 min-h-[480px] items-center container px-4">
+      <section id="hero" className="grid grid-cols-2 md:grid-cols-12 desktop:min-h-[540px] min-h-[480px] items-center container px-4">
         <div className="space-y-3 md:col-start-2 md:col-span-5 col-span-1">
           <h1 className="text-4xl md:text-5xl font-bold" style={{lineHeight: "1.2"}}>Empower Your <br /> Auto Gallery Seamlessly</h1>
           <p className="text-lg">Manage, showcase, rent, and sell cars in one place</p>
@@ -31,6 +44,47 @@ const Landing = () => {
           </Link>
         </div>
       </section>
+      <section id="brands" className="py-12 space-y-14">
+        <h3 className="text-2xl font-semibold text-muted-foreground text-center">Supported Brands</h3>
+        <Marquee speed={30} gradient={true} gradientColor={"#FAFAFA"} gradientWidth={140} >
+          <Image className="mx-16" src={bmwLogo} alt="bmw-logo"/>
+          <Image className="mx-16" src={ferrariLogo} alt="ferrari-logo"/>
+          <Image className="mx-16" src={nissanNextLogo} alt="nissan-next-logo"/>
+          <Image className="mx-16" src={teslaLogo} alt="tesla-logo"/>
+          <Image className="mx-16" src={mercedesBenzLogo} alt="mercedes-benz-logo"/>
+          <Image className="mx-16" src={lamborghiniLogo} alt="lamborghini-logo"/>
+          <Image className="mx-16" src={renaultLogo} alt="renault-logo"/>
+          <Image className="mx-16" src={audiLogo} alt="audio-logo"/>
+          <Image className="mx-16" src={volkswagenLogo} alt="volkswagen-logo"/>
+        </Marquee>
+        <div className="bg-secondary w-fit mx-auto rounded-full p-6 px-8">
+          <h4 className="text-lg font-medium">And <span className="text-white bg-primary p-1.5 rounded-full">+50</span></h4>
+        </div>
+      </section>
+      <section id="comments" className="py-12 container">
+        <Image className="mx-auto mb-8" src={quote} alt="quote"/>
+        <p className="mx-auto max-w-4xl text-lg text-muted-foreground text-center mb-24">Our mission is to empower auto gallery agents with seamless inventory management and sales tools while offering prospective buyers and renters a hassle-free experience to explore, rent, or purchase their ideal car. Simplifying transactions and expanding choices, we bridge the gap between agents and seekers, revolutionizing the automotive industry.</p>
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 gap-y-12 mb-10">
+          {comments.map((comment) => (
+            <div key={comment.id} className="relative col-span-1">
+              <div className="absolute select-none -top-10 -left-4">
+                <span className="text-[160px] leading-none text-muted-foreground/30">“</span>
+              </div>
+              <div className="!backdrop-blur-sm bg-white/95 shadow-sm rounded-xl supports-[backdrop-filter]:bg-white/10 p-4">
+                <blockquote className="space-y-2">
+                  <p className="text-xl">
+                    &ldquo;{comment.comment}.&rdquo;
+                  </p>
+                  <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={comment.image} width={48} height={48} alt="user" className="rounded-full me-3"/><h5 className="font-semibold">{comment.author}</h5></footer>
+                </blockquote>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      <footer className="container py-6 border-t">
+        <p className="text-muted-foreground">© {new Date().getFullYear()} autzon. All rights reserved.</p>
+      </footer>
     </>
   )
 }

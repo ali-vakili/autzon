@@ -21,7 +21,7 @@ const Navbar = () => {
 
   return (
     <header className={`w-100 ${isDashboardPage && '!fixed top-0 z-10 w-full'} relative bg-background border-b`}>
-      <nav className={`grid ${isDashboardPage ? 'grid-cols-2' : 'grid-cols-3'} p-4 items-center`}>
+      <nav className={`grid ${isDashboardPage ? 'grid-cols-2' : 'grid-cols-3'} p-4 md:px-8 items-center`}>
         <div className="flex items-center gap-4 w-fit">
           <Link href={"/"}>
             <svg width="82" height="18" viewBox="0 0 82 18" fill="none" xmlns="http://www.w3.org/2000/svg">
