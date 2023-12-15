@@ -7,7 +7,6 @@ import {
   SelectValue,
 } from "@/ui/select"
 import { Dispatch, SetStateAction } from "react";
-import { filterOptionsType } from "@/components/template/car/AllCars";
 
 
 type buildYearPropType = {
@@ -16,13 +15,13 @@ type buildYearPropType = {
     year: string;
   }[],
   defaultValue: string;
-  setFilterOptions: Dispatch<SetStateAction<filterOptionsType>>
+  setFilterOptions: Dispatch<SetStateAction<any>>
 }
 
 
 const BuildYear = ({ buildYears, setFilterOptions, defaultValue } : buildYearPropType) => {
   const handleBuildYearChange = (selectedYearId: string) => {
-    setFilterOptions((prevOptions) => ({
+    setFilterOptions((prevOptions:any) => ({
       ...prevOptions,
       buildYearId: selectedYearId,
     }));

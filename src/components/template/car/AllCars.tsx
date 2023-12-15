@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import CarCard from "@/components/module/CarCard";
+import AgentCarCard from "@/components/module/AgentCarCard";
 import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -28,6 +28,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { BuildYear, Category, Color, Model, Seats, FuelType, Published, Unpublished } from "@/components/module/filters";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { agentFilterOptionsType } from "@/components/module/filters/FiltersType";
 
 
 
@@ -129,16 +130,7 @@ type allCarsPropType = {
   }[]
 }
 
-export type filterOptionsType = {
-  published: boolean,
-  unpublished: boolean,
-  buildYearId: string;
-  model_id: string;
-  category_id: string;
-  fuel_type_id: string;
-  care_seats_id: string;
-  color_id: string;
-}
+// export type filterOptionsType = totalFilterOptions;
 
 
 const hasNonNullProperty = <T extends Record<string, any>, K extends keyof T>(
@@ -153,7 +145,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
   const [searchParam, setSearchParam] = useState<string>("newest");
   const hasCarsForRent = hasNonNullProperty(carsData, 'for_rent');
   const hasCarsForSale = hasNonNullProperty(carsData, 'for_sale');
-  const [filterOptions, setFilterOptions] = useState<filterOptionsType>({
+  const [filterOptions, setFilterOptions] = useState<agentFilterOptionsType>({
     published: true,
     unpublished: false,
     buildYearId: "",
@@ -259,7 +251,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
           ) : (
             carsData && carsData.length > 0 ? (
               carsData.map(car => (
-                <CarCard key={car.id} car={car} view_to={AGENT} forCard={car.for_rent ? "RENTAL" : car.for_sale ? "SALE" : "NONE"} isFetching={isFetching} refetchCarData={refetchCarData}/>
+                <AgentCarCard key={car.id} car={car} view_to={AGENT} forCard={car.for_rent ? "RENTAL" : car.for_sale ? "SALE" : "NONE"} isFetching={isFetching} refetchCarData={refetchCarData}/>
               ))
             ) : cars.length === 0 ? (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
@@ -307,7 +299,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
           </div>
           <div className={`grid ${(hasCarsForRent || isLoading) && 'grid-cols-[repeat(auto-fill,minmax(224px,1fr))]'} gap-3`}>
             {carsData.filter(car => car.for_rent).length > 0 ? carsData.filter(car => car.for_rent).map(car => (
-              <CarCard key={car.id} car={car} view_to={AGENT} forCard={"RENTAL"} refetchCarData={refetchCarData} isFetching={isFetching}/>
+              <AgentCarCard key={car.id} car={car} view_to={AGENT} forCard={"RENTAL"} refetchCarData={refetchCarData} isFetching={isFetching}/>
             )) : cars.length === 0 ? (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
                 <h3 className="text-lg font-semibold">You don't have any rental cars to show</h3>
@@ -352,7 +344,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
           </div>
           <div className={`grid ${(hasCarsForSale || isLoading) && 'grid-cols-[repeat(auto-fill,minmax(224px,1fr))]'} gap-3`}>
             {carsData.filter(car => car.for_sale).length > 0 ? carsData.filter(car => car.for_sale).map(car => (
-              <CarCard key={car.id} car={car} view_to={"AGENT"} forCard={"SALE"} refetchCarData={refetchCarData} isFetching={isFetching}/>
+              <AgentCarCard key={car.id} car={car} view_to={"AGENT"} forCard={"SALE"} refetchCarData={refetchCarData} isFetching={isFetching}/>
             )) : cars.length === 0 ? (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
                 <h3 className="text-lg font-semibold">You don't have any sale cars to show</h3>

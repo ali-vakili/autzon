@@ -85,7 +85,7 @@ const SignUpAgent = () => {
               <p className="text-2xl">
                 &ldquo;autzon's efficiency has revolutionized my workflow, enabling me to handle my auto gallery seamlessly and elevate client interactions to a whole new level.&rdquo;
               </p>
-              <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://i.pravatar.cc/400?img=11'} width={48} height={48} alt="user" className="rounded-full me-3"/><h5 className="font-semibold">kev codez</h5></footer>
+              <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://i.pravatar.cc/400?img=11'} width={48} height={48} quality={100} alt="user" className="rounded-full me-3"/><h5 className="font-semibold">kev codez</h5></footer>
             </blockquote>
           </div>
         </div>

@@ -75,7 +75,7 @@ const Landing = () => {
                   <p className="text-xl">
                     &ldquo;{comment.comment}.&rdquo;
                   </p>
-                  <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={comment.image} width={48} height={48} alt="user" className="rounded-full me-3"/><h5 className="font-semibold">{comment.author}</h5></footer>
+                  <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={comment.image} width={48} height={48} quality={100} alt="user" className="rounded-full me-3"/><h5 className="font-semibold">{comment.author}</h5></footer>
                 </blockquote>
               </div>
             </div>

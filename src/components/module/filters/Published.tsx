@@ -1,16 +1,15 @@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Dispatch, SetStateAction } from "react";
-import { filterOptionsType } from "@/components/template/car/AllCars";
 
 
 type publishedPropType = {
   defaultValue: boolean;
-  setFilterOptions: Dispatch<SetStateAction<filterOptionsType>>
+  setFilterOptions: Dispatch<SetStateAction<any>>
 }
 
 const Published = ({ defaultValue, setFilterOptions }: publishedPropType) => {
   const handlePublishedChange = (checkValue: boolean) => {
-    setFilterOptions((prevOptions) => ({
+    setFilterOptions((prevOptions: any) => ({
       ...prevOptions,
       published: checkValue,
     }));

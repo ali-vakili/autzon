@@ -23,7 +23,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { filterOptionsType } from "@/components/template/car/AllCars";
 
 
 type models = {
@@ -44,7 +43,7 @@ type modelPropType = {
     models: models[];
   }[],
   defaultValue: string;
-  setFilterOptions: Dispatch<SetStateAction<filterOptionsType>>
+  setFilterOptions: Dispatch<SetStateAction<any>>
 }
 
 
@@ -52,7 +51,7 @@ const Model = ({ brandsAndModels, setFilterOptions, defaultValue } : modelPropTy
   const [selectedBrand, setSelectedBrand] = useState<{id:number, name: string, models: models[]}|null>(null);
   const [selectedModelId , setSelectedModelId] = useState<string|null>(defaultValue);
   const handleModelChange = (selectedYearId: string) => {
-    setFilterOptions((prevOptions) => ({
+    setFilterOptions((prevOptions: any) => ({
       ...prevOptions,
       model_id: selectedYearId,
     }));

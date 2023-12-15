@@ -7,7 +7,6 @@ import {
   SelectValue,
 } from "@/ui/select"
 import { Dispatch, SetStateAction } from "react";
-import { filterOptionsType } from "@/components/template/car/AllCars";
 
 
 type fuelTypePropType = {
@@ -16,13 +15,13 @@ type fuelTypePropType = {
     type: string;
   }[],
   defaultValue: string;
-  setFilterOptions: Dispatch<SetStateAction<filterOptionsType>>
+  setFilterOptions: Dispatch<SetStateAction<any>>
 }
 
 
 const FuelType = ({ fuelTypes, setFilterOptions, defaultValue } : fuelTypePropType) => {
   const handleFuelTypeChange = (selectedYearId: string) => {
-    setFilterOptions((prevOptions) => ({
+    setFilterOptions((prevOptions: any) => ({
       ...prevOptions,
       fuel_type_id: selectedYearId,
     }));

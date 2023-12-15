@@ -7,7 +7,6 @@ import {
   SelectValue,
 } from "@/ui/select"
 import { Dispatch, SetStateAction } from "react";
-import { filterOptionsType } from "@/components/template/car/AllCars";
 
 
 type categoryPropType = {
@@ -17,13 +16,13 @@ type categoryPropType = {
     abbreviation: string | null;
   }[]
   defaultValue: string;
-  setFilterOptions: Dispatch<SetStateAction<filterOptionsType>>
+  setFilterOptions: Dispatch<SetStateAction<any>>
 }
 
 
 const Category = ({ categories, setFilterOptions, defaultValue } : categoryPropType) => {
   const handleCategoryChange = (selectedYearId: string) => {
-    setFilterOptions((prevOptions) => ({
+    setFilterOptions((prevOptions: any) => ({
       ...prevOptions,
       category_id: selectedYearId,
     }));

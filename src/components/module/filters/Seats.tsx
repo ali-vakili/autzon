@@ -7,7 +7,6 @@ import {
   SelectValue,
 } from "@/ui/select"
 import { Dispatch, SetStateAction } from "react";
-import { filterOptionsType } from "@/components/template/car/AllCars";
 
 
 type seatsPropType = {
@@ -17,13 +16,13 @@ type seatsPropType = {
     seats_count: string;
   }[],
   defaultValue: string;
-  setFilterOptions: Dispatch<SetStateAction<filterOptionsType>>
+  setFilterOptions: Dispatch<SetStateAction<any>>
 }
 
 
 const Seats = ({ carSeats, setFilterOptions, defaultValue } : seatsPropType) => {
   const handleSeatsChange = (selectedYearId: string) => {
-    setFilterOptions((prevOptions) => ({
+    setFilterOptions((prevOptions: any) => ({
       ...prevOptions,
       care_seats_id: selectedYearId,
     }));

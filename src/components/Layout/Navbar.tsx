@@ -48,9 +48,9 @@ const Navbar = () => {
 
         {!isDashboardPage && (
           <div className="space-x-2 justify-self-center">
-            <Link href="#" className={buttonVariants({variant: "link"})}>Buy Car</Link>
-            <Link href="#" className={buttonVariants({variant: "link"})}>Rent Car</Link>
-            <Link href="#" className={buttonVariants({variant: "link"})}>Galleries</Link>
+            <Link href="/buy-car" className={`${buttonVariants({variant: "link"})} ${pathname.startsWith("/buy-car") && "underline font-semibold"}`}>Buy Car</Link>
+            <Link href="/rent-car" className={`${buttonVariants({variant: "link"})} ${pathname.startsWith("/rent-car") && "underline font-semibold"}`}>Rent Car</Link>
+            <Link href="/galleries" className={`${buttonVariants({variant: "link"})} ${pathname.startsWith("/galleries") && "underline font-semibold"}`}>Galleries</Link>
           </div>
         )}
         <div className="col-span-1 justify-self-end">

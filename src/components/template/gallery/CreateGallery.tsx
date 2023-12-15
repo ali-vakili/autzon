@@ -65,7 +65,7 @@ type createGalleryFormPropType = {
 
 const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormPropType) => {
   const [leftPhoneNumbersCount, setLeftPhoneNumbersCount] = useState<number>(2);
-  const [selectedProvince , setSelectedProvince] = useState<{id:number, name: string}|null>(null);
+  const [selectedProvince, setSelectedProvince] = useState<{id:number, name: string}|null>(null);
   const router = useRouter();
 
   const { mutate: createGalley, data, isLoading, isSuccess, isError, error }: createGalleryHookType = useCreateGallery();

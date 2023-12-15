@@ -1,17 +1,38 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { connectDB, prisma } from "@/lib"
+import { Prisma } from '@prisma/client';
 
 
-export const GET = async () => {
+export const GET = async (req: NextRequest) => {
+  const searchParamFor = req.nextUrl.searchParams.get("for");
+  const searchParamCityId = req.nextUrl.searchParams.get("city_id") ?? "52";
   try {
     connectDB();
 
+    let whereClause: Prisma.CarWhereInput = {
+      gallery: {
+        city_id: +searchParamCityId,
+      },
+      is_published: true
+    };
+
+    switch (searchParamFor) {
+      case 'rent':
+        whereClause.for_rent = { isNot: null };
+        break;
+      case 'sale':
+        whereClause.for_sale = { isNot: null };
+        break;
+    }
+
     const cars = await prisma.car.findMany(
       {
+        where: whereClause,
         select: {
           id: true,
           title: true,
-          build_year: true,
+          model_id: true,
+          build_year_id: true,
           fuel_type: {
             select: {
               id: true,
@@ -35,6 +56,7 @@ export const GET = async () => {
             select: {
               id: true,
               price: true,
+              color: true
             }
           },
           is_car_rented: true,
@@ -47,16 +69,16 @@ export const GET = async () => {
           },
           car_seat:{
             select: {
+              id: true,
               seats_count: true
             }
           },
           description: true,
-          is_published: true,
           createdAt: true,
           updatedAt: true,
         },
         orderBy: {
-          createdAt: "desc"
+          updatedAt: "desc"
         }
       }
     )

@@ -7,7 +7,6 @@ import {
   SelectValue,
 } from "@/ui/select"
 import { Dispatch, SetStateAction } from "react";
-import { filterOptionsType } from "@/components/template/car/AllCars";
 
 
 type colorPropType = {
@@ -17,13 +16,13 @@ type colorPropType = {
     color_code: string;
   }[]
   defaultValue: string;
-  setFilterOptions: Dispatch<SetStateAction<filterOptionsType>>
+  setFilterOptions: Dispatch<SetStateAction<any>>
 }
 
 
 const Color = ({ colors, setFilterOptions, defaultValue } : colorPropType) => {
   const handleColorChange = (selectedYearId: string) => {
-    setFilterOptions((prevOptions) => ({
+    setFilterOptions((prevOptions: any) => ({
       ...prevOptions,
       color_id: selectedYearId,
     }));
