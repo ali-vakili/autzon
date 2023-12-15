@@ -7,14 +7,13 @@ import { Button } from "@/ui/button";
 import { ScrollArea } from "@/ui/scroll-area";
 import { BuildYear, Category, FuelType, Model, Seats } from "./filters";
 import { rentalCarsFilterOptionsType } from "./filters/FiltersType";
-import { cars } from "@/template/rentalCars/RentalCars";
 
 
 type carsFilterPropType = {
   selectedCityId: string;
   setSelectedCityId: Dispatch<SetStateAction<string>>;
   carsFromApi:any;
-  setCarsData: Dispatch<SetStateAction<cars[]>>
+  setCarsData: Dispatch<SetStateAction<any>>
   brandsAndModels: {
     id: number;
     name: string;

@@ -32,10 +32,19 @@ type car = {
     id: string;
     url: string;
   }[];
-  for_rent: {
+  for_rent?: {
     id: string;
     price_per_day: number;
     extra_time: boolean;
+  };
+  for_sale?: {
+    id: string;
+    price: number;
+    color: {
+      id: number,
+      color_name: string,
+      color_code: string
+    }
   };
   is_car_rented: {
     id: string;
@@ -57,15 +66,15 @@ type carCardPropType = {
   car: car
 }
 
-const FormattedRentPrice = ({ price }: {price: number}) => {
+const FormattedRentPrice = ({ price, type }: {price: number, type: "RENT" | "SALE"}) => {
   const { formattedValue } = formatPrice(price);
   return (
-    <h3 className="flex gap-1 items-center text-xl font-bold">{formattedValue} <span className="text-base text-muted-foreground">/day</span></h3>
+    <h3 className="flex gap-1 items-center text-xl font-bold">{formattedValue} {type === "RENT" && <span className="text-base text-muted-foreground">/day</span>}</h3>
   )
 }
 
 const CarCard = ({ car }: carCardPropType) => {
-  const { id, title, images, category, fuel_type, car_seat, for_rent, is_car_rented, description } = car;
+  const { id, title, images, category, fuel_type, car_seat, for_rent, for_sale, is_car_rented, description } = car;
   return (
     <div className="relative flex flex-col justify-start h-fit w-full border bg-white rounded-md pb-2 space-y-2 overflow-hidden">
       <div className="w-full min-h-[160px]">
@@ -77,23 +86,35 @@ const CarCard = ({ car }: carCardPropType) => {
         <div className="space-y-2">
           <h4 className="flex items-center text-xl font-semibold">
             {title}
-            {is_car_rented.length > 0 ? (
-              <Badge variant="destructive" className="!rounded-md w-fit ms-4">Not available</Badge>
+            {for_rent && is_car_rented.length > 0 ? (
+              <Badge variant="destructive" className="!rounded-md w-fit ms-4">
+                Not available
+              </Badge>
             ) : (
-              <Badge className="bg-success !rounded-md w-fit ms-4">Available</Badge>
+              for_rent && (
+                <Badge className="bg-success !rounded-md w-fit ms-4">Available</Badge>
+              )
             )}
           </h4>
           <Badge variant="secondary" className="!rounded-md">{category.category}</Badge>
         </div>
-        <FormattedRentPrice price={for_rent.price_per_day}/>
+        {for_rent && <FormattedRentPrice price={for_rent.price_per_day} type={"RENT"}/>}
+        {for_sale && <FormattedRentPrice price={for_sale.price} type={"SALE"}/>}
       </div>
+      {for_sale && (
+        <div className="flex items-center ms-4">
+          <span className="w-4 h-4 rounded-full border border-muted me-1.5" style={{backgroundColor: `${for_sale.color.color_code}`}}></span>
+          <h5 className="text-muted-foreground text-xs">{for_sale.color.color_name}</h5>
+        </div>
+        )}
       {description && (<p className="text-xs text-muted-foreground w-full overflow-hidden overflow-ellipsis whitespace-nowrap h-4 px-4">{description}</p>)}
       <Separator />
       <div className="flex items-center justify-around px-2">
         <h5 className="flex items-center text-sm"><Fuel size={16} className="me-1.5 inline"/>{fuel_type.type}</h5>
         <h5 className="flex items-center text-sm"><FiUsers size={16} className="me-1.5 inline"/>{car_seat.seats_count} Seats</h5>
       </div>
-      <Button disabled={is_car_rented.length > 0 ? true : false} className="mx-4 !mt-4 bg-blue-600 hover:bg-blue-500">Rent Car</Button>
+      {for_rent && <Button disabled={is_car_rented.length > 0 ? true : false} className="mx-4 !mt-4 bg-blue-600 hover:bg-blue-500">Rent Car</Button>}
+      {for_sale && <Button className="mx-4 !mt-4 bg-green-600 hover:bg-green-500">Buy Car</Button>}
     </div>
   )
 }
