@@ -113,8 +113,8 @@ const CarCard = ({ car }: carCardPropType) => {
         <h5 className="flex items-center text-sm"><Fuel size={16} className="me-1.5 inline"/>{fuel_type.type}</h5>
         <h5 className="flex items-center text-sm"><FiUsers size={16} className="me-1.5 inline"/>{car_seat.seats_count} Seats</h5>
       </div>
-      {for_rent && <Button disabled={is_car_rented.length > 0 ? true : false} className="mx-4 !mt-4 bg-blue-600 hover:bg-blue-500">Rent Car</Button>}
-      {for_sale && <Button className="mx-4 !mt-4 bg-green-600 hover:bg-green-500">Buy Car</Button>}
+      {for_rent && <Button disabled={is_car_rented.length > 0 ? true : false} className="mx-4 !mt-4 bg-blue-600 hover:bg-blue-500">Check renting details</Button>}
+      {for_sale && <Button className="mx-4 !mt-4 bg-green-600 hover:bg-green-500">Check out car</Button>}
     </div>
   )
 }

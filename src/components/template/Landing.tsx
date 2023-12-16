@@ -18,11 +18,11 @@ import comments from "@/constants/comments.json"
 const Landing = () => {
   return (
     <>
-      <section id="hero" className="grid grid-cols-2 md:grid-cols-12 desktop:min-h-[540px] min-h-[480px] items-center px-5">
-        <div className="space-y-3 md:col-start-2 md:col-span-5 col-span-1">
-          <h1 className="text-4xl md:text-5xl font-bold" style={{lineHeight: "1.2"}}>Empower Your <br /> Auto Gallery Seamlessly</h1>
+      <section id="hero" className="grid grid-cols-1 min-h-[460px] items-center px-5 md:mx-8 mx-5 my-8 bg-muted rounded-md">
+        <div className="space-y-3 col-span-1 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold" style={{lineHeight: "1.2"}}>Empower Your <br /> Auto Gallery Seamlessly</h1>
           <p className="text-lg">Manage, showcase, rent, and sell cars in one place</p>
-          <p>or someone seeking to rent or purchase the perfect car, our platform provides seamless solutions for both showcasing and acquiring vehicles. Explore, rent, or buy with ease!</p>
+          <p className="max-w-3xl mx-auto">or someone seeking to rent or purchase the perfect car, our platform provides seamless solutions for both showcasing and acquiring vehicles. Explore, rent, or buy with ease!</p>
         </div>
       </section>
       <section id="actions" className="px-5 md:px-8 pb-10">
