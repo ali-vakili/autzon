@@ -1,6 +1,6 @@
 "use client"
 
-import { Label } from "@/components/ui/label";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,11 +18,11 @@ import {
   CommandItem,
 } from "@/components/ui/command"
 import { Button } from "@/components/ui/button";
-import { FiCheck, FiChevronRight, FiX } from "react-icons/fi";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+
+import { FiCheck, FiMapPin, FiX } from "react-icons/fi";
 
 
 type cityPropType = {
@@ -53,18 +53,17 @@ const City = ({ cities, provinces, setFilterOptions, defaultValue } : cityPropTy
   }, [defaultValue])
 
   return (
-    <div className="space-y-2">
-      <Label>City</Label>
+    <div className="flex items-end">
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline" className={cn("w-full justify-between", !selectedProvince && "text-muted-foreground")}>
+          <Button variant="outline" className={cn("w-fit justify-between px-3 bg-white mb-3 ms-auto", !selectedProvince && "text-muted-foreground")}>
+            <FiMapPin size={16} className="me-1.5"/>
             {selectedCityId
               ? cities.find(
                   (city) => `${city.id}` === selectedCityId
                 )?.name_en
               : "Select a city"
             }
-            <FiChevronRight size={16}/>
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">

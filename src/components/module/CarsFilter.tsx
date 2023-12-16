@@ -1,6 +1,5 @@
 "use client"
 
-import City from "./filters/City";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FiFilter, FiRotateCw } from "react-icons/fi";
 import { Button } from "@/ui/button";
@@ -10,10 +9,8 @@ import { rentalCarsFilterOptionsType } from "./filters/FiltersType";
 
 
 type carsFilterPropType = {
-  selectedCityId: string;
-  setSelectedCityId: Dispatch<SetStateAction<string>>;
   carsFromApi:any;
-  setCarsData: Dispatch<SetStateAction<any>>
+  setCarsData: Dispatch<SetStateAction<any[]>>
   brandsAndModels: {
     id: number;
     name: string;
@@ -37,15 +34,6 @@ type carsFilterPropType = {
     category: string;
     abbreviation: string | null;
   }[]
-  cities: {
-    id: number;
-    name_en: string;
-    province_id: number;
-  }[],
-  provinces: {
-    id: number;
-    name_en: string;
-  }[]
 }
 
 type models = {
@@ -59,7 +47,7 @@ type models = {
   } | null;
 }
 
-const CarsFilter = ({ carsFromApi, setCarsData, selectedCityId, setSelectedCityId, cities, provinces, brandsAndModels, buildYears, categories, fuelTypes, carSeats }:carsFilterPropType) => {
+const CarsFilter = ({ carsFromApi, setCarsData, brandsAndModels, buildYears, categories, fuelTypes, carSeats }:carsFilterPropType) => {
   const [filterOptions, setFilterOptions] = useState<rentalCarsFilterOptionsType>({
     buildYearId: "",
     category_id: "",
@@ -76,7 +64,6 @@ const CarsFilter = ({ carsFromApi, setCarsData, selectedCityId, setSelectedCityI
       care_seats_id: "",
       fuel_type_id: "",
     });
-    setSelectedCityId("52");
   }
 
   useEffect(() => {
@@ -94,14 +81,13 @@ const CarsFilter = ({ carsFromApi, setCarsData, selectedCityId, setSelectedCityI
   }, [filterOptions, carsFromApi]);
 
   return (
-    <aside className="lg:flex flex-col hidden sticky top-6 col-span-2 bg-white rounded-md px-5 py-6 h-fit">
-      <div className="flex items-center justify-between mb-5">
+    <div className="bg-white rounded-md px-5 py-6 h-fit sticky top-6">
+      <div className="flex items-center justify-between mb-3">
         <h2 className="flex items-center text-sm font-semibold text-muted-foreground self-start"><FiFilter size={28} className="bg-gray-100 rounded p-1.5 me-1.5"/> Filter by</h2>
         <Button variant={"ghost"} size={"icon"} className="h-8 w-8" onClick={resetFilters}><FiRotateCw size={16}/></Button>
       </div>
       <ScrollArea className="h-[420px]">
-        <div className="space-y-3 py-3 pe-4">
-          <City provinces={provinces} cities={cities} defaultValue={selectedCityId} setFilterOptions={setSelectedCityId}/>
+        <div className="space-y-3 py-3">
           <BuildYear buildYears={buildYears} defaultValue={filterOptions.buildYearId} setFilterOptions={setFilterOptions}/>
           <Category categories={categories} defaultValue={filterOptions.category_id} setFilterOptions={setFilterOptions}/>
           <Model brandsAndModels={brandsAndModels} defaultValue={filterOptions.model_id} setFilterOptions={setFilterOptions}/>
@@ -109,7 +95,7 @@ const CarsFilter = ({ carsFromApi, setCarsData, selectedCityId, setSelectedCityI
           <FuelType fuelTypes={fuelTypes} defaultValue={filterOptions.fuel_type_id}  setFilterOptions={setFilterOptions}/>
         </div>
       </ScrollArea>
-    </aside>
+    </div>
   )
 }
 

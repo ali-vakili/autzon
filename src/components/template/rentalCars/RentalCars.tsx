@@ -2,11 +2,12 @@
 
 import CarCard from "@/components/module/CarCard";
 import CarsFilter from "@/components/module/CarsFilter";
+import City from "@/components/module/filters/City";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetRentalCars } from "@/hooks/useGetRentalCars";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
 import { Loader2 } from "lucide-react"
@@ -106,6 +107,7 @@ type models = {
 const RentalCars = ({ cities, provinces, brandsAndModels, buildYears, categories, fuelTypes, carSeats }: rentalCarsPropType) => {
   const [carsData, setCarsData] = useState<rentalCars[]>([]);
   const [selectedCityId, setSelectedCityId] = useState<string>("52");
+  const cityName = cities.find(city => `${city.id}` === selectedCityId)?.name_en;
   const router = useRouter();
 
   const { data: carsFromApi, isSuccess, isLoading, isFetching, isError, error, refetch } = useGetRentalCars(selectedCityId);
@@ -113,7 +115,7 @@ const RentalCars = ({ cities, provinces, brandsAndModels, buildYears, categories
   const handleCityChange = (newCityId: string) => {
     setSelectedCityId(newCityId);
     const citySlug = cities.find(city => `${city.id}` === newCityId)?.slug;
-    router.push(`/rent-car?city=${citySlug}`);
+    router.push(`/rent-car?city=${citySlug?.toLowerCase()}`);
   };
 
   useEffect(() => {
@@ -138,7 +140,11 @@ const RentalCars = ({ cities, provinces, brandsAndModels, buildYears, categories
             <Badge variant={"outline"} className="gap-2 text-sm w-fit text-muted-foreground"><span className="text-white bg-primary py-1 px-3 rounded-full">{carsData.length}</span>Vehicles to rent</Badge>
           )}
         </div>
-        <h4 className="text-muted-foreground text-sm mb-8">Try to find the car that suits your needs</h4>
+        {isFetching ? (
+          <Skeleton className="h-5 w-[200px] rounded-full mb-8" />
+        ) : (
+          <h4 className="text-muted-foreground text-sm mb-8">Total {carsData.length} rental cars in {cityName}</h4>
+        )}
         {isFetching && (
           <Badge variant={"secondary"} className="gap-2 text-sm w-fit text-muted-foreground mb-4"><Loader2 className="h-4 w-4 animate-spin" /> Loading</Badge>
         )}
@@ -166,7 +172,10 @@ const RentalCars = ({ cities, provinces, brandsAndModels, buildYears, categories
           }
         </div>
       </div>
-      <CarsFilter carsFromApi={carsFromApi} setCarsData={setCarsData} selectedCityId={selectedCityId} setSelectedCityId={setSelectedCityId} provinces={provinces} cities={cities} brandsAndModels={brandsAndModels} buildYears={buildYears} categories={categories} carSeats={carSeats} fuelTypes={fuelTypes}/>
+      <aside className="lg:flex flex-col hidden col-span-2 rounded-md h-full">
+        <City provinces={provinces} cities={cities} defaultValue={selectedCityId} setFilterOptions={setSelectedCityId}/>
+        <CarsFilter carsFromApi={carsFromApi} setCarsData={setCarsData} brandsAndModels={brandsAndModels} buildYears={buildYears} categories={categories} carSeats={carSeats} fuelTypes={fuelTypes}/>
+      </aside>
     </div>
   )
 }

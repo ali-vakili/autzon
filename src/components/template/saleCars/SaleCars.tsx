@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
 import { Loader2 } from "lucide-react"
+import City from "@/components/module/filters/City";
 
 
 type saleCars = {
@@ -115,6 +116,7 @@ type models = {
 const SaleCars = ({ cities, provinces, brandsAndModels, buildYears, categories, fuelTypes, carSeats, colors }: saleCarsPropType) => {
   const [carsData, setCarsData] = useState<saleCars[]>([]);
   const [selectedCityId, setSelectedCityId] = useState<string>("52");
+  const cityName = cities.find(city => `${city.id}` === selectedCityId)?.name_en;
   const router = useRouter();
 
   const { data: carsFromApi, isSuccess, isLoading, isFetching, isError, error, refetch } = useGetSaleCars(selectedCityId);
@@ -122,7 +124,7 @@ const SaleCars = ({ cities, provinces, brandsAndModels, buildYears, categories, 
   const handleCityChange = (newCityId: string) => {
     setSelectedCityId(newCityId);
     const citySlug = cities.find(city => `${city.id}` === newCityId)?.slug;
-    router.push(`/buy-car?city=${citySlug}`);
+    router.push(`/buy-car?city=${citySlug?.toLowerCase()}`);
   };
 
   useEffect(() => {
@@ -147,7 +149,11 @@ const SaleCars = ({ cities, provinces, brandsAndModels, buildYears, categories, 
             <Badge variant={"outline"} className="gap-2 text-sm w-fit text-muted-foreground"><span className="text-white bg-primary py-1 px-3 rounded-full">{carsData.length}</span>Vehicles to buy</Badge>
           )}
         </div>
-        <h4 className="text-muted-foreground text-sm mb-8">Try to find the car that suits your needs</h4>
+        {isFetching ? (
+          <Skeleton className="h-5 w-[200px] rounded-full mb-8" />
+        ) : (
+          <h4 className="text-muted-foreground text-sm mb-8">Total {carsData.length} sale cars in {cityName}</h4>
+        )}
         {isFetching && (
           <Badge variant={"secondary"} className="gap-2 text-sm w-fit text-muted-foreground mb-4"><Loader2 className="h-4 w-4 animate-spin" /> Loading</Badge>
         )}
@@ -175,7 +181,10 @@ const SaleCars = ({ cities, provinces, brandsAndModels, buildYears, categories, 
           }
         </div>
       </div>
-      <CarsFilter carsFromApi={carsFromApi} setCarsData={setCarsData} selectedCityId={selectedCityId} setSelectedCityId={setSelectedCityId} provinces={provinces} cities={cities} brandsAndModels={brandsAndModels} buildYears={buildYears} categories={categories} carSeats={carSeats} fuelTypes={fuelTypes}/>
+      <aside className="lg:flex flex-col hidden col-span-2 rounded-md h-full">
+        <City provinces={provinces} cities={cities} defaultValue={selectedCityId} setFilterOptions={setSelectedCityId}/>
+        <CarsFilter carsFromApi={carsFromApi} setCarsData={setCarsData} brandsAndModels={brandsAndModels} buildYears={buildYears} categories={categories} carSeats={carSeats} fuelTypes={fuelTypes}/>
+      </aside>
     </div>
   )
 }

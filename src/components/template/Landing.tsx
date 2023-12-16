@@ -27,17 +27,17 @@ const Landing = () => {
       </section>
       <section id="actions" className="px-5 md:px-8 pb-10">
         <div className="flex items-start desktop:flex-nowrap flex-wrap gap-4">
-          <Link href={"#"} className={`${buttonVariants({ variant: "default", size: "lg" })} group h-48 rounded-lg flex-col flex-grow basis-2/6 py-8 !text-lg !items-start !justify-start`}>
+          <Link href={"/rent-car"} className={`${buttonVariants({ variant: "default", size: "lg" })} group h-48 rounded-lg flex-col flex-grow basis-2/6 py-8 !text-lg !items-start !justify-start`}>
             Rental Cars
             <h5 className="text-sm text-muted-foreground">Wanna rent a car? check out rental cars.</h5>
             <FiArrowRight size={24} className="mt-auto text-muted-foreground self-end transition-transform duration-300 group-hover:translate-x-0 group-hover:text-white translate-x-[-0.5rem]"/>
           </Link>
-          <Link href={"#"} className={`${buttonVariants({ variant: "default", size: "lg" })} group h-48 rounded-lg flex-col flex-grow basis-2/6 py-8 !text-lg !items-start !justify-start`}>
+          <Link href={"/buy-car"} className={`${buttonVariants({ variant: "default", size: "lg" })} group h-48 rounded-lg flex-col flex-grow basis-2/6 py-8 !text-lg !items-start !justify-start`}>
             Sale Cars
             <h5 className="text-sm text-muted-foreground">Wanna buy a car? check out sale cars.</h5>
             <FiArrowRight size={24} className="mt-auto text-muted-foreground self-end transition-transform duration-300 group-hover:translate-x-0 group-hover:text-white translate-x-[-0.5rem]"/>
           </Link>
-          <Link href={"#"} className={`${buttonVariants({ variant: "default", size: "lg" })} group h-48 rounded-lg flex-col flex-grow basis-2/6 py-8 !text-lg !items-start !justify-start`}>
+          <Link href={"/galleries"} className={`${buttonVariants({ variant: "default", size: "lg" })} group h-48 rounded-lg flex-col flex-grow basis-2/6 py-8 !text-lg !items-start !justify-start`}>
             Galleries
             <h5 className="text-sm text-muted-foreground">Looking for an special auto gallery? check out and find it.</h5>
             <FiArrowRight size={24} className="mt-auto text-muted-foreground self-end transition-transform duration-300 group-hover:translate-x-0 group-hover:text-white translate-x-[-0.5rem]"/>

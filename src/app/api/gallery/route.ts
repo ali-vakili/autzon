@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { connectDB, validateSession, prisma, checkAgent } from "@/lib";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
@@ -7,19 +7,36 @@ import { galleriesBucketUrl } from "@/constants/supabaseStorage";
 import supabase from "@/lib/supabase";
 
 
-export const GET = async () => {
+export const GET = async (req: NextRequest) => {
+  const searchParamCityId = req.nextUrl.searchParams.get("city_id") ?? "52";
   try {
     connectDB();
 
     const galleries = await prisma.autoGallery.findMany(
       {
+        where: {
+          city_id: +searchParamCityId,
+          is_verified: true
+        },
         select: {
           id: true,
           name: true,
-          image: true,
-          cars: true,
+          image: {
+            select: {
+              url: true
+            }
+          },
+          cars: {
+            where: {
+              is_published: true,
+            },
+            select: {
+              id: true,
+            }
+          },
           categories: {
             select: {
+              id: true,
               category: true,
               abbreviation: true
             }
@@ -27,27 +44,28 @@ export const GET = async () => {
           city: {
             select: {
               name_en: true,
-              name_fa: true,
-              slug: true
+              province: {
+                select: {
+                  name_en: true
+                }
+              }
             }
           },
           address: true,
+          about: true,
           phone_numbers: {
             select: {
               id: true,
               number: true
             }
           },
-          agent: {
-            select: {
-              firstName:true,
-              lastName: true
-            },
-          },
           is_verified: true,
           createdAt: true,
           updatedAt: true,
         },
+        orderBy: {
+          updatedAt: "desc"
+        }
       }
     )
 

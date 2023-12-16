@@ -13,7 +13,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { FiUser, FiAlertCircle, FiCheckCircle, FiEdit, FiPhone, FiMapPin, FiInfo, FiPlus  } from "react-icons/fi";
+import { FiUser, FiAlertCircle, FiCheckCircle, FiEdit, FiPhone, FiMapPin, FiInfo } from "react-icons/fi";
 import { Building, Blocks, Car, CalendarPlus } from 'lucide-react';
 
 
@@ -76,7 +76,7 @@ const Gallery = ({ gallery, agent }: galleryPropType) => {
             <AvatarImage alt="agent_avatar" src={image?.url ?? undefined}/>
             <AvatarFallback>{avatarFallBackText(name, null)}</AvatarFallback>
           </Avatar>
-          <div className="flex flex-col items-start space-y-3">
+          <div className="flex flex-col items-start space-y-2">
             <h2 className="text-xl font-bold">
               {name}
             </h2>
