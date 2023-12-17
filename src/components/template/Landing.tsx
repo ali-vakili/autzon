@@ -18,7 +18,7 @@ import comments from "@/constants/comments.json"
 const Landing = () => {
   return (
     <>
-      <section id="hero" className="grid grid-cols-1 min-h-[460px] items-center px-5 md:mx-8 mx-5 my-8 bg-muted rounded-md">
+      <section id="hero" className="grid grid-cols-1 min-h-[480px] items-center px-5 md:mx-8 mx-5 my-5 bg-muted rounded-md">
         <div className="space-y-3 col-span-1 text-center">
           <h1 className="text-4xl md:text-6xl font-bold" style={{lineHeight: "1.2"}}>Empower Your <br /> Auto Gallery Seamlessly</h1>
           <p className="text-lg">Manage, showcase, rent, and sell cars in one place</p>

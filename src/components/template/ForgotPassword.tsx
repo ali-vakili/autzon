@@ -79,9 +79,11 @@ const ForgotPassword = () => {
                 We have successfully sent a link to reset your password, Please check your email inbox.
               </p>
               <Separator className="my-2" />
-              <h3 className="inline-flex text-gray-200 text-xs font-semibold">
-              <FiInfo size={16} className="me-1.5 flex-shrink-0"/>if you registered using your email and password, you will receive a password reset email.
-              </h3>
+              <div className="bg-white p-2 rounded-md">
+                <h3 className="inline-flex text-gray-600 text-xs font-semibold">
+                <FiInfo size={16} className="me-1.5 flex-shrink-0"/>if you registered using your email and password, you will receive a password reset email.
+                </h3>
+              </div>
             </div>
           </div>
         ):(
