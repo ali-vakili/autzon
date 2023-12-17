@@ -29,7 +29,7 @@ import { AGENT } from "@/constants/roles"
 import logoIcon from "../../../public/logo-icon.svg";
 import Image from "next/image"
 
-import "@/scss/Common.scss"
+import "../css/common.css"
 
 
 const SignUpAgent = () => {
