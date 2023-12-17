@@ -1,3 +1,4 @@
+import formatPhoneNumber from "@/helper/formatPhoneNumber";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/tooltip";
 import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar";
 import { avatarFallBackText } from "@/helper/fallBackText";
@@ -94,8 +95,12 @@ const GalleryCard = ({ gallery }: galleryCardPropType) => {
         </div>
         <div className="flex flex-col items-start space-y-2">
           <h4 className="flex items-center w-fit gap-x-1"><FiPhone size={16}/>Phone numbers</h4>
-          {phone_numbers.map(phone_number => (
-            <h5 key={phone_number.id} className="text-muted-foreground ms-5">{phone_number.number}</h5>
+          {phone_numbers.map((phone_number, index) => (
+            <h5 key={phone_number.id} className="text-muted-foreground ms-5">
+              <span className="py-1 px-2 bg-secondary rounded-md">{index+1}</span>
+              {" "}-{" "}
+              {formatPhoneNumber(phone_number.number)}
+            </h5>
           ))}
         </div>
       </div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import formatPhoneNumber from "@/helper/formatPhoneNumber";
 import { sessionUser } from "@/lib/types/sessionUserType";
 import { DefaultSession } from "next-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar"
@@ -112,9 +113,13 @@ const Gallery = ({ gallery, agent }: galleryPropType) => {
           </div>
           <div className="space-y-2">
             <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiPhone className="me-1.5 inline" size={16}/>Phone numbers</h3>
-            {phone_numbers.map(phone_number => (
-              <h5 key={phone_number.id} className="ms-5">{phone_number.number}</h5>
-            ))}
+            {phone_numbers.map((phone_number, index) => (
+            <h5 key={phone_number.id} className="text-muted-foreground ms-5">
+              <span className="py-1 px-2 bg-secondary rounded-md">{index+1}</span>
+              {" "}-{" "}
+              {formatPhoneNumber(phone_number.number)}
+            </h5>
+          ))}
           </div>
           <div className="space-x-3 space-y-2">
             <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><Blocks className="me-1.5 inline" size={16}/>Categories</h3>
@@ -187,7 +192,7 @@ const Gallery = ({ gallery, agent }: galleryPropType) => {
           <h4 className="mb-1 font-semibold text-sm text-primary">Email</h4>
           <h5 className="text-zinc-500 text-sm ms-3">{email}</h5>
           <h4 className="mb-1 font-semibold text-sm text-primary mt-3">Phone Number</h4>
-          <h5 className="text-zinc-500 text-sm ms-3">{galleryAgent.phone_number}</h5>
+          <h5 className="text-zinc-500 text-sm ms-3">{formatPhoneNumber(galleryAgent.phone_number)}</h5>
           <h4 className="mb-1 font-semibold text-sm text-primary mt-3">Join Date</h4>
           <h5 className="text-zinc-500 text-sm ms-3">{joined_date}</h5>
         </div>
