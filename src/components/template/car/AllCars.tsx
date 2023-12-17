@@ -255,7 +255,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
               ))
             ) : cars.length === 0 ? (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
-                <h3 className="text-lg font-semibold">You don't have any cars to show</h3>
+                <h3 className="text-lg font-semibold">You don&apos;t have any cars to show</h3>
                 <h4 className="text-sm font-medium">Add one</h4>
                 <div className="space-x-2">
                   <Link href={"/dashboard/cars/rental/create"} className={`${buttonVariants({ variant:"secondary" })} !text-blue-600`}><FiPlus size={16} className="me-1.5"/>Add rental car</Link>
@@ -264,7 +264,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
               </div>
             ) : (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">
-                <h3 className="text-lg font-semibold">Couldn't find any car!</h3>
+                <h3 className="text-lg font-semibold">Couldn&apos;t find any car!</h3>
                 <h4 className="text-sm font-medium">Try to change your filters</h4>
               </div>
             )
@@ -302,7 +302,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
               <AgentCarCard key={car.id} car={car} view_to={AGENT} forCard={"RENTAL"} refetchCarData={refetchCarData} isFetching={isFetching}/>
             )) : cars.length === 0 ? (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
-                <h3 className="text-lg font-semibold">You don't have any rental cars to show</h3>
+                <h3 className="text-lg font-semibold">You don&apos;t have any rental cars to show</h3>
                 <h4 className="text-sm font-medium">Add one</h4>
                 <div className="space-x-2">
                   <Link href={"/dashboard/cars/rental/create"} className={`${buttonVariants({ variant:"secondary" })} !text-blue-600`}><FiPlus size={16} className="me-1.5"/>Add rental car</Link>
@@ -310,7 +310,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
               </div>
             ) : (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">
-                <h3 className="text-lg font-semibold">Couldn't find any car!</h3>
+                <h3 className="text-lg font-semibold">Couldn&apos;t find any car!</h3>
                 <h4 className="text-sm font-medium">Try to change your filters</h4>
               </div>
             )}
@@ -347,7 +347,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
               <AgentCarCard key={car.id} car={car} view_to={"AGENT"} forCard={"SALE"} refetchCarData={refetchCarData} isFetching={isFetching}/>
             )) : cars.length === 0 ? (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
-                <h3 className="text-lg font-semibold">You don't have any sale cars to show</h3>
+                <h3 className="text-lg font-semibold">You don&apos;t have any sale cars to show</h3>
                 <h4 className="text-sm font-medium">Add one</h4>
                 <div className="space-x-2">
                   <Link href={"/dashboard/cars/sale/create"} className={`${buttonVariants({ variant:"secondary" })} !text-green-600`}><FiPlus size={16} className="me-1.5"/>Add sale car</Link>
@@ -355,7 +355,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
               </div>
             ) : (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">
-                <h3 className="text-lg font-semibold">Couldn't find any car!</h3>
+                <h3 className="text-lg font-semibold">Couldn&apos;t find any car!</h3>
                 <h4 className="text-sm font-medium">Try to change your filters</h4>
               </div>
             )}

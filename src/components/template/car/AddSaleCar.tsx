@@ -576,7 +576,7 @@ const AddSaleCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears
                       Publish Car
                     </FormLabel>
                     <div className="text-sm text-muted-foreground">
-                      You can uncheck if you don't want to,&nbsp;
+                      You can uncheck if you don&apos;t want to,&nbsp;
                       <p className="inline text-orange-500">
                         note that the users will not be able to see the car.
                       </p> 

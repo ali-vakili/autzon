@@ -64,7 +64,7 @@ const ForgotPassword = () => {
       <div className="flex flex-col flex-1 max-w-sm mt-14">
         <Button onClick={router.back} variant={"link"} size={"sm"} className="w-fit p-0"><FiArrowLeft size={24} className="me-1.5"/>Back</Button>
         <h1 className="mt-4 mb-2 text-2xl font-semibold">Reset Your Password</h1>
-        <h2 className="text-sm text-foreground-light mb-10">Type in your email and we'll send you a link to reset your password</h2>
+        <h2 className="text-sm text-foreground-light mb-10">Type in your email and we&apos;ll send you a link to reset your password</h2>
         {isError && (
           <div className="w-full bg-destructive/80 rounded mb-3">
             <h4 className="text-gray-50 text-sm p-2 text-center ">{errorMessage}</h4>

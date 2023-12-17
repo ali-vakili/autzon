@@ -127,7 +127,7 @@ const ResetPassword = ({ token }: RestPasswordPropsType) => {
         
         <div className="self-center my-8 text-sm">
           <span className="text-foreground-light">
-            If you didn't mean to reset your password&nbsp;
+            If you didn&apos;t mean to reset your password&nbsp;
           </span>
           <Link href="/sign-in" className="underline transition text-foreground hover:text-foreground-light">
             return to sign in

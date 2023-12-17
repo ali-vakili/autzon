@@ -83,7 +83,7 @@ const SignUpAgent = () => {
           <div className="!backdrop-blur-sm bg-white/95 shadow-lg rounded-xl supports-[backdrop-filter]:bg-white/10 p-4">
             <blockquote className="space-y-2">
               <p className="text-2xl">
-                &ldquo;autzon's efficiency has revolutionized my workflow, enabling me to handle my auto gallery seamlessly and elevate client interactions to a whole new level.&rdquo;
+                &ldquo;autzon&apos;s efficiency has revolutionized my workflow, enabling me to handle my auto gallery seamlessly and elevate client interactions to a whole new level.&rdquo;
               </p>
               <footer className="flex items-center pt-4 text-sm text-muted-foreground"><Image src={'https://i.pravatar.cc/400?img=11'} width={48} height={48} quality={100} alt="user" className="rounded-full me-3"/><h5 className="font-semibold">kev codez</h5></footer>
             </blockquote>
@@ -106,7 +106,7 @@ const SignUpAgent = () => {
             <div>
               <h4 className="text-gray-200 mb-1.5 font-semibold text-sm">Check your email to confirm</h4>
               <p className="text-gray-200 text-xs font-semibold">
-                You've successfully signed up, Please check your email to confirm your account before signing in to the autzone dashboard.
+                You&apos;ve successfully signed up, Please check your email to confirm your account before signing in to the autzone dashboard.
               </p>
             </div>
           </div>
@@ -174,7 +174,7 @@ const SignUpAgent = () => {
           </Link>    
         </div>
         <div className="sm:text-center mb-6">
-          <p className="text-xs text-muted-foreground sm:mx-auto sm:max-w-sm">By continuing, you agree to autzon's <Link className="underline hover:text-foreground" href="#">Terms of Service</Link> and <Link className="underline hover:text-foreground" href="#">Privacy Policy</Link>, and to receive periodic emails with updates.</p>
+          <p className="text-xs text-muted-foreground sm:mx-auto sm:max-w-sm">By continuing, you agree to autzon&apos;s <Link className="underline hover:text-foreground" href="#">Terms of Service</Link> and <Link className="underline hover:text-foreground" href="#">Privacy Policy</Link>, and to receive periodic emails with updates.</p>
         </div>
       </div>
     </div>

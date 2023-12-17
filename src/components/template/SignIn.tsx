@@ -153,7 +153,7 @@ const SignIn = () => {
         </Form>
         <div className="self-center my-8 text-sm">
           <span className="text-foreground-light">
-            Don't have an account?&nbsp;
+            Don&apos;t have an account?&nbsp;
           </span>
           <Link href="/sign-up" className="underline transition text-foreground hover:text-foreground-light">
             Sign Up Now

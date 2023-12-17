@@ -121,7 +121,7 @@ const GalleriesInCity = ({ cities, provinces, categories }: galleriesInCityPropT
                 ))
               ) : (
                 <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">
-                  <h3 className="text-lg font-semibold">Couldn't find any gallery!</h3>
+                  <h3 className="text-lg font-semibold">Couldn&apos;t find any gallery!</h3>
                   <h4 className="text-sm font-medium">Try to change your filters</h4>
                 </div>
               )
