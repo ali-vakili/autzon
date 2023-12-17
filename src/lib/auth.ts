@@ -23,6 +23,7 @@ export const authOptions: NextAuthOptions = {
         if (profile.picture) {
           const agentImage = await prisma.image.create({
             data: {
+              agent_id: profile.sub,
               url: profile.image,
             },
           })
