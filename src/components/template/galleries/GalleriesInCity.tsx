@@ -99,9 +99,9 @@ const GalleriesInCity = ({ cities, provinces, categories }: galleriesInCityPropT
           )}
         </div>
         {isFetching ? (
-          <Skeleton className="h-5 w-[200px] rounded-full mb-8" />
+          <Skeleton className="h-5 w-[200px] rounded-full mt-4 mb-8" />
         ) : (
-          <h4 className="text-muted-foreground text-sm mb-8">Total {galleriesData.length} rental cars in {cityName}</h4>
+          <h4 className="text-muted-foreground text-sm mt-4 mb-8">Total {galleriesData.length} rental cars in {cityName}</h4>
         )}
         {isFetching && (
           <Badge variant={"secondary"} className="gap-2 text-sm w-fit text-muted-foreground mb-4"><Loader2 className="h-4 w-4 animate-spin" /> Loading</Badge>

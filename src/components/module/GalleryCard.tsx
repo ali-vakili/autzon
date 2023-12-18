@@ -46,16 +46,16 @@ type galleryCardPropType = {
 
 
 const GalleryCard = ({ gallery }: galleryCardPropType) => {
-  const { id, image, name, about, address, categories, phone_numbers, city: { name_en: city_name_en, province:{name_en: province_name_en} }, city, is_verified } = gallery;
+  const { id, image, name, about, address, categories, phone_numbers, city: { name_en: city_name_en, province:{name_en: province_name_en} }, is_verified } = gallery;
 
   return (
     <div className="flex flex-col w-full lg:col-span-2 col-span-3 bg-white rounded-md p-5 space-y-5 border">
-      <div className="flex items-center space-x-4">
+      <div className="flex LPhone:flex-row flex-col items-center space-x-4 gap-y-3">
         <Avatar className="w-32 h-32">
           <AvatarImage alt="agent_avatar" src={image?.url ?? undefined}/>
           <AvatarFallback>{avatarFallBackText(name, null)}</AvatarFallback>
         </Avatar>
-        <div className="flex flex-col items-start space-y-2">
+        <div className="flex flex-col LPhone:items-start items-center space-y-2">
           <h2 className="text-xl font-bold">
             {name}
           </h2>
@@ -78,16 +78,16 @@ const GalleryCard = ({ gallery }: galleryCardPropType) => {
             </Tooltip>
           </TooltipProvider>
         </div>
-        <h5 className="!ms-auto text-muted-foreground text-sm">{city_name_en}, {province_name_en}</h5>
+        <h5 className="LPhone:!ms-auto text-muted-foreground text-sm">{city_name_en}, {province_name_en}</h5>
       </div>
-      <div className="flex flex-wrap gap-4 ms-36">
+      <div className="flex flex-wrap gap-4 lg:ms-36">
         <div className="flex flex-col items-start space-y-2">
           <h4 className="inline-flex items-center gap-x-1"><FiMapPin size={16}/> Address</h4>
           <h5 className="text-muted-foreground text-sm ms-5">{address}</h5>
         </div>
         <div className="flex flex-col items-start space-y-2">
           <h4 className="inline-flex items-center gap-x-1"><Blocks size={16}/> Categories</h4>
-          <div className="flex ms-5 gap-2">
+          <div className="flex flex-wrap ms-5 gap-2">
             {categories.map(category => (
               <Badge key={category.id} variant={"secondary"} className="rounded">{category.category}</Badge>
             ))}
@@ -104,7 +104,7 @@ const GalleryCard = ({ gallery }: galleryCardPropType) => {
           ))}
         </div>
       </div>
-      <div className="space-y-2 ms-36">
+      <div className="space-y-2 lg:ms-36">
         <h4 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiInfo className="me-1.5 inline" size={16}/>About</h4>
         <p className="text-zinc-500 text-sm ms-5">{about}</p>
       </div>

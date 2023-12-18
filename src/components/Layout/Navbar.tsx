@@ -13,6 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/ui/select"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuTrigger } from "@/ui/dropdown-menu"
+import { FiMenu } from "react-icons/fi"
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -21,7 +23,7 @@ const Navbar = () => {
 
   return (
     <header className={`w-100 ${isDashboardPage && '!fixed top-0 z-10 w-full'} relative bg-background border-b`}>
-      <nav className={`grid ${isDashboardPage ? 'grid-cols-2' : 'grid-cols-3'} p-4 md:px-8 items-center`}>
+      <nav className={`grid ${isDashboardPage ? 'grid-cols-2' : 'lg:grid-cols-3 grid-cols-4'} p-4 md:px-8 items-center`}>
         <div className="flex items-center gap-4 w-fit">
           <Link href={"/"}>
             <svg width="82" height="18" viewBox="0 0 82 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -47,13 +49,13 @@ const Navbar = () => {
         </div>
 
         {!isDashboardPage && (
-          <div className="space-x-2 justify-self-center">
+          <div className="space-x-2 justify-self-center hidden lg:block">
             <Link href="/buy-car" className={`${buttonVariants({variant: "link"})} ${pathname.startsWith("/buy-car") && "underline font-semibold"}`}>Buy Car</Link>
             <Link href="/rent-car" className={`${buttonVariants({variant: "link"})} ${pathname.startsWith("/rent-car") && "underline font-semibold"}`}>Rent Car</Link>
             <Link href="/galleries" className={`${buttonVariants({variant: "link"})} ${pathname.startsWith("/galleries") && "underline font-semibold"}`}>Galleries</Link>
           </div>
         )}
-        <div className="col-span-1 justify-self-end">
+        <div className={`flex place-items-center ${isDashboardPage ? 'grid-cols-1' : 'col-span-3 lg:col-span-1'} justify-self-end`}>
           {status === "loading" ? (
             <div className="flex items-center space-x-4">
               <div className="flex flex-col items-end space-y-2">
@@ -65,20 +67,48 @@ const Navbar = () => {
           ) : status === "authenticated" ? (
             <UserNav user={session.user} isDashboardPage={isDashboardPage} />
           ) : (
-            <div className="space-x-3">
-              <Link href={"/sign-up"} className={buttonVariants({ variant: "secondary", size: "sm" })}>
+            <div className="flex space-x-3">
+              <Link href={"/sign-up"} className={`${buttonVariants({ variant: "secondary", size: "sm" })} hidden lg:flex`}>
                 Start as a customer
               </Link>
               {pathname === "/agent/sign-up" ? (
-                <Link href={"/sign-in"} className={buttonVariants({ variant: "default", size: "sm" })}>
+                <Link href={"/sign-in"} className={`${buttonVariants({ variant: "default", size: "sm" })} hidden lg:flex`}>
                   Sign in to your account
                 </Link>
               ) : (
-                <Link href={"/agent/sign-up"} className={buttonVariants({ variant: "default", size: "sm" })}>
+                <Link href={"/agent/sign-up"} className={`${buttonVariants({ variant: "default", size: "sm" })} hidden lg:flex`}>
                   Create your own gallery
                 </Link>
               )}
+              <Link href={"/sign-up"} className={`${buttonVariants({ variant: "secondary", size: "sm" })} !px-2 text-xs lg:hidden`}>
+                Sign up
+              </Link>
+              {pathname === "/agent/sign-up" ? (
+                <Link href={"/sign-in"} className={`${buttonVariants({ variant: "default", size: "sm" })} !px-2 text-xs lg:hidden`}>
+                  Sign in
+                </Link>
+              ) : (
+                <Link href={"/agent/sign-up"} className={`${buttonVariants({ variant: "default", size: "sm" })} !px-2 text-xs lg:hidden`}>
+                  Agent sign up
+                </Link>
+              )}
             </div>
+          )}
+          {!isDashboardPage && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="relative h-8 w-8 rounded-md flex items-center justify-center bg-secondary cursor-pointer lg:hidden ms-4">
+                  <FiMenu size={20} className="block color-black"/>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-12" align="end" forceMount>
+                <DropdownMenuGroup className="text-center">
+                  <Link href="/buy-car" className={`${buttonVariants({variant: "link"})} ${pathname.startsWith("/buy-car") && "underline font-semibold"}`}>Buy Car</Link>
+                  <Link href="/rent-car" className={`${buttonVariants({variant: "link"})} ${pathname.startsWith("/rent-car") && "underline font-semibold"}`}>Rent Car</Link>
+                  <Link href="/galleries" className={`${buttonVariants({variant: "link"})} ${pathname.startsWith("/galleries") && "underline font-semibold"}`}>Galleries</Link>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
       </nav>

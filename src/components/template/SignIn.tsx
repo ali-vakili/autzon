@@ -112,13 +112,13 @@ const SignIn = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col flex-1 col-span-3 max-w-sm mx-auto">
+      <div className="flex flex-col flex-1 col-span-3 LPhone:max-w-sm w-full mx-auto">
         <h1 className="mt-10 mb-2 text-2xl font-semibold">Welcome Back</h1>
         <h2 className="text-sm text-foreground-light mb-10">Sign in to your account</h2>
         <ContinueWithGoogle text='Sign in with Google' callbackUrl={callbackUrl} role={USER} isLoading={loader}/>
         <hr className="divider sign-in"></hr>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="min-[425px]:w-96 min-[375px]:w-80 w-72 space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="min-[425px]:w-96 space-y-4">
             <FormField
               control={form.control}
               name="email"

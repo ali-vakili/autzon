@@ -22,9 +22,9 @@ type CarDetailsPropType = {
 const TotalCars = ({ cars }: CarDetailsPropType) => {
   return (
     <div className="bg-white w-full rounded p-5 space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="flex items-center font-semibold w-fit"><Car className="bg-gray-100 rounded p-1.5 me-1.5" size={36}/>Cars</h2>
-        <div className="space-x-2">
+      <div className="flex flex-wrap STablet:flex-row flex-col items-center justify-between gap-y-4">
+        <h2 className="flex items-center font-semibold w-fit self-start"><Car className="bg-gray-100 rounded p-1.5 me-1.5" size={36}/>Cars</h2>
+        <div className="flex flex-wrap items-center justify-center gap-3">
           <Link href={"/dashboard/cars/rental/create"} className={`${buttonVariants({ variant: "outline", size: "sm" })} text-blue-600`}>
             <FiPlus size={16} className="me-1.5"/>
             Add a rental car

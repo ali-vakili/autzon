@@ -90,7 +90,7 @@ const SignUpUser = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-start flex-1 col-span-3 max-w-sm mx-auto">
+      <div className="flex flex-col flex-1 col-span-3 LPhone:max-w-sm w-full mx-auto">
         <h1 className="mt-8 mb-2 text-2xl font-semibold">Get started</h1>
         <h2 className="text-sm text-foreground-light mb-10">Create a new account</h2>
         <ContinueWithGoogle text='Sign up with Google' callbackUrl={"/"} role={USER} isLoading={isLoading}/>
@@ -112,7 +112,7 @@ const SignUpUser = () => {
           </div>
         ):(
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="min-[425px]:w-96 min-[375px]:w-80 w-72 space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="min-[425px]:w-96 space-y-4">
               <FormField
                 control={form.control}
                 name="email"

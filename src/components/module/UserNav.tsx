@@ -18,7 +18,7 @@ import { FiLogOut, FiAlertCircle } from "react-icons/fi"
 import userNavDropDownMenuItems from "@/constants/userNavMenuItem";
 
 import { sessionUser } from "@/lib/types/sessionUserType";
-import { avatarFallBackText } from "@/helper/fallBackText";
+import { avatarFallBackText } from "@/helper/fallBackText"
 
 
 type NavUserPropsType = {
@@ -34,7 +34,7 @@ const UserNav = ({ user, isDashboardPage }: NavUserPropsType) => {
     <div className="flex items-center space-x-4">
       <div className="flex flex-col items-end space-y-1">
         { is_profile_complete ? (
-          <h4 className="text-base">
+          <h4 className="md:text-base text-sm">
             {firstName}&nbsp;{lastName}
           </h4>
         ) : (
@@ -51,7 +51,7 @@ const UserNav = ({ user, isDashboardPage }: NavUserPropsType) => {
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-52" align="end" forceMount>
+        <DropdownMenuContent className="sm:w-52 w-40" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">{firstName}&nbsp;{lastName}</p>
