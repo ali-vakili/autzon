@@ -37,7 +37,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils"
 
-import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
+import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload, FiPercent, FiDollarSign } from "react-icons/fi"
 import { Car } from 'lucide-react';
 
 import { useCreateRentalCar, createRentalCarHookType } from "@/hooks/useCreateRentalCar";
@@ -487,7 +487,7 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
                   <FormItem className="mt-4">
                     <FormLabel>Price per day <span className="text-destructive">*</span></FormLabel>
                     <FormControl>
-                      <Input placeholder="$" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
+                      <Input placeholder="" icon={FiDollarSign} {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
                     </FormControl>
                     <FormDescription>
                       Provide the amount of money($) for a renting day.
@@ -503,7 +503,7 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
                   <FormItem className="mt-4">
                     <FormLabel>Reservation fee percentage</FormLabel>
                     <FormControl>
-                      <Input placeholder="%" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
+                      <Input placeholder="" icon={FiPercent} {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
                     </FormControl>
                     <FormDescription>
                       Provide the  percentage amount(%) for a reservation fee.
@@ -561,7 +561,7 @@ const AddRentalCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYea
                   <FormItem className="mt-8 w-full">
                     <FormLabel>Late return fee per hour <span className="text-destructive">{watch("extra_time") && '*'}</span></FormLabel>
                     <FormControl>
-                      <Input disabled={!watch("extra_time")} placeholder="$" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
+                      <Input disabled={!watch("extra_time")} placeholder="" icon={FiDollarSign} {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

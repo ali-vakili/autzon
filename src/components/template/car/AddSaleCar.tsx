@@ -36,7 +36,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils"
 
-import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
+import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload, FiDollarSign } from "react-icons/fi"
 import { Car } from 'lucide-react';
 
 import { useCreateSaleCar, createSaleCarHookType } from "@/hooks/useCreateSaleCar";
@@ -514,7 +514,7 @@ const AddSaleCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears
                   <FormItem className="mt-4">
                     <FormLabel>Price <span className="text-destructive">*</span></FormLabel>
                     <FormControl>
-                      <Input placeholder="$" name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), setFormattedPriceValue(getFormattedPrice(event.target.value))}} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
+                      <Input placeholder="" icon={FiDollarSign} name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), setFormattedPriceValue(getFormattedPrice(event.target.value))}} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
                     </FormControl>
                     {formattedPriceValue}
                     <FormDescription>
