@@ -20,6 +20,10 @@ body,
   box-sizing: border-box;
 }
 
+body {
+  min-width: 320px;
+}
+
 @layer base {
   :root {
     --background: 0, 0%, 98%;

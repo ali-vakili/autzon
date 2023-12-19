@@ -214,7 +214,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
           <TabsTrigger value="sale">Sale</TabsTrigger>
         </TabsList>
       </div>
-      <div className="flex flex-col items-start md:grid grid-cols-3 gap-6">
+      <div className="flex md:flex-row flex-col items-start gap-6">
         <TabsContent
           value="all_cars"
           className="bg-white w-full lg:col-span-2 col-span-3 rounded-md p-5"
@@ -361,7 +361,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
             )}
           </div>
         </TabsContent>
-        <div className="lg:flex flex-col sticky top-5 hidden col-span-1 max-w-xs bg-white rounded-md py-5 mt-2">
+        <div className="lg:flex flex-col flex-grow sticky top-5 hidden col-span-1 xl:min-w-[320px] min-w-[288px] max-w-xs bg-white rounded-md py-5 mt-2">
           <div className="flex items-center justify-between mb-5 px-5">
             <h2 className="flex items-center text-sm font-semibold text-muted-foreground self-start"><FiFilter size={28} className="bg-gray-100 rounded p-1.5 me-1.5"/> Filter by</h2>
             <Button variant={"ghost"} size={"icon"} className="h-8 w-8" onClick={resetFilters}><FiRotateCw size={16}/></Button>

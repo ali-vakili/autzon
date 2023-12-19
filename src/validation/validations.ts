@@ -187,6 +187,12 @@ const AddAndUpdateRentalCarSchema = CarCommonSchema.merge(
     .refine(value => value === "" || (Number.isFinite(parseFloat(value)) && !Number.isNaN(parseFloat(value))), {
       message: "Reservation fee percentage must be a number",
     })
+    .refine(value => {
+      const floatValue = parseFloat(value);
+      return floatValue <= 100;
+    }, {
+      message: "Reservation fee percentage must not be greater than 100",
+    })
     .optional(),
     late_return_fee_per_hour: z
     .string()

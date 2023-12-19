@@ -74,7 +74,7 @@ const ResetPassword = ({ token }: RestPasswordPropsType) => {
 
   return (
     <div className="flex flex-col flex-1 items-center flex-shrink-0 px-5">
-      <div className="flex flex-col flex-1 max-w-sm">
+      <div className="flex flex-col flex-1 LPhone:max-w-sm w-full">
         <h1 className="mt-8 mb-2 text-2xl font-semibold">Reset Your Password</h1>
         <h2 className="text-sm text-foreground-light mb-10">Type in a new secure password and press reset password to update your password</h2>
         {isError && (
@@ -84,7 +84,7 @@ const ResetPassword = ({ token }: RestPasswordPropsType) => {
         )}
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="min-[425px]:w-96 min-[375px]:w-80 w-72 space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="min-[425px]:w-96 space-y-4">
           <FormField
               control={form.control}
               name="newPassword"

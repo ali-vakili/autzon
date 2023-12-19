@@ -266,7 +266,7 @@ type carCardPropType = {
 const AgentCarCard = ({ car, view_to, forCard, isFetching, refetchCarData }: carCardPropType) => {
   const { id, title, images, category, fuel_type, car_seat, for_rent, for_sale, is_published, is_car_rented, description } = car;
   return (
-    <div className="relative flex flex-col justify-start h-fit w-full border bg-white rounded-md pb-2 space-y-2 overflow-hidden">
+    <div className="relative flex flex-col justify-start h-full w-full border bg-white rounded-md pb-2 space-y-2 overflow-hidden">
       <ImageSection
         id={id}
         title={title}
@@ -295,9 +295,9 @@ const AgentCarCard = ({ car, view_to, forCard, isFetching, refetchCarData }: car
         />
       )}
 
-      {description && (<p className="text-xs text-muted-foreground w-full overflow-hidden overflow-ellipsis whitespace-nowrap h-4 !mt-3 px-2">{description}</p>)}
+      {description && (<p className="text-xs text-muted-foreground w-full overflow-hidden overflow-ellipsis whitespace-nowrap h-4 !mt-3 !mb-2 px-2">{description}</p>)}
 
-      <Separator />
+      <Separator className="!mt-auto"/>
 
       <AdditionalInfoSection
         fuelType={fuel_type.type}

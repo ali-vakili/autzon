@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib';
 import { Suspense } from 'react';
 import DashboardSkeletonLoading from '@/components/module/DashboardSkeletonLoading';
-import CreateGalleyWarning from '@/components/module/CreateGalleyWarning';
+import CreateGalleryWarning from '@/components/module/CreateGalleryWarning';
 import TotalCars from '@/components/module/TotalCars';
 
 import type { Metadata } from 'next'
@@ -30,7 +30,7 @@ export default async function Home() {
 
   if (!gallery) {
     return (
-      <CreateGalleyWarning />
+      <CreateGalleryWarning />
     )
   }
 

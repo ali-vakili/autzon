@@ -38,7 +38,7 @@ import { cn } from "@/lib/utils"
 
 import formatPrice from "@/helper/formatPrice";
 
-import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
+import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload, FiDollarSign } from "react-icons/fi"
 import { Car } from 'lucide-react';
 
 import { useUpdateSaleCar, updateSaleCarHookType } from "@/hooks/useUpdateSaleCar";
@@ -384,7 +384,7 @@ const EditSaleCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories, c
                         </Button>
                       </FormControl>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
+                    <DialogContent className="STablet:max-w-[425px] phone:max-w-[360px] max-w-[320px]">
                       <DialogHeader>
                         <DialogTitle>Select Model</DialogTitle>
                         <DialogDescription>
@@ -582,7 +582,7 @@ const EditSaleCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories, c
                   <FormItem className="mt-4">
                     <FormLabel>Price <span className="text-destructive">*</span></FormLabel>
                     <FormControl>
-                      <Input placeholder="$" name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), setFormattedPriceValue(getFormattedPrice(event.target.value))}} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
+                      <Input placeholder="" icon={FiDollarSign} name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), setFormattedPriceValue(getFormattedPrice(event.target.value))}} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
                     </FormControl>
                     {formattedPriceValue}
                     <FormDescription>

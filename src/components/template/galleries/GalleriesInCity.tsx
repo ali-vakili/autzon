@@ -95,7 +95,7 @@ const GalleriesInCity = ({ cities, provinces, categories }: galleriesInCityPropT
           {isFetching ? (
             <Skeleton className="h-9 w-[100px] rounded-full" />
           ) : (
-            <Badge variant={"outline"} className="gap-2 text-sm w-fit text-muted-foreground"><span className="text-white bg-primary py-1 px-3 rounded-full">{galleriesData.length}</span>Galleries to explore</Badge>
+            <Badge variant={"outline"} className="gap-2 LPhone:text-sm text-xs w-fit text-muted-foreground"><span className="text-white LPhone:text-sm text-xs bg-primary py-1 LPhone:px-3 px-2 rounded-full">{galleriesData.length}</span>Galleries to explore</Badge>
           )}
         </div>
         {isFetching ? (

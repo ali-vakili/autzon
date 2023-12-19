@@ -31,8 +31,8 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({ isOpen, closeDialog, onDele
           <FiTrash2 size={16}/>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] gap-4">
-        <DialogHeader>
+      <DialogContent className="STablet:max-w-[425px] max-w-[320px] gap-4">
+        <DialogHeader className="STablet:mt-0 mt-5">
           <DialogTitle>
             Confirm deletion of
             <span className="text-muted-foreground"> {title}</span>
@@ -51,7 +51,7 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({ isOpen, closeDialog, onDele
               Close
             </Button>
           </DialogClose>
-          <Button type="button" onClick={onDelete} variant={"destructive"} disabled={isLoading} isLoading={isLoading} className="w-fit">
+          <Button type="button" onClick={onDelete} variant={"destructive"} disabled={isLoading} isLoading={isLoading} className="STablet:w-fit w-full">
             {isLoading ? 'Deleting...' : 'Delete'}
           </Button>
         </DialogFooter>

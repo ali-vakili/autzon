@@ -316,7 +316,7 @@ const AddSaleCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears
                         </Button>
                       </FormControl>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
+                    <DialogContent className="STablet:max-w-[425px] phone:max-w-[360px] max-w-[320px]">
                       <DialogHeader>
                         <DialogTitle>Select Model</DialogTitle>
                         <DialogDescription>

@@ -197,7 +197,7 @@ const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGallery
                           </Button>
                         </FormControl>
                       </DialogTrigger>
-                      <DialogContent className="sm:max-w-[425px]">
+                      <DialogContent className="STablet:max-w-[425px] phone:max-w-[360px] max-w-[320px]">
                         <DialogHeader>
                           <DialogTitle>Select City</DialogTitle>
                           <DialogDescription>
@@ -368,7 +368,7 @@ const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGallery
                         Select the categories that suit your gallery.
                       </FormDescription>
                     </div>
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid sm:grid-cols-4 grid-cols-3 gap-2">
                       {categories.map((item) => (
                         <FormField
                           key={item.id}

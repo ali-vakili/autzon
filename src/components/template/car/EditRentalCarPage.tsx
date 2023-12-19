@@ -1,5 +1,6 @@
 "use client"
 
+import formatPrice from "@/helper/formatPrice";
 import { AddAndUpdateRentalCarSchema, AddAndUpdateRentalCarSchemaType } from "@/validation/validations"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
@@ -37,7 +38,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils"
 
-import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload  } from "react-icons/fi"
+import { FiX, FiPlus , FiChevronRight, FiCheck, FiUpload, FiPercent, FiDollarSign } from "react-icons/fi"
 import { Car } from 'lucide-react';
 
 import { useUpdateRentalCar, updateRentalCarHookType } from "@/hooks/useUpdateRentalCar";
@@ -125,6 +126,9 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
   const [carImages , setCarImages] = useState<{id: string, url: string}[]>([]);
   const [deletedImagesId , setDeletedImagesId] = useState<string[]>([]);
   const [updatedImagesIdAndIndex , setUpdatedImagesIdAndIndex] = useState<{id: string, index: number}[]>([]);
+  const [formattedPriceValue, setFormattedPriceValue] = useState<JSX.Element | null>(null);
+  const [formattedLateReturnFeePerHour, setFormattedLateReturnFeePerHour] = useState<JSX.Element | null>(null);
+  const [formattedReservationFeePercentage, setFormattedReservationFeePercentage] = useState<JSX.Element | null>(null);
 
   const router = useRouter();
 
@@ -207,6 +211,32 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
     if (index >= 0 && index < carImages.length) {
       const idToUpdate = carImages[index].id;
       setUpdatedImagesIdAndIndex((prevUpdatedImagesId) => [...prevUpdatedImagesId, { id:idToUpdate, index: index + 1 }]);
+    }
+  }
+
+  const getFormattedPrice = (price: string, period: string) => {
+    const { formattedValue, isValid } = formatPrice(price);
+
+    if (isValid) {
+      return <p className="text-sm text-muted-foreground">{formattedValue} {period}</p>;
+    } else {
+      return <p className="text-sm text-destructive">{formattedValue}</p>;
+    }
+  }
+
+  const formatPercentage = (numberString: string) => {
+    const isValidNumber = /^\d+(\.\d+)?$/.test(numberString);
+  
+    if (isValidNumber) {
+      const floatValue = parseFloat(numberString);
+      
+      if (floatValue > 100) {
+        return (<p className="text-sm text-destructive">Value cannot be more than 100%</p>);
+      }
+
+      return (<p className="text-sm text-muted-foreground">{floatValue.toFixed(2)} %</p>);
+    } else {
+      return (<p className="text-sm text-destructive">Invalid value</p>);
     }
   }
   
@@ -354,7 +384,7 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
                         </Button>
                       </FormControl>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
+                    <DialogContent className="STablet:max-w-[425px] phone:max-w-[360px] max-w-[320px]">
                       <DialogHeader>
                         <DialogTitle>Select Model</DialogTitle>
                         <DialogDescription>
@@ -558,8 +588,9 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
                   <FormItem className="mt-4">
                     <FormLabel>Price per day <span className="text-destructive">*</span></FormLabel>
                     <FormControl>
-                      <Input placeholder="$" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
+                      <Input placeholder="" icon={FiDollarSign} name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), setFormattedPriceValue(getFormattedPrice(event.target.value, "per day"))}} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
                     </FormControl>
+                    {formattedPriceValue}
                     <FormDescription>
                       Provide the amount of money($) for a renting day.
                     </FormDescription>
@@ -574,8 +605,9 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
                   <FormItem className="mt-4">
                     <FormLabel>Reservation fee percentage</FormLabel>
                     <FormControl>
-                      <Input placeholder="%" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
+                      <Input placeholder="" icon={FiPercent} name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} disabled={field.disabled} onChange={(event) => {field.onChange(event), setFormattedReservationFeePercentage(formatPercentage(event.target.value))}} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
                     </FormControl>
+                    {formattedReservationFeePercentage}
                     <FormDescription>
                       Provide the  percentage amount(%) for a reservation fee.
                     </FormDescription>
@@ -632,8 +664,9 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
                   <FormItem className="mt-8 w-full">
                     <FormLabel>Late return fee per hour <span className="text-destructive">{watch("extra_time") && '*'}</span></FormLabel>
                     <FormControl>
-                      <Input disabled={!watch("extra_time")} placeholder="$" {...field} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
+                      <Input disabled={!watch("extra_time")} placeholder="" icon={FiDollarSign} name={field.name} ref={field.ref} value={field.value} onBlur={field.onBlur} onChange={(event) => {field.onChange(event), setFormattedLateReturnFeePerHour(getFormattedPrice(event.target.value, "per hour"))}} type="text" className="border text-sm px-4 py-2 bg-secondary focus:bg-slate-50"/>
                     </FormControl>
+                    {watch("extra_time") && formattedLateReturnFeePerHour}
                     <FormMessage />
                   </FormItem>
                 )}

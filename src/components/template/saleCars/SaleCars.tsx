@@ -157,7 +157,7 @@ const SaleCars = ({ cities, provinces, brandsAndModels, buildYears, categories, 
         {isFetching && (
           <Badge variant={"secondary"} className="gap-2 text-sm w-fit text-muted-foreground mb-4"><Loader2 className="h-4 w-4 animate-spin" /> Loading</Badge>
         )}
-        <div className={`grid ${((carsData && carsData.length > 0) || isLoading) && 'LPhone:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] grid-cols-[repeat(auto-fill,minmax(auto,1fr))]'} gap-5`}>
+        <div className={`grid ${((carsData && carsData.length > 0) || isLoading) && 'LPhone:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] grid-cols-[repeat(auto-fill,minmax(auto,1fr))]'} gap-y-4 gap-x-2`}>
           {isLoading ? (
               <>
                 <Skeleton className="h-96 w-full rounded-md"/>

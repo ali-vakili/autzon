@@ -78,7 +78,7 @@ const GalleryCard = ({ gallery }: galleryCardPropType) => {
             </Tooltip>
           </TooltipProvider>
         </div>
-        <h5 className="LPhone:!ms-auto text-muted-foreground text-sm">{city_name_en}, {province_name_en}</h5>
+        <h5 className="LPhone:!ms-auto text-muted-foreground text-sm text-right">{city_name_en}, {province_name_en}</h5>
       </div>
       <div className="flex flex-wrap gap-4 lg:ms-36">
         <div className="flex flex-col items-start space-y-2">
