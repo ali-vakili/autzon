@@ -9,3 +9,6 @@ export const galleriesBucketUrl = `${supabaseUrl}/storage/v1/object/public/galle
 
 // cars bucket
 export const carsBucketUrl = `${supabaseUrl}/storage/v1/object/public/cars/`
+
+// assets bucket 
+export const assetsBucketUrl = `${supabaseUrl}/storage/v1/object/public/assets/`

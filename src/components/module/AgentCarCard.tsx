@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "../ui/button";
 import { Separator } from "@/components/ui/separator";
 import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { assetsBucketUrl } from "@/constants/supabaseStorage";
 
 import { FiUsers, FiEdit } from "react-icons/fi";
 import { Fuel } from 'lucide-react';
@@ -96,7 +97,7 @@ type ImageSectionProps = {
   images: {
     id: string;
     url: string;
-  }[];
+  }[] | [];
   viewTo: viewTo;
   isPublished?: boolean;
   for_rent: {
@@ -115,7 +116,7 @@ const ImageSection = ({ id, title, images, viewTo, isPublished, for_rent, for_sa
   <div className="w-full min-h-[160px]">
     <AspectRatio ratio={16 / 9} className="bg-muted rounded-t-md">
       <ImageBadge id={id} title={title} viewTo={viewTo} isPublished={isPublished} for_rent={for_rent} for_sale={for_sale} refetchCarData={refetchCarData}/>
-      <Image src={images[0].url} quality={100} className="rounded-t-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images[0].url}/>
+      <Image src={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`} quality={100} className="rounded-t-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`}/>
     </AspectRatio>
   </div>
 );

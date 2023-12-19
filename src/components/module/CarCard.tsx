@@ -6,7 +6,6 @@ import { Separator } from "@/ui/separator";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogClose,
   DialogHeader,
@@ -14,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from "@/ui/button";
+import { assetsBucketUrl } from "@/constants/supabaseStorage";
 
 import { Fuel } from "lucide-react";
 import { FiUsers } from "react-icons/fi";
@@ -41,7 +41,7 @@ type car = {
   images: {
     id: string;
     url: string;
-  }[];
+  }[] | [];
   for_rent?: {
     id: string;
     price_per_day: number;
@@ -91,7 +91,7 @@ const CarCard = ({ car }: carCardPropType) => {
         <div className="relative flex flex-col justify-start h-full w-full border bg-white rounded-md pb-2 space-y-2 cursor-pointer transition-color overflow-hidden">
           <div className="w-full min-h-[160px]">
             <AspectRatio ratio={16 / 9} className="bg-muted rounded-t-md">
-              <Image src={images[0].url} quality={100} className="rounded-t-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images[0].url}/>
+              <Image src={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`} quality={100} className="rounded-t-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`}/>
             </AspectRatio>
           </div>
           <div className="flex items-center justify-between p-4 py-2">
@@ -125,8 +125,6 @@ const CarCard = ({ car }: carCardPropType) => {
             <h5 className="flex items-center text-sm"><Fuel size={16} className="me-1.5 inline"/>{fuel_type.type}</h5>
             <h5 className="flex items-center text-sm"><FiUsers size={16} className="me-1.5 inline"/>{car_seat.seats_count} Seats</h5>
           </div>
-          {/* {for_rent && <Button disabled={is_car_rented.length > 0 ? true : false} className="mx-4 !mt-4 bg-blue-600 hover:bg-blue-500">Check renting details</Button>}
-          {for_sale && <Button className="mx-4 !mt-4 bg-green-600 hover:bg-green-500">Check out car</Button>} */}
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
