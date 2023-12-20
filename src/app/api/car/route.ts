@@ -31,8 +31,32 @@ export const GET = async (req: NextRequest) => {
         select: {
           id: true,
           title: true,
+          gallery: {
+            select: {
+              id: true,
+              name: true,
+              is_verified: true,
+            }
+          },
           model_id: true,
+          model: {
+            select: {
+              id: true,
+              name: true,
+              brand: {
+                select: {
+                  id: true,
+                  name: true,
+                }
+              }
+            }
+          },
           build_year_id: true,
+          build_year: {
+            select: {
+              year: true,
+            }
+          },
           fuel_type: {
             select: {
               id: true,
@@ -45,18 +69,13 @@ export const GET = async (req: NextRequest) => {
               url: true
             }
           },
-          for_rent: {
-            select: {
-              id: true,
-              price_per_day: true,
-              extra_time: true,
-            }
-          },
+          for_rent: true,
           for_sale: {
             select: {
               id: true,
+              color: true,
               price: true,
-              color: true
+              mileage: true,
             }
           },
           is_car_rented: true,

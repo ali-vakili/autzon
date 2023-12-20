@@ -22,3 +22,30 @@ hr.divider.sign-in::after {
 hr.divider.sign-up::after {
   content: "or continue with email";
 }
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.swiper-slide img {
+  display: block;
+  object-fit: cover;
+}
+.swiper-pagination {
+  padding: 8px 4px;
+  border-radius: 8px;
+  background-color: #0f172aeb;
+}
+.swiper-pagination-bullet-active {
+  background-color: #FFF;
+}
+.swiper-pagination-bullet-active-prev, .swiper-pagination-bullet-active-prev-prev, .swiper-pagination-bullet-active-next,.swiper-pagination-bullet-active-next-next {
+  background-color: #E2E8F0;
+}
