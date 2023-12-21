@@ -24,6 +24,10 @@ type saleCars = {
     image: {
       url: string;
     } | null;
+    phone_numbers: {
+      number: string;
+      id: string;
+    }[];
     city: {
       name_en: string;
       province: {

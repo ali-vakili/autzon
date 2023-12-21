@@ -114,7 +114,6 @@ export const POST = async (req: Request) => {
 
   }
   catch(err) {
-    console.log(err)
     if (err instanceof ZodError) {
       const errorMessages = fromZodError(err);
       const messages = [...errorMessages.details];

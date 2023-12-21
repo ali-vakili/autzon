@@ -19,8 +19,6 @@ import {
 } from "@/components/ui/tabs"
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { AGENT } from "@/constants/roles";
-
 import { useGetGalleryCars } from "@/hooks/useGetGalleryCars";
 
 import { FiFilter, FiPlus, FiRefreshCw, FiRotateCw  } from "react-icons/fi";
@@ -251,7 +249,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
           ) : (
             carsData && carsData.length > 0 ? (
               carsData.map(car => (
-                <AgentCarCard key={car.id} car={car} view_to={AGENT} forCard={car.for_rent ? "RENTAL" : car.for_sale ? "SALE" : "NONE"} isFetching={isFetching} refetchCarData={refetchCarData}/>
+                <AgentCarCard key={car.id} car={car} forCard={car.for_rent ? "RENTAL" : car.for_sale ? "SALE" : "NONE"} isFetching={isFetching} refetchCarData={refetchCarData}/>
               ))
             ) : cars.length === 0 ? (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
@@ -299,7 +297,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
           </div>
           <div className={`grid ${(hasCarsForRent || isLoading) && 'grid-cols-[repeat(auto-fill,minmax(224px,1fr))]'} gap-3`}>
             {carsData.filter(car => car.for_rent).length > 0 ? carsData.filter(car => car.for_rent).map(car => (
-              <AgentCarCard key={car.id} car={car} view_to={AGENT} forCard={"RENTAL"} refetchCarData={refetchCarData} isFetching={isFetching}/>
+              <AgentCarCard key={car.id} car={car} forCard={"RENTAL"} refetchCarData={refetchCarData} isFetching={isFetching}/>
             )) : cars.length === 0 ? (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
                 <h3 className="text-lg font-semibold">You don&apos;t have any rental cars to show</h3>
@@ -344,7 +342,7 @@ const AllCars = ({ cars, gallery_id, brandsAndModels, buildYears, categories, fu
           </div>
           <div className={`grid ${(hasCarsForSale || isLoading) && 'grid-cols-[repeat(auto-fill,minmax(224px,1fr))]'} gap-3`}>
             {carsData.filter(car => car.for_sale).length > 0 ? carsData.filter(car => car.for_sale).map(car => (
-              <AgentCarCard key={car.id} car={car} view_to={"AGENT"} forCard={"SALE"} refetchCarData={refetchCarData} isFetching={isFetching}/>
+              <AgentCarCard key={car.id} car={car} forCard={"SALE"} refetchCarData={refetchCarData} isFetching={isFetching}/>
             )) : cars.length === 0 ? (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">
                 <h3 className="text-lg font-semibold">You don&apos;t have any sale cars to show</h3>

@@ -6,6 +6,7 @@ import City from "@/components/module/filters/City";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetRentalCars } from "@/hooks/useGetRentalCars";
+import { useGetUserSavedCars } from "@/hooks/useGetUserSavedCars";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -24,6 +25,10 @@ type rentalCars = {
     image: {
       url: string;
     } | null;
+    phone_numbers: {
+      number: string;
+      id: string;
+    }[];
     city: {
       name_en: string;
       province: {
@@ -143,6 +148,7 @@ const RentalCars = ({ cities, provinces, brandsAndModels, buildYears, categories
   const router = useRouter();
 
   const { data: carsFromApi, isSuccess, isLoading, isFetching, isError, error, refetch } = useGetRentalCars(selectedCityId);
+  const { data: userSavedCars={data: []}, refetch: refetchUserSavedCars } = useGetUserSavedCars();
 
   const handleCityChange = (newCityId: string) => {
     setSelectedCityId(newCityId);
@@ -192,7 +198,7 @@ const RentalCars = ({ cities, provinces, brandsAndModels, buildYears, categories
             ) : (
               carsData && carsData.length > 0 ? (
                 carsData.map((car) => (
-                  <CarCard key={car.id} car={car} />
+                  <CarCard key={car.id} car={car} userSavedCars={userSavedCars.data}/>
                 ))
               ) : (
                 <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">

@@ -1,6 +1,13 @@
 import RentalCars from "@/components/template/rentalCars/RentalCars";
 import { prisma } from "@/lib";
 
+import type { Metadata } from 'next'
+
+
+export const metadata: Metadata = {
+  title: 'Rent Car',
+}
+
 export default async function RentCar() {
 
   const brandsAndModels = await prisma.brand.findMany({

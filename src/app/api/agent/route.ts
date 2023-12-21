@@ -13,7 +13,14 @@ export const GET = async () => {
       {
         select: {
           id: true,
-          image: true,
+          image: {
+            select: {
+              id: true,
+              url: true,
+              createdAt: true,
+              updatedAt: true
+            }
+          },
           firstName: true,
           lastName: true,
           role: true,

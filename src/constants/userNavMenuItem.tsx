@@ -41,7 +41,7 @@ const userNavDropDownMenuItems = (is_profile_complete: boolean) => {
       id: 3,
       title: "Saves",
       icon: <FiBookmark size={16} className="me-3"/>,
-      href: "#",
+      href: "/saves",
       disabled: !is_profile_complete
     }
   ]

@@ -19,12 +19,8 @@ import { toast } from "sonner";
 import { Button } from "@/ui/button";
 
 
-type viewTo = "AGENT" | "USER";
-
-
 type ImageBadgeProps = {
   id: string;
-  viewTo: viewTo;
   title: string;
   isPublished?: boolean;
   for_rent: {
@@ -48,7 +44,7 @@ const useDialog = () => {
   return { isOpen, openDialog, closeDialog };
 };
 
-const ImageBadge = ({ id, title, viewTo, isPublished, for_rent, for_sale, refetchCarData }: ImageBadgeProps) => {
+const ImageBadge = ({ id, title, isPublished, for_rent, for_sale, refetchCarData }: ImageBadgeProps) => {
   const { mutate: deleteCar, data, isSuccess, isLoading, isError, error }: deleteCarHookType = useDeleteCar();
   const { isOpen, openDialog, closeDialog } = useDialog();
 
@@ -76,12 +72,10 @@ const ImageBadge = ({ id, title, viewTo, isPublished, for_rent, for_sale, refetc
         />
       </div>
       <div className="absolute right-2 bottom-2 z-20 space-x-1">
-        {viewTo === "AGENT" && (
-          isPublished ? (
-            <Badge variant="default">Published</Badge>
-          ) : (
-            <Badge variant="destructive">Unpublished</Badge>
-          )
+        {isPublished ? (
+          <Badge variant="default">Published</Badge>
+        ) : (
+          <Badge variant="destructive">Unpublished</Badge>
         )}
         {for_rent && <Badge variant="outline" className="text-white bg-blue-600 border-blue-700">Rental</Badge>}
         {for_sale && <Badge variant="outline" className="text-white bg-green-600 border-green-700">Sale</Badge>}
@@ -98,7 +92,6 @@ type ImageSectionProps = {
     id: string;
     url: string;
   }[] | [];
-  viewTo: viewTo;
   isPublished?: boolean;
   for_rent: {
     id: string;
@@ -112,10 +105,10 @@ type ImageSectionProps = {
   refetchCarData : () => void;
 };
 
-const ImageSection = ({ id, title, images, viewTo, isPublished, for_rent, for_sale, refetchCarData }: ImageSectionProps) => (
+const ImageSection = ({ id, title, images, isPublished, for_rent, for_sale, refetchCarData }: ImageSectionProps) => (
   <div className="w-full min-h-[160px]">
     <AspectRatio ratio={16 / 9} className="bg-muted rounded-t-md">
-      <ImageBadge id={id} title={title} viewTo={viewTo} isPublished={isPublished} for_rent={for_rent} for_sale={for_sale} refetchCarData={refetchCarData}/>
+      <ImageBadge id={id} title={title} isPublished={isPublished} for_rent={for_rent} for_sale={for_sale} refetchCarData={refetchCarData}/>
       <Image src={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`} quality={100} className="rounded-t-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`}/>
     </AspectRatio>
   </div>
@@ -188,14 +181,12 @@ const AdditionalInfoSection = ({ fuelType, seatCount }: AdditionalInfoSectionPro
 
 
 type EditLinkProps = {
-  viewTo: viewTo;
   id: string;
   forCarLink: string;
   disabled: boolean
 };
 
-const EditLink = ({ viewTo, id, forCarLink, disabled }: EditLinkProps) => (
-  viewTo === 'AGENT' && (
+const EditLink = ({id, forCarLink, disabled }: EditLinkProps) => (
     disabled ? (
       <Button disabled className="!mt-4 mx-2">
         <FiEdit size={16} className="me-1.5"/>Edit Car
@@ -205,12 +196,10 @@ const EditLink = ({ viewTo, id, forCarLink, disabled }: EditLinkProps) => (
         <FiEdit size={16} className="me-1.5"/>Edit Car
       </Link>
     )
-  )
 );
 
 
 type carCardPropType = {
-  view_to: viewTo;
   forCard: "RENTAL" | "SALE" | "NONE";
   isFetching: boolean;
   refetchCarData : () => void;
@@ -264,7 +253,7 @@ type carCardPropType = {
   }
 }
 
-const AgentCarCard = ({ car, view_to, forCard, isFetching, refetchCarData }: carCardPropType) => {
+const AgentCarCard = ({ car, forCard, isFetching, refetchCarData }: carCardPropType) => {
   const { id, title, images, category, fuel_type, car_seat, for_rent, for_sale, is_published, is_car_rented, description } = car;
   return (
     <div className="relative flex flex-col justify-start h-full w-full border bg-white rounded-md pb-2 space-y-2 overflow-hidden">
@@ -272,7 +261,6 @@ const AgentCarCard = ({ car, view_to, forCard, isFetching, refetchCarData }: car
         id={id}
         title={title}
         images={images}
-        viewTo={view_to}
         isPublished={is_published}
         for_rent={for_rent}
         for_sale={for_sale}
@@ -305,7 +293,7 @@ const AgentCarCard = ({ car, view_to, forCard, isFetching, refetchCarData }: car
         seatCount={car_seat.seats_count}
       />
 
-      <EditLink viewTo={view_to} id={id} disabled={isFetching} forCarLink={forCard === "RENTAL" ? "rental" : forCard === "SALE" ? "sale" : ""}/>
+      <EditLink id={id} disabled={isFetching} forCarLink={forCard === "RENTAL" ? "rental" : forCard === "SALE" ? "sale" : ""}/>
     </div>
   )
 }

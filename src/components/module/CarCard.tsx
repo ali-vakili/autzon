@@ -1,5 +1,9 @@
+"use client"
+
 import Image from "next/image"
 import formatPrice from "@/helper/formatPrice";
+import formatPhoneNumber from "@/helper/formatPhoneNumber";
+import { useEffect, useState } from "react";
 import { Badge } from "@/ui/badge"
 import { AspectRatio } from "@/ui/aspect-ratio"
 import { Separator } from "@/ui/separator";
@@ -17,6 +21,9 @@ import { ScrollArea } from "@/ui/scroll-area";
 import { assetsBucketUrl } from "@/constants/supabaseStorage";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar";
+import { avatarFallBackText } from "@/helper/fallBackText";
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -25,7 +32,9 @@ import '../css/common.css';
 
 import { Pagination } from 'swiper/modules';
 
-import { FiUsers, FiMapPin } from "react-icons/fi";
+import { useSaveORUnSaveCar, saveORUnSaveCarHookType } from "@/hooks/useSaveORUnSaveCar";
+
+import { FiUsers, FiMapPin, FiCheckCircle, FiAlertCircle } from "react-icons/fi";
 import { Fuel, GalleryVerticalEnd, Bookmark, BookmarkCheck } from "lucide-react";
 
 
@@ -39,6 +48,10 @@ type car = {
     image: {
       url: string;
     } | null;
+    phone_numbers: {
+      number: string;
+      id: string;
+    }[];
     city: {
       name_en: string;
       province: {
@@ -117,6 +130,8 @@ type car = {
 
 type carCardPropType = {
   car: car
+  userSavedCars?: {car: car}[];
+  savedCarsRefetch?: any;
 }
 
 const FormattedRentPrice = ({ price, type, className }: {price: number, type: "RENT" | "SALE", className?: string | undefined}) => {
@@ -148,8 +163,33 @@ const calculateReservationFee = (pricePerDay: number, reservationFeePercentage: 
   return formattedValue;
 };
 
-const CarCard = ({ car }: carCardPropType) => {
-  const { id, title, gallery: { id:galleryId, name, image, city: { name_en:city_name_en, province: { name_en:province_name_en } }, is_verified }, images, model: { name: modelName, brand: { name: brandName }}, build_year:{year}, category, fuel_type, car_seat, for_rent, for_sale, is_car_rented, description } = car;
+const CarCard = ({ car, userSavedCars, savedCarsRefetch }: carCardPropType) => {
+  const [saved, setSaved] = useState(false);
+  const { id, title, gallery: { id:galleryId, name, image, phone_numbers, city: { name_en:city_name_en, province: { name_en:province_name_en } }, is_verified }, images, model: { name: modelName, brand: { name: brandName }}, build_year:{year}, category, fuel_type, car_seat, for_rent, for_sale, is_car_rented, description } = car;
+
+  const { mutate, data, isSuccess, isLoading, isError, error }: saveORUnSaveCarHookType = useSaveORUnSaveCar();
+
+  useEffect(()=> {
+    isSuccess === true && data?.message && (toast.success(data.message));
+    isError === true && error && toast.error(error?.response.data.error);
+  }, [isSuccess, isError])
+
+  useEffect(()=> {
+    if (data) {
+      setSaved(data?.saved);
+    }
+    savedCarsRefetch && savedCarsRefetch();
+  }, [data, userSavedCars])
+
+  useEffect(() => {
+    const isCarSaved = userSavedCars?.some(savedCar => savedCar.car.id === id);
+    if (isCarSaved) {
+      setSaved(true);
+    } else {
+      setSaved(false);
+    }
+  }, [])
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -157,7 +197,10 @@ const CarCard = ({ car }: carCardPropType) => {
           <div className="w-full min-h-[160px]">
             <AspectRatio ratio={16 / 9} className="bg-muted rounded-t-md">
               <Image src={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`} quality={100} className="rounded-t-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`}/>
-              {images.length > 1 && <GalleryVerticalEnd size={28} className="absolute top-2 right-2 py-1 px-1.5 bg-muted rounded"/>} 
+              <div className="flex absolute top-2 right-2 gap-2">
+                {saved && <BookmarkCheck size={28} className="py-1 px-1.5 bg-muted rounded"/>}
+                {images.length > 1 && <GalleryVerticalEnd size={28} className="py-1 px-1.5 bg-muted rounded"/>} 
+              </div>
             </AspectRatio>
           </div>
           <div className="flex items-center justify-between p-4 py-2">
@@ -249,7 +292,11 @@ const CarCard = ({ car }: carCardPropType) => {
                       <Badge className="bg-success !rounded-md w-fit hover:!bg-success">Available</Badge>
                     )
                   )}
-                  <Button variant={"outline"} size={"sm"}><Bookmark size={16} className="me-1"/>Save</Button>
+                  {saved ? (
+                    <Button isLoading={isLoading} onClick={() => mutate({ car_id: id, action: "UNSAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <BookmarkCheck size={16} className="me-1"/>}{isLoading ? "Unsaving" : "Saved"}</Button>
+                  ) : (
+                    <Button isLoading={isLoading} onClick={() => mutate({ car_id: id, action: "SAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <Bookmark size={16} className="me-1"/>}{isLoading ? "Saving" : "Save"}</Button>
+                  )}
                 </div>
               </div>
               {for_rent && (
@@ -321,11 +368,43 @@ const CarCard = ({ car }: carCardPropType) => {
                 )}
               </div>
               {description && (
-                <div className="flex flex-col flex-grow mb-2">
-                  <h4 className="text-xs text-muted-foreground font-semibold">Description: </h4>
-                  <h3 className="text-sm font-bold">{description}</h3>
-                </div>
+                <>
+                  <div className="flex flex-col flex-grow mb-2">
+                    <h4 className="text-xs text-muted-foreground font-semibold">Description: </h4>
+                    <h3 className="text-sm font-bold">{description}</h3>
+                  </div>
+                  <Separator className="my-2"/>
+                </>
               )}
+              <h3 className="text-sm text-muted-foreground font-bold">From auto gallery:</h3>
+              <div className="flex flex-col flex-grow w-full bg-primary px-3 py-5 rounded-md gap-2">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center space-x-3">
+                    <Avatar className="w-12 h-12">
+                      <AvatarImage alt="agent_avatar" src={image?.url ?? undefined}/>
+                      <AvatarFallback>{avatarFallBackText(name, null)}</AvatarFallback>
+                    </Avatar>
+                    <h2 className="text-base text-white font-bold">
+                      {name}
+                    </h2>
+                  </div>
+                  {is_verified ? (
+                    <Badge><FiCheckCircle size={16} className="me-1.5"/> Verified</Badge>
+                  ) : (
+                    <Badge variant="destructive"><FiAlertCircle size={16} className="me-1.5"/> Not Verified</Badge>
+                  )}
+                </div>
+                <h4 className="text-xs text-muted-foreground font-semibold mb-1">Phone numbers: </h4>
+                <div className="flex flex-wrap w-full justify-between gap-3">
+                  {phone_numbers.map((phone_number, index) => (
+                    <h5 key={phone_number.id} className="text-white text-sm font-semibold">
+                      <span className="py-1 px-1.5 text-muted-foreground border border-muted-foreground rounded-md">{index+1}</span>
+                      {" "}-{" "}
+                      {formatPhoneNumber(phone_number.number)}
+                    </h5>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </ScrollArea>

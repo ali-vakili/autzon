@@ -47,6 +47,24 @@ model Image {
   car_id     String?
 }
 
+model Announcement {
+  id       String           @id @default(uuid())
+  content  String
+  for_city City?            @relation(fields: [city_id], references: [id])
+  city_id  Int
+  for_user AutoGalleryAgent @relation(fields: [user_id], references: [id])
+  user_id  String
+}
+
+model UserSavedCars {
+  user    AutoGalleryAgent @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String
+  car     Car              @relation(fields: [car_id], references: [id], onDelete: Cascade)
+  car_id  String
+
+  @@id([user_id, car_id])
+}
+
 model ActivationToken {
   id          String           @id @default(uuid())
   verifyToken String           @unique @db.Text
@@ -68,15 +86,16 @@ model Province {
 }
 
 model City {
-  id          Int           @id
-  name_fa     String
-  name_en     String
-  slug        String
-  latitude    Float
-  longitude   Float
-  province    Province      @relation(fields: [province_id], references: [id])
-  province_id Int
-  gallery     AutoGallery[]
+  id           Int            @id
+  name_fa      String
+  name_en      String
+  slug         String
+  latitude     Float
+  longitude    Float
+  province     Province       @relation(fields: [province_id], references: [id])
+  province_id  Int
+  gallery      AutoGallery[]
+  Announcement Announcement[]
 }
 
 model Model {
@@ -137,6 +156,7 @@ model Car {
   category           AutoGalleryAndCarCategory @relation(fields: [category_id], references: [id])
   category_id        Int
   images             Image[]
+  UserSavedCars      UserSavedCars[]
   gallery            AutoGallery               @relation(fields: [gallery_id], references: [id], onDelete: Cascade)
   gallery_id         String
   for_rent           RentalCar?
@@ -238,6 +258,8 @@ model AutoGalleryAgent {
   password_reset_token PasswordResetToken[]
   accounts             Account[]
   sessions             Session[]
+  Announcement         Announcement[]
+  UserSavedCars        UserSavedCars[]
   is_profile_complete  Boolean              @default(false)
   is_subscribed        Boolean              @default(false)
   is_verified          Boolean              @default(false)

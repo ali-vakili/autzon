@@ -1,6 +1,13 @@
 import SaleCars from "@/components/template/saleCars/SaleCars";
 import { prisma } from "@/lib";
 
+import type { Metadata } from 'next'
+
+
+export const metadata: Metadata = {
+  title: 'Buy Car',
+}
+
 export default async function SaleCar() {
 
   const brandsAndModels = await prisma.brand.findMany({

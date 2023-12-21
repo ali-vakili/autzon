@@ -40,6 +40,12 @@ export const GET = async (req: NextRequest) => {
                 }
               },
               name: true,
+              phone_numbers: {
+                select: {
+                  id: true,
+                  number: true
+                }
+              },
               city: {
                 select: {
                   name_en: true,

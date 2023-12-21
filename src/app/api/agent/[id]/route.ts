@@ -20,7 +20,14 @@ export const GET = async (req: Request, { params }: requestProps) => {
         where: { id: params.id },
         select: {
           id: true,
-          image: true,
+          image: {
+            select: {
+              id: true,
+              url: true,
+              createdAt: true,
+              updatedAt: true
+            }
+          },
           firstName: true,
           lastName: true,
           role: true,
@@ -29,6 +36,14 @@ export const GET = async (req: Request, { params }: requestProps) => {
             select: {
               id: true,
               name: true,
+              image: {
+                select: {
+                  id: true,
+                  url: true,
+                  createdAt: true,
+                  updatedAt: true
+                }
+              },
               cars: true,
               categories: {
                 select: {
@@ -39,8 +54,11 @@ export const GET = async (req: Request, { params }: requestProps) => {
               city: {
                 select: {
                   name_en: true,
-                  name_fa: true,
-                  slug: true
+                  province: {
+                    select: {
+                      name_en: true
+                    }
+                  }
                 }
               },
               address: true,

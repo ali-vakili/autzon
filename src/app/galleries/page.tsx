@@ -1,6 +1,13 @@
 import GalleriesInCity from "@/components/template/galleries/GalleriesInCity";
 import { prisma } from "@/lib";
 
+import type { Metadata } from 'next'
+
+
+export const metadata: Metadata = {
+  title: 'Galleries',
+}
+
 export default async function Galleries() {
 
   const categories = await prisma.autoGalleryAndCarCategory.findMany({
