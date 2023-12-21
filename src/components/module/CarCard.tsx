@@ -193,7 +193,7 @@ const CarCard = ({ car }: carCardPropType) => {
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent className="SLaptop:max-w-[1000px] STablet:max-w-[580px] LPhone:max-w-[420px] max-w-[320px] pe-0">
+      <DialogContent className="SLaptop:max-w-[1000px] STablet:max-w-[580px] LPhone:max-w-[420px] phone:max-w-[360px] max-w-[320px] pe-0">
         <DialogHeader>
           <DialogTitle>Car details</DialogTitle>
         </DialogHeader>
@@ -204,10 +204,10 @@ const CarCard = ({ car }: carCardPropType) => {
                 dynamicBullets: true,
               }}
               modules={[Pagination]}
-              className="SLaptop:!sticky SLaptop:top-0 SLaptop:max-w-[420px] STablet:max-w-[532px] LPhone:max-w-[372px] max-w-[272px] !mx-0 mb-2"
+              className="SLaptop:!sticky SLaptop:top-0 SLaptop:max-w-[420px] STablet:max-w-[532px] LPhone:max-w-[372px] phone:max-w-[316px] max-w-[272px] !mx-0 mb-2"
             >
               {images.length > 0 ? images.map((image, index) => (
-                <SwiperSlide>
+                <SwiperSlide key={image.id}>
                   <AspectRatio ratio={16 / 9} className="bg-muted rounded-md">
                     <Image src={image.url} alt={`car_image_${index+1}`} quality={100} className="rounded-md object-cover" fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)"/>
                   </AspectRatio>
@@ -221,7 +221,7 @@ const CarCard = ({ car }: carCardPropType) => {
               )}
             </Swiper>
             <div className="flex flex-col w-full items-start gap-3 pe-5">
-              <div className="flex items-start justify-between w-full !mb-3">
+              <div className="flex items-start justify-between w-full !mb-2">
                 <div className="flex flex-col gap-1">
                   <h3 className="text-xl font-semibold">
                     {title}
@@ -276,7 +276,7 @@ const CarCard = ({ car }: carCardPropType) => {
                     </div>
                   )}
                   <div className="flex flex-col flex-wrap w-full justify-evenly bg-white rounded-md gap-3 p-3">
-                    <h3 className="inline-flex items-center gap-1 text-sm text-muted-foreground"><FiMapPin />{city_name_en}, {province_name_en}</h3>
+                    <h3 className="inline-flex items-center gap-1 text-sm text-muted-foreground font-semibold"><FiMapPin size={16}/>{city_name_en}, {province_name_en}</h3>
                     <div className="flex flex-col flex-grow">
                       <h4 className="text-xs text-muted-foreground font-semibold">Pick up location: </h4>
                       <h3 className="font-bold">{for_rent.pick_up_place}</h3>
@@ -321,7 +321,7 @@ const CarCard = ({ car }: carCardPropType) => {
                 )}
               </div>
               {description && (
-                <div className="flex flex-col flex-grow">
+                <div className="flex flex-col flex-grow mb-2">
                   <h4 className="text-xs text-muted-foreground font-semibold">Description: </h4>
                   <h3 className="text-sm font-bold">{description}</h3>
                 </div>
@@ -329,9 +329,9 @@ const CarCard = ({ car }: carCardPropType) => {
             </div>
           </div>
         </ScrollArea>
-        <DialogFooter className="pe-6 items-end">
+        <DialogFooter className="me-6 STablet:items-end pt-2">
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type="button" variant="secondary" className="">
               Close
             </Button>
           </DialogClose>
