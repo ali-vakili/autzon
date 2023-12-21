@@ -16,6 +16,7 @@ import { Button } from "@/ui/button";
 import { ScrollArea } from "@/ui/scroll-area";
 import { assetsBucketUrl } from "@/constants/supabaseStorage";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { cn } from "@/lib/utils";
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -24,15 +25,27 @@ import '../css/common.css';
 
 import { Pagination } from 'swiper/modules';
 
-import { FiUsers } from "react-icons/fi";
+import { FiUsers, FiMapPin } from "react-icons/fi";
 import { Fuel, GalleryVerticalEnd, Bookmark, BookmarkCheck } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Seats } from "./filters";
 
 
 type car = {
   id: string;
   title: string;
+  gallery: {
+    id: string;
+    name: string;
+    is_verified: boolean;
+    image: {
+      url: string;
+    } | null;
+    city: {
+      name_en: string;
+      province: {
+        name_en: string;
+      };
+    };
+  };
   description: string;
   car_seat: {
     id: number;
@@ -81,9 +94,9 @@ type car = {
     price: number;
     mileage: number;
     color: {
-        id: number;
-        color_name: string;
-        color_code: string;
+      id: number;
+      color_name: string;
+      color_code: string;
     };
   } | null;
   is_car_rented: {
@@ -136,7 +149,7 @@ const calculateReservationFee = (pricePerDay: number, reservationFeePercentage: 
 };
 
 const CarCard = ({ car }: carCardPropType) => {
-  const { id, title, images, model: { name: modelName, brand: { name: brandName }}, build_year:{year}, category, fuel_type, car_seat, for_rent, for_sale, is_car_rented, description } = car;
+  const { id, title, gallery: { id:galleryId, name, image, city: { name_en:city_name_en, province: { name_en:province_name_en } }, is_verified }, images, model: { name: modelName, brand: { name: brandName }}, build_year:{year}, category, fuel_type, car_seat, for_rent, for_sale, is_car_rented, description } = car;
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -208,7 +221,7 @@ const CarCard = ({ car }: carCardPropType) => {
               )}
             </Swiper>
             <div className="flex flex-col w-full items-start gap-3 pe-5">
-              <div className="flex items-start justify-between w-full">
+              <div className="flex items-start justify-between w-full !mb-3">
                 <div className="flex flex-col gap-1">
                   <h3 className="text-xl font-semibold">
                     {title}
@@ -262,7 +275,8 @@ const CarCard = ({ car }: carCardPropType) => {
                       <FormattedLateReturnPrice price={for_rent.reservation_fee_percentage} className="text-lg"/>
                     </div>
                   )}
-                  <div className="flex flex-wrap w-full justify-evenly bg-white rounded-md gap-3 p-3">
+                  <div className="flex flex-col flex-wrap w-full justify-evenly bg-white rounded-md gap-3 p-3">
+                    <h3 className="inline-flex items-center gap-1 text-sm text-muted-foreground"><FiMapPin />{city_name_en}, {province_name_en}</h3>
                     <div className="flex flex-col flex-grow">
                       <h4 className="text-xs text-muted-foreground font-semibold">Pick up location: </h4>
                       <h3 className="font-bold">{for_rent.pick_up_place}</h3>

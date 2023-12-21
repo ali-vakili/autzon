@@ -17,12 +17,37 @@ type rentalCars = {
   id: string;
   title: string;
   description: string;
+  gallery: {
+    id: string;
+    name: string;
+    is_verified: boolean;
+    image: {
+      url: string;
+    } | null;
+    city: {
+      name_en: string;
+      province: {
+        name_en: string;
+      };
+    };
+  };
   car_seat: {
     id: number;
     seats_count: string;
   };
   build_year_id: number;
+  build_year: {
+    year: string;
+  };
   model_id: number;
+  model: {
+    id: number;
+    name: string;
+    brand: {
+      id: number;
+      name: string;
+    };
+  };
   category: {
     id: number;
     category: string;
@@ -38,9 +63,16 @@ type rentalCars = {
   }[];
   for_rent: {
     id: string;
+    car_id: string;
     price_per_day: number;
+    pick_up_place: string;
+    drop_off_place: string;
+    reservation_fee_percentage: number;
+    late_return_fee_per_hour: number | null;
     extra_time: boolean;
-  };
+    createdAt: Date;
+    updatedAt: Date;
+  } | null;
   is_car_rented: {
     id: string;
     rented_user_id: string;

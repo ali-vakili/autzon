@@ -34,7 +34,22 @@ export const GET = async (req: NextRequest) => {
           gallery: {
             select: {
               id: true,
+              image: {
+                select: {
+                  url: true
+                }
+              },
               name: true,
+              city: {
+                select: {
+                  name_en: true,
+                  province: {
+                    select: {
+                      name_en: true,
+                    }
+                  }
+                }
+              },
               is_verified: true,
             }
           },

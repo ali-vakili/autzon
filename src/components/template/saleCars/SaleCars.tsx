@@ -2,6 +2,7 @@
 
 import CarCard from "@/components/module/CarCard";
 import CarsFilter from "@/components/module/CarsFilter";
+import City from "@/components/module/filters/City";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetSaleCars } from "@/hooks/useGetSaleCars";
@@ -10,19 +11,43 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
 import { Loader2 } from "lucide-react"
-import City from "@/components/module/filters/City";
 
 
 type saleCars = {
   id: string;
   title: string;
   description: string;
+  gallery: {
+    id: string;
+    name: string;
+    is_verified: boolean;
+    image: {
+      url: string;
+    } | null;
+    city: {
+      name_en: string;
+      province: {
+        name_en: string;
+      };
+    };
+  };
   car_seat: {
     id: number;
     seats_count: string;
   };
   build_year_id: number;
+  build_year: {
+    year: string;
+  };
   model_id: number;
+  model: {
+    id: number;
+    name: string;
+    brand: {
+      id: number;
+      name: string;
+    };
+  };
   category: {
     id: number;
     category: string;
@@ -39,12 +64,13 @@ type saleCars = {
   for_sale: {
     id: string;
     price: number;
+    mileage: number;
     color: {
-      id: number,
-      color_name: string,
-      color_code: string
-    }
-  };
+      id: number;
+      color_name: string;
+      color_code: string;
+    };
+  } | null;
   is_car_rented: {
     id: string;
     rented_user_id: string;
