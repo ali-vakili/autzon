@@ -14,6 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+
 import { FiUser, FiAlertCircle, FiCheckCircle, FiEdit, FiPhone, FiMapPin, FiInfo } from "react-icons/fi";
 import { Building, Blocks, Car, CalendarPlus } from 'lucide-react';
 
@@ -108,8 +109,8 @@ const Gallery = ({ gallery, agent }: galleryPropType) => {
           </div>
           <div className="space-y-2">
             <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiMapPin className="me-1.5 inline" size={16}/>Location and address</h3>
-            <h5 className="text-zinc-500 text-sm ms-5">{city_name_en}, {province_name_en}</h5>
             <h5 className="text-zinc-500 text-sm ms-5">{address}</h5>
+            <h5 className="text-zinc-500 text-sm ms-5">{city_name_en}, {province_name_en}</h5>
           </div>
           <div className="space-y-2">
             <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiPhone className="me-1.5 inline" size={16}/>Phone numbers</h3>

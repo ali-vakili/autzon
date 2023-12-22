@@ -6,7 +6,7 @@ import { ScrollArea } from "@/ui/scroll-area"
 import { buttonVariants } from "@/ui/button"
 import { dashboardPanel } from "@/constants/dashboardPanel"
 import { sessionUser } from "@/lib/types/sessionUserType"
-import { AutoGalleryItems, CarsItem } from "./DashboardPanelItems"
+import { AutoGalleryItems, CarsItem, RequestsItem } from "./DashboardPanelItems"
 import { cn } from "@/lib/utils"
 
 
@@ -16,10 +16,10 @@ const DashboardPanel = ({ user, hasAutoGallery }: { user: sessionUser, hasAutoGa
     <aside className="fixed min-w-[248px] h-full overflow-hidden -translate-x-full md:translate-x-0 w-64 transition-all z-40 top-[73px] left-0">
       <ScrollArea className="h-full z-20 bg-background w-64 border-r">
         <div className="pt-8 pb-20 px-4 h-fit">
-          <ul className="space-y-4">
+          <ul className="flex flex-col w-full items-start gap-y-2">
             <>
               {dashboardPanel.map((item) => (
-                  <li className="my-1" key={item.id}>
+                  <li className="my-1 w-full" key={item.id}>
                   <Link
                     href={item.href}
                     className={cn(
@@ -37,6 +37,7 @@ const DashboardPanel = ({ user, hasAutoGallery }: { user: sessionUser, hasAutoGa
               ))}
               <AutoGalleryItems hasAutoGallery={hasAutoGallery} />
               <CarsItem hasAutoGallery={hasAutoGallery} />
+              <RequestsItem hasAutoGallery={hasAutoGallery} />
             </>
           </ul>
         </div>

@@ -1,4 +1,4 @@
-import { FiGrid, FiList, FiPlus, FiEdit, FiCircle, FiAlertCircle } from "react-icons/fi"
+import { FiGrid, FiList, FiPlus, FiEdit, FiCircle, FiAlertCircle, FiFile } from "react-icons/fi"
 
 
 const dashboardPanel = [
@@ -74,4 +74,19 @@ const dashboardPanelCarsItems = [
   }
 ]
 
-export { dashboardPanelAutoGallery, dashboardPanelCarsItems, dashboardPanel }
+const dashboardPanelRequestItems = [
+  {
+    id: 4,
+    label: "Request",
+    children: [
+      {
+        id: 4.1,
+        title: "Rent Car",
+        href: "request/rent-car",
+        icon: <FiFile size={16} className="me-1.5"/>,
+      },
+    ]
+  }
+]
+
+export { dashboardPanelAutoGallery, dashboardPanelCarsItems, dashboardPanel, dashboardPanelRequestItems }

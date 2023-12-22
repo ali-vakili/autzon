@@ -1,6 +1,6 @@
 const getCreatedAndJoinDate = (date: Date) => {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  const formatted_date = new Date(date).toLocaleDateString(undefined, options);
+  const formatted_date = new Date(date).toLocaleDateString('en-US', options);
 
   return formatted_date;
 }

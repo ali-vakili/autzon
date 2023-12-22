@@ -153,7 +153,7 @@ export const POST = async (req: NextRequest, { params }: requestProps) => {
 
     return NextResponse.json(
       {
-        message: "Car successfully saved.",
+        message: "Car successfully saved you can find it in saves page.",
         saved: true
       },
       { status: 200 }

@@ -1,5 +1,4 @@
 import SavedCars from "@/components/template/SavedCars";
-import { prisma } from "@/lib";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 

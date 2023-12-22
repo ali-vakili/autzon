@@ -115,7 +115,11 @@ const SavedCars = () => {
     <div className="flex flex-col items-start w-full bg-white rounded-md px-5 py-6 gap-4 max-w-5xl mx-auto">
       <div className="flex items-center justify-between w-full mb-4">
         <h2 className="text-lg font-semibold">Saved cars</h2>
-        <Badge variant={"outline"} className="gap-2 text-sm w-fit text-muted-foreground"><span className="text-white bg-primary py-1 px-3 rounded-full">{carsData.length}</span>Saved cars</Badge>
+        {isFetching ? (
+          <Skeleton className="h-9 w-[100px] rounded-full" />
+        ) : (
+          <Badge variant={"outline"} className="gap-2 text-sm w-fit text-muted-foreground"><span className="text-white bg-primary py-1 px-3 rounded-full">{carsData.length}</span>Saved cars</Badge>
+        )}
       </div>
       <Button onClick={() => refetch()} size="sm" variant={"outline"} type="button" disabled={isFetching} isLoading={isFetching} className="w-fit text-xs h-8">{isFetching ? 'Refreshing' : <><FiRefreshCw className="me-1.5" />Refresh</>}</Button>
       <div className="grid w-full">

@@ -6,6 +6,7 @@ import { Badge } from "@/ui/badge";
 
 import { FiAlertCircle, FiCheckCircle, FiInfo, FiPhone, FiMapPin } from "react-icons/fi";
 import { Blocks } from 'lucide-react';
+import Link from "next/link";
 
 
 
@@ -49,7 +50,7 @@ const GalleryCard = ({ gallery }: galleryCardPropType) => {
   const { id, image, name, about, address, categories, phone_numbers, city: { name_en: city_name_en, province:{name_en: province_name_en} }, is_verified } = gallery;
 
   return (
-    <div className="flex flex-col w-full lg:col-span-2 col-span-3 bg-white rounded-md p-5 space-y-5 border">
+    <Link href={`/gallery/${id}`} className="flex flex-col w-full lg:col-span-2 col-span-3 bg-white rounded-md p-5 space-y-5 border">
       <div className="flex LPhone:flex-row flex-col items-center space-x-4 gap-y-3">
         <Avatar className="w-32 h-32">
           <AvatarImage alt="agent_avatar" src={image?.url ?? undefined}/>
@@ -108,7 +109,7 @@ const GalleryCard = ({ gallery }: galleryCardPropType) => {
         <h4 className="flex items-center text-sm font-semibold mb-3 w-fit"><FiInfo className="me-1.5 inline" size={16}/>About</h4>
         <p className="text-zinc-500 text-sm ms-5">{about}</p>
       </div>
-    </div>
+    </Link>
   )
 }
 

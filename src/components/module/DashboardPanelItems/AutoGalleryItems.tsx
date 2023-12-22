@@ -12,11 +12,11 @@ const AutoGalleryItems = ({ hasAutoGallery }: {hasAutoGallery: boolean}) => {
   return (
     <>
       {items.map((item) => (
-        <div className="py-2" key={item.id}>
+        <div className="py-2 w-full" key={item.id}>
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">{item.label}</h2>
           {item.children.map((child) => (
             child.show && (
-              <li className="my-1" key={child.id}>
+              <li className="my-1 w-full" key={child.id}>
                 {child.alert ? (
                   <Link
                     href={`/dashboard/${child.href}`}

@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link";
 import Image from "next/image"
 import formatPrice from "@/helper/formatPrice";
 import formatPhoneNumber from "@/helper/formatPhoneNumber";
@@ -34,7 +35,7 @@ import { Pagination } from 'swiper/modules';
 
 import { useSaveORUnSaveCar, saveORUnSaveCarHookType } from "@/hooks/useSaveORUnSaveCar";
 
-import { FiUsers, FiMapPin, FiCheckCircle, FiAlertCircle } from "react-icons/fi";
+import { FiUsers, FiMapPin, FiCheckCircle, FiAlertCircle, FiInfo  } from "react-icons/fi";
 import { Fuel, GalleryVerticalEnd, Bookmark, BookmarkCheck } from "lucide-react";
 
 
@@ -131,7 +132,6 @@ type car = {
 type carCardPropType = {
   car: car
   userSavedCars?: {car: car}[];
-  savedCarsRefetch?: any;
 }
 
 const FormattedRentPrice = ({ price, type, className }: {price: number, type: "RENT" | "SALE", className?: string | undefined}) => {
@@ -163,7 +163,7 @@ const calculateReservationFee = (pricePerDay: number, reservationFeePercentage: 
   return formattedValue;
 };
 
-const CarCard = ({ car, userSavedCars, savedCarsRefetch }: carCardPropType) => {
+const CarCard = ({ car, userSavedCars }: carCardPropType) => {
   const [saved, setSaved] = useState(false);
   const { id, title, gallery: { id:galleryId, name, image, phone_numbers, city: { name_en:city_name_en, province: { name_en:province_name_en } }, is_verified }, images, model: { name: modelName, brand: { name: brandName }}, build_year:{year}, category, fuel_type, car_seat, for_rent, for_sale, is_car_rented, description } = car;
 
@@ -178,7 +178,6 @@ const CarCard = ({ car, userSavedCars, savedCarsRefetch }: carCardPropType) => {
     if (data) {
       setSaved(data?.saved);
     }
-    savedCarsRefetch && savedCarsRefetch();
   }, [data, userSavedCars])
 
   useEffect(() => {
@@ -320,6 +319,7 @@ const CarCard = ({ car, userSavedCars, savedCarsRefetch }: carCardPropType) => {
                       <h3 className="text-sm font-bold mb-2">Extra Time</h3>
                       <h4 className="text-xs font-semibold">Late return fee per hour: </h4>
                       <FormattedLateReturnPrice price={for_rent.reservation_fee_percentage} className="text-lg"/>
+                      <h5 className="text-xs text-muted-foreground inline-flex items-center gap-1 mt-2"><FiInfo size={16} />This is a penalty in case you return car late.</h5>
                     </div>
                   )}
                   <div className="flex flex-col flex-wrap w-full justify-evenly bg-white rounded-md gap-3 p-3">
@@ -377,7 +377,7 @@ const CarCard = ({ car, userSavedCars, savedCarsRefetch }: carCardPropType) => {
                 </>
               )}
               <h3 className="text-sm text-muted-foreground font-bold">From auto gallery:</h3>
-              <div className="flex flex-col flex-grow w-full bg-primary px-3 py-5 rounded-md gap-2">
+              <Link href={`/gallery/${galleryId}`} className="flex flex-col flex-grow w-full bg-primary px-3 py-5 rounded-md gap-2">
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center space-x-3">
                     <Avatar className="w-12 h-12">
@@ -404,7 +404,7 @@ const CarCard = ({ car, userSavedCars, savedCarsRefetch }: carCardPropType) => {
                     </h5>
                   ))}
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
         </ScrollArea>
