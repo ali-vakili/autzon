@@ -330,7 +330,7 @@ const CarCard = ({ car, userSavedCars }: carCardPropType) => {
                     </div>
                     <Separator />
                     <div className="flex flex-col flex-grow">
-                      <h4 className="text-xs text-muted-foreground font-semibold">Drop Off location: </h4>
+                      <h4 className="text-xs text-muted-foreground font-semibold">Drop off location: </h4>
                       <h3 className="font-bold">{for_rent.drop_off_place}</h3>
                     </div>
                   </div>

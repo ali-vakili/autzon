@@ -8,7 +8,7 @@ export default withAuth(
     if (request.nextUrl.pathname.startsWith("/dashboard")
       && request.nextauth.token?.role !== AGENT) {
       return NextResponse.rewrite(
-        new URL("/", request.url)
+        new URL("/denied", request.url)
       )
     }
 
