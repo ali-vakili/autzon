@@ -75,6 +75,7 @@ const AgentUpdateSchema = z
     imageFile: imageFileSchema,
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
+    city: z.string().min(1, "Please select a city"),
     phone_number: phoneNumberSchema,
     bio: z
       .string()

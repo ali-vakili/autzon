@@ -92,6 +92,7 @@ type saleCars = {
 }
 
 type saleCarsPropType = {
+  userCityId: number|null|undefined;
   brandsAndModels: {
     id: number;
     name: string;
@@ -143,9 +144,9 @@ type models = {
   } | null;
 }
 
-const SaleCars = ({ cities, provinces, brandsAndModels, buildYears, categories, fuelTypes, carSeats, colors }: saleCarsPropType) => {
+const SaleCars = ({ cities, provinces, brandsAndModels, buildYears, categories, fuelTypes, carSeats, colors, userCityId }: saleCarsPropType) => {
   const [carsData, setCarsData] = useState<saleCars[]>([]);
-  const [selectedCityId, setSelectedCityId] = useState<string>("52");
+  const [selectedCityId, setSelectedCityId] = useState<string>(`${userCityId}` ?? "52");
   const cityName = cities.find(city => `${city.id}` === selectedCityId)?.name_en;
   const router = useRouter();
 

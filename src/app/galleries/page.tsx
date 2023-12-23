@@ -1,5 +1,6 @@
 import GalleriesInCity from "@/components/template/galleries/GalleriesInCity";
-import { prisma } from "@/lib";
+import { prisma, validateSession } from "@/lib";
+import { NextResponse } from "next/server";
 
 import type { Metadata } from 'next'
 
@@ -28,9 +29,16 @@ export default async function Galleries() {
     orderBy: { name_en: 'asc' },
   })
 
+  let userCityId = null
+
+  const session = await validateSession();
+  if (!(session instanceof NextResponse)) {
+    userCityId = session.user.city?.id;
+  };
+
   return (
     <main className="flex min-h-full flex-col px-5 md:px-8 py-8">
-      <GalleriesInCity provinces={provinces} cities={cities} categories={categories}/>
+      <GalleriesInCity userCityId={userCityId} provinces={provinces} cities={cities} categories={categories}/>
     </main>
   )
 }

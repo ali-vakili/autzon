@@ -7,6 +7,7 @@ import { Button, buttonVariants } from "@/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,6 +22,13 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { FiCheck, FiChevronRight, FiX } from "react-icons/fi";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 
 type editProfilePropType = {
@@ -31,14 +39,45 @@ type editProfilePropType = {
     lastName: string | null;
     phone_number: string | null;
     bio: string | null;
+    city_id: number | null,
+    city: {
+      id: number;
+      name_en: string;
+      latitude: number;
+      longitude: number;
+      province: {
+        id: number;
+        name_en: string;
+        latitude: number;
+        longitude: number;
+      };
+    } | null;
     image: {
       url: string;
     } | null;
   }
+  cities: {
+    id: number;
+    name_en: string;
+    province_id: number;
+    latitude: number;
+    longitude: number;
+  }[],
+  provinces: {
+    id: number;
+    name_en: string;
+    latitude: number;
+    longitude: number;
+  }[]
 }
 
-const EditProfile = ({ user }: editProfilePropType) => {
+const EditProfile = ({ user, cities, provinces }: editProfilePropType) => {
   const [name, setName] = useState({ firstName: '', lastName: '' });
+
+  const [selectedProvince, setSelectedProvince] = useState<{id:number, name_en: string, latitude: number, longitude: number}|null>(user.city !== null ? { id: user.city.province.id, name_en: user.city.province.name_en, latitude: user.city.province.latitude, longitude: user.city.province.longitude } : null);
+
+  const [selectedCity, setSelectedCity] = useState<{id:number, name_en: string, latitude: number, longitude: number}|null>(user.city !== null ? { id: user.city.id, name_en: user.city.name_en, latitude: user.city.latitude, longitude: user.city.longitude } : null);
+
   const { id, firstName, lastName, image, phone_number, bio } = user;
   const { url } = image ?? { url: null };
   const { data: session, update } = useSession();
@@ -76,6 +115,7 @@ const EditProfile = ({ user }: editProfilePropType) => {
         profile: data.image_url,
         firstName: firstName,
         lastName: lastName,
+        city: { ...selectedCity, province: selectedProvince },
         is_profile_complete: true 
       }
     });
@@ -107,13 +147,14 @@ const EditProfile = ({ user }: editProfilePropType) => {
       imageUrl: "",
       imageFile: null,
       firstName: firstName || undefined,
+      city: `${selectedCity?.id}` ?? "",
       lastName: lastName || undefined,
       phone_number: phone_number || undefined,
       bio: bio || undefined
     },
   })
 
-  const { isDirty, errors } = form.formState;
+  const { errors } = form.formState;
   const { watch } = form;
 
   return (
@@ -191,6 +232,111 @@ const EditProfile = ({ user }: editProfilePropType) => {
           />
           <FormField
             control={form.control}
+            name="city"
+            render={({ field }) => (
+              <FormItem className="mt-8">
+                <FormLabel>City <span className="text-destructive">*</span></FormLabel>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <FormControl>
+                      <Button variant="outline" className={cn("w-full justify-between", !field.value && "text-muted-foreground")}>
+                        {field.value
+                          ? cities.find(
+                              (city) => `${city.id}` === field.value
+                            )?.name_en
+                          : "Select city"
+                        }
+                        <FiChevronRight size={16}/>
+                      </Button>
+                    </FormControl>
+                  </DialogTrigger>
+                  <DialogContent className="STablet:max-w-[425px] phone:max-w-[360px] max-w-[320px]">
+                    <DialogHeader>
+                      <DialogTitle>Select City</DialogTitle>
+                      <DialogDescription>
+                        The selected city will be your gallery city.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <Command>
+                      <CommandInput placeholder="Search city or province..."/>
+                      {selectedProvince && (
+                        <Badge variant="secondary" className="w-fit py-2 px-4 m-2 ms-3">
+                          <span aria-description="unselect province" className="bg-slate-300 me-1.5 cursor-pointer rounded-full p-0.5" onClick={() => setSelectedProvince(null)}><FiX size={16}/></span>
+                          { selectedProvince.name_en }
+                        </Badge>
+                      )}
+                      <ScrollArea className="h-80">
+                        <CommandEmpty>No city or province found.</CommandEmpty>
+                        <CommandGroup>
+                          <h4 className="text-xs text-gray-400 ms-3 my-3">{selectedProvince ? "Cities" : "Provinces"}</h4>
+                          {selectedProvince ? 
+                            cities
+                            .filter((city) => city.province_id === selectedProvince.id)
+                            .map((city) => (
+                              <CommandItem
+                                value={city.name_en}
+                                key={city.id}
+                                className={cn("mb-0.5", `${city.id}` === field.value && "bg-accent")}
+                                onSelect={() => {
+                                  form.setValue("city", `${city.id}`), setSelectedCity({id: city.id, name_en: city.name_en, latitude: city.latitude, longitude: city.longitude});
+                                }}
+                              >
+                                <span className="flex items-center mr-2 h-4 w-4">
+                                  {`${city.id}` === field.value && (
+                                    <FiCheck
+                                      className={cn(
+                                        `${city.id}` === field.value ? "opacity-100" : "opacity-0"
+                                      )}
+                                    />
+                                  )}
+                                </span>
+                                {city.name_en}
+                              </CommandItem>
+                            ))
+                          :
+                            provinces.map((province) => (
+                              <CommandItem
+                                value={province.name_en}
+                                key={province.id}
+                                className={cn("mb-0.5", province.id === selectedProvince && "bg-accent")}
+                                onSelect={() => {
+                                  setSelectedProvince({id: province.id, name_en: province.name_en, latitude: province.latitude, longitude: province.longitude})
+                                }}
+                              >
+                                <span className="flex items-center mr-2 h-4 w-4">
+                                  {province.id === selectedProvince && (
+                                    <FiCheck
+                                      className={cn(
+                                        province.id === selectedProvince ? "opacity-100" : "opacity-0"
+                                      )}
+                                    />
+                                  )}
+                                </span>
+                                {province.name_en}
+                              </CommandItem>
+                            ))
+                          }
+                        </CommandGroup>
+                      </ScrollArea>
+                    </Command>
+                    <DialogFooter>
+                      <DialogClose asChild>
+                        <Button type="button" variant="secondary">
+                          Close
+                        </Button>
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+                <FormDescription>
+                  Select which city your gallery is.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="bio"
             render={({ field }) => (
               <FormItem className="mt-8">
@@ -207,7 +353,7 @@ const EditProfile = ({ user }: editProfilePropType) => {
             )}
           />
           <div className="text-end">
-            <Button type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Saving Profile...' : 'Save Profile'}</Button>
+            <Button type="submit" disabled={isLoading} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Saving Profile...' : 'Save Profile'}</Button>
           </div>
         </form>
       </Form>

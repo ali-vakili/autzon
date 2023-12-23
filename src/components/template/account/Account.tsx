@@ -19,7 +19,7 @@ import { getCreatedAndJoinDate, getUpdatedAtDate } from "@/helper/getDate";
 
 
 const Account = async ({ user } : { user: sessionUser }) => {
-  const { email, profile, firstName, lastName, role, is_verified, join_date, updatedAt } = user
+  const { email, profile, firstName, lastName, role, is_verified, city, join_date, updatedAt } = user
   const joined_date = getCreatedAndJoinDate(join_date);
   const updatedAt_date = getUpdatedAtDate(updatedAt);
 
@@ -65,6 +65,12 @@ const Account = async ({ user } : { user: sessionUser }) => {
       </div>
       <h4 className="mb-1 font-semibold text-primary">Email</h4>
       <h5 className="text-zinc-500 ms-3">{email}</h5>
+      {city && (
+        <>
+          <h4 className="mb-1 font-semibold text-primary mt-3">City</h4>
+          <h5 className="text-zinc-500 ms-3">{city.name_en}, {city.province.name_en}</h5>
+        </>
+      )}
       <h4 className="mb-1 font-semibold text-primary mt-3">Join Date</h4>
       <h5 className="text-zinc-500 ms-3">{joined_date}</h5>
     </>

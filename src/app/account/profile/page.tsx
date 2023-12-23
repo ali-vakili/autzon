@@ -24,6 +24,23 @@ export default async function Profile() {
       email: true,
       firstName: true,
       lastName: true,
+      city_id: true,
+      city: {
+        select: {
+          id: true,
+          name_en: true,
+          latitude: true,
+          longitude: true,
+          province: {
+            select: {
+              id: true,
+              name_en: true,
+              latitude: true,
+              longitude: true
+            }
+          }
+        }
+      },
       phone_number: true,
       bio: true,
       image: {
@@ -36,7 +53,17 @@ export default async function Profile() {
 
   if (!agent) return;
 
+  const provinces = await prisma.province.findMany({ 
+    select: { id: true, name_en: true, latitude: true, longitude: true }, 
+    orderBy: { name_en: 'asc' },
+  })
+
+  const cities = await prisma.city.findMany({ 
+    select: { id: true, name_en: true, province_id: true, latitude: true, longitude: true },
+    orderBy: { name_en: 'asc' },
+  })
+
   return (
-    <EditProfile user={agent}/>
+    <EditProfile provinces={provinces} cities={cities} user={agent}/>
   )
 }

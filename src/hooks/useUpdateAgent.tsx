@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 const updateAgent = async ({ values, agent_id }: {values: AgentUpdateType , agent_id: string}) => {
-  const { imageFile, firstName, lastName, phone_number, bio } = values;
+  const { imageFile, firstName, lastName, phone_number, city, bio } = values;
 
   const formData = new FormData();
   if (imageFile) {
@@ -13,6 +13,7 @@ const updateAgent = async ({ values, agent_id }: {values: AgentUpdateType , agen
   formData.append('firstName', firstName);
   formData.append('lastName', lastName);
   formData.append('phone_number', phone_number);
+  formData.append('city', city);
   formData.append('bio', bio);
 
   const { data } = await axios.patch(

@@ -23,7 +23,9 @@ export default async function CreateGallery() {
     include: { gallery: true },
   });
 
-  !agent || agent!.gallery.length > 0 && redirect("/dashboard");
+  if (!agent || agent!.gallery.length > 0) {
+    redirect("/dashboard");
+  }
 
   const autoGalleryCategories = await prisma.autoGalleryAndCarCategory.findMany({
     select: {
@@ -44,6 +46,6 @@ export default async function CreateGallery() {
   })
 
   return (
-    <CreateGalleryForm categories={autoGalleryCategories} cities={cities} provinces={provinces}/>
+    <CreateGalleryForm agentCityId={agent.city_id} categories={autoGalleryCategories} cities={cities} provinces={provinces}/>
   )
 }

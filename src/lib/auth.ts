@@ -79,6 +79,28 @@ export const authOptions: NextAuthOptions = {
         const userImage = await prisma.image.findUnique({
           where: { agent_id: existingAgent.id }
         })
+
+        let userCity = null
+
+        if (existingAgent.city_id){
+          userCity = await prisma.city.findFirst({
+            where: { id: existingAgent.city_id },
+            select: {
+              id: true,
+              name_en: true,
+              latitude: true,
+              longitude: true,
+              province: {
+                select: {
+                  id: true,
+                  name_en: true,
+                  latitude: true,
+                  longitude: true
+                }
+              }
+            }
+          })
+        }
         
         return {
           id: `${existingAgent.id}`,
@@ -87,6 +109,7 @@ export const authOptions: NextAuthOptions = {
           lastName: existingAgent.lastName,
           profile: userImage?.url ?? null,
           role: existingAgent.role,
+          city: userCity,
           is_verified: existingAgent.is_verified,
           is_subscribed: existingAgent.is_subscribed,
           is_profile_complete: existingAgent.is_profile_complete,
@@ -124,6 +147,7 @@ export const authOptions: NextAuthOptions = {
             lastName: token.lastName,
             profile: token.profile,
             role: token.role,
+            city: token.city,
             is_verified: token.is_verified,
             is_subscribed: token.is_subscribed,
             is_profile_complete: token.is_profile_complete,

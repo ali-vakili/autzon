@@ -319,7 +319,7 @@ const CarCard = ({ car, userSavedCars }: carCardPropType) => {
                       <h3 className="text-sm font-bold mb-2">Extra Time</h3>
                       <h4 className="text-xs font-semibold">Late return fee per hour: </h4>
                       <FormattedLateReturnPrice price={for_rent.reservation_fee_percentage} className="text-lg"/>
-                      <h5 className="text-xs text-muted-foreground inline-flex items-center gap-1 mt-2"><FiInfo size={16} />This is a penalty in case you return car late.</h5>
+                      <h5 className="text-xs text-orange-500 inline-flex items-center gap-1 mt-2"><FiInfo size={16} />This is a penalty in case you return car late.</h5>
                     </div>
                   )}
                   <div className="flex flex-col flex-wrap w-full justify-evenly bg-white rounded-md gap-3 p-3">

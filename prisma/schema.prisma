@@ -13,6 +13,13 @@ datasource db {
 enum Role {
   USER
   AGENT
+  ADMIN
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
 }
 
 model AutoGalleryAndCarCategory {
@@ -86,15 +93,16 @@ model Province {
 }
 
 model City {
-  id           Int            @id
+  id           Int                @id
   name_fa      String
   name_en      String
   slug         String
   latitude     Float
   longitude    Float
-  province     Province       @relation(fields: [province_id], references: [id])
+  province     Province           @relation(fields: [province_id], references: [id])
   province_id  Int
   gallery      AutoGallery[]
+  user         AutoGalleryAgent[]
   Announcement Announcement[]
 }
 
@@ -142,6 +150,19 @@ model CarColor {
   SaleCar SaleCar[]
 }
 
+model RentRequest {
+  id              String           @id @default(uuid())
+  user            AutoGalleryAgent @relation(fields: [user_id], references: [id], onDelete: Restrict)
+  user_id         String
+  car             Car              @relation(fields: [car_id], references: [id], onDelete: Restrict)
+  car_id          String
+  auto_gallery    AutoGallery      @relation(fields: [auto_gallery_id], references: [id], onDelete: Restrict)
+  auto_gallery_id String
+  status          RequestStatus    @default(PENDING)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
 model Car {
   id                 String                    @id @default(uuid())
   title              String                    @db.VarChar(30)
@@ -157,6 +178,7 @@ model Car {
   category_id        Int
   images             Image[]
   UserSavedCars      UserSavedCars[]
+  rent_request       RentRequest[]
   gallery            AutoGallery               @relation(fields: [gallery_id], references: [id], onDelete: Cascade)
   gallery_id         String
   for_rent           RentalCar?
@@ -233,6 +255,7 @@ model AutoGallery {
   city_id       Int
   address       String
   phone_numbers PhoneNumber[]
+  rent_request  RentRequest[]
   about         String?                     @db.VarChar(1024)
   agent         AutoGalleryAgent            @relation(fields: [agent_id], references: [id], onDelete: Cascade)
   agent_id      String
@@ -251,6 +274,8 @@ model AutoGalleryAgent {
   password             String?
   phone_number         String?              @db.VarChar(11)
   bio                  String?              @db.VarChar(1024)
+  city                 City?                @relation(fields: [city_id], references: [id])
+  city_id              Int?
   gallery              AutoGallery[]
   rented_cars          RentedCar[]
   rental_car_history   RentalCarHistory[]
@@ -260,6 +285,7 @@ model AutoGalleryAgent {
   sessions             Session[]
   Announcement         Announcement[]
   UserSavedCars        UserSavedCars[]
+  rent_request         RentRequest[]
   is_profile_complete  Boolean              @default(false)
   is_subscribed        Boolean              @default(false)
   is_verified          Boolean              @default(false)

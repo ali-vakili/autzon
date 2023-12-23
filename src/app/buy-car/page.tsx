@@ -1,5 +1,6 @@
 import SaleCars from "@/components/template/saleCars/SaleCars";
-import { prisma } from "@/lib";
+import { prisma, validateSession } from "@/lib";
+import { NextResponse } from "next/server";
 
 import type { Metadata } from 'next'
 
@@ -77,9 +78,16 @@ export default async function SaleCar() {
     orderBy: { name_en: 'asc' },
   })
 
+  let userCityId = null
+
+  const session = await validateSession();
+  if (!(session instanceof NextResponse)) {
+    userCityId = session.user.city?.id;
+  };
+
   return (
     <main className="flex min-h-full flex-col px-5 md:px-8 py-8">
-      <SaleCars provinces={provinces} cities={cities} brandsAndModels={brandsAndModels} buildYears={buildYears} categories={categories} carSeats={carSeats} fuelTypes={fuelTypes} colors={colors} />
+      <SaleCars userCityId={userCityId} provinces={provinces} cities={cities} brandsAndModels={brandsAndModels} buildYears={buildYears} categories={categories} carSeats={carSeats} fuelTypes={fuelTypes} colors={colors} />
     </main>
   )
 }

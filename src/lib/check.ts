@@ -7,6 +7,7 @@ type session = {
     id: string,
     email: string,
     role: string,
+    // city: { id: number, name_en: string, latitude: number, longitude: number, province:{ id:number, name_en: string, latitude: number, longitude: number } } | null
     is_verified: boolean,
     is_subscribed: boolean,
   }
@@ -16,10 +17,11 @@ type agentProfile = {
   firstName: string | null;
   lastName: string | null;
   phone_number: string | null;
+  city_id: number | null
 }
 
 const checkAgentProfile = (agent: agentProfile) => {
-  if (!agent.firstName || !agent.lastName || !agent.phone_number) {
+  if (!agent.firstName || !agent.lastName || !agent.phone_number || !agent.city_id) {
     return NextResponse.json(
       { message: "Please complete your account information in order to create an auto gallery" },
       { status: 400 }

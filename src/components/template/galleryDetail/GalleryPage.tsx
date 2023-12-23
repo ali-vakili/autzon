@@ -63,9 +63,9 @@ const GalleryPage = ({ gallery }: galleryPagePropType) => {
         <div className="flex flex-col bg-secondary rounded-md w-fit p-4 gap-2 min-w-[320px]">
           <h4 className="text-sm text-muted-foreground font-semibold">Contact info</h4>
           <h4 className="inline-flex items-center font-semibold gap-1.5"><FiPhone size={16}/>Phone numbers:</h4>
-          <div className="flex flex-wrap w-full gap-y-2 gap-x-8">
+          <div className="flex flex-wrap w-full gap-y-2 gap-x-2">
             {phone_numbers.map((phone_number, index) => (
-              <h5 key={phone_number.id} className="text-lg font-semibold ms-5">
+              <h5 key={phone_number.id} className="text-lg font-semibold mx-5">
                 <span className="text-muted-foreground">{index+1}</span>
                 {" "}-{" "}
                 {formatPhoneNumber(phone_number.number)}

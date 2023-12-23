@@ -29,9 +29,9 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
       throw zodError;
     }
 
-    const { imageFile, firstName, lastName, phone_number, bio } = formDataObject;
+    const { imageFile, firstName, lastName, phone_number, city, bio } = formDataObject;
     
-    if (!firstName || !lastName || !phone_number) {
+    if (!firstName || !lastName || !phone_number || !city) {
       return NextResponse.json(
         { error: "Please fill all required fields" },
         { status: 422 }
@@ -67,6 +67,7 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
           firstName: firstName.toString(),
           lastName: lastName.toString(),
           phone_number: phone_number.toString(),
+          city_id: +city,
           bio: bio.toString(),
           is_profile_complete: true
         },
@@ -89,7 +90,6 @@ export const PATCH = async (req: Request, { params }: requestProps) => {
     }
   }
   catch(err) {
-    console.log(err);
     if (err instanceof ZodError) {
       const errorMessages = fromZodError(err);
       const messages = [...errorMessages.details];

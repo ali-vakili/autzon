@@ -840,5 +840,21 @@
       { "name": "C70" },
       { "name": "Polestar 2" }
     ]
-  }
+  },
+  {
+    "id": 54,
+    "brandName": "BMW",
+    "models": [
+      { "name": "3 Series" },
+      { "name": "5 Series" },
+      { "name": "7 Series" },
+      { "name": "X3" },
+      { "name": "X5" },
+      { "name": "X7" },
+      { "name": "Z4" },
+      { "name": "M2" },
+      { "name": "M4" },
+      { "name": "i3" }
+    ]
+  }  
 ]

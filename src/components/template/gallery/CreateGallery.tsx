@@ -47,6 +47,7 @@ import { useRouter } from "next/navigation";
 
 
 type createGalleryFormPropType = {
+  agentCityId: number | null
   categories: {
     id: number;
     category: string;
@@ -63,7 +64,7 @@ type createGalleryFormPropType = {
   }[]
 }
 
-const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormPropType) => {
+const CreateGalleryForm = ({ agentCityId, categories, cities, provinces }: createGalleryFormPropType) => {
   const [leftPhoneNumbersCount, setLeftPhoneNumbersCount] = useState<number>(2);
   const [selectedProvince, setSelectedProvince] = useState<{id:number, name: string}|null>(null);
   const router = useRouter();
@@ -81,7 +82,7 @@ const CreateGalleryForm = ({ categories, cities, provinces }: createGalleryFormP
       name: "",
       imageUrl: "",
       imageFile: null,
-      city: "",
+      city: `${agentCityId}` ?? "",
       address: "",
       phone_numbers:[{ number: "" }],
       categories: [],
