@@ -65,7 +65,7 @@ type galleriesInCityPropType = {
 
 const GalleriesInCity = ({ cities, provinces, categories, userCityId }: galleriesInCityPropType) => {
   const [galleriesData, setGalleriesData] = useState<galleries[]>([]);
-  const [selectedCityId, setSelectedCityId] = useState<string>(`${userCityId}` ?? "52");
+  const [selectedCityId, setSelectedCityId] = useState<string>(userCityId ? `${userCityId}` : "52");
   const cityName = cities.find(city => `${city.id}` === selectedCityId)?.name_en;
   const router = useRouter();
 

@@ -645,7 +645,7 @@ const EditRentalCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories,
                         Extra Time
                       </FormLabel>
                       <FormDescription>
-                        Enables Extra time price for the rented car per hour.
+                        Enables Extra time penalty price for the rented car per hour in case renter returns car late.
                       </FormDescription>
                     </div>
                     <FormControl>

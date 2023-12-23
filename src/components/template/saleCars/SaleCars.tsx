@@ -146,7 +146,7 @@ type models = {
 
 const SaleCars = ({ cities, provinces, brandsAndModels, buildYears, categories, fuelTypes, carSeats, colors, userCityId }: saleCarsPropType) => {
   const [carsData, setCarsData] = useState<saleCars[]>([]);
-  const [selectedCityId, setSelectedCityId] = useState<string>(`${userCityId}` ?? "52");
+  const [selectedCityId, setSelectedCityId] = useState<string>(userCityId ? `${userCityId}` : "52");
   const cityName = cities.find(city => `${city.id}` === selectedCityId)?.name_en;
   const router = useRouter();
 

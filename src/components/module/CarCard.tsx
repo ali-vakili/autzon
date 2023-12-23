@@ -34,9 +34,12 @@ import '../css/common.css';
 import { Pagination } from 'swiper/modules';
 
 import { useSaveORUnSaveCar, saveORUnSaveCarHookType } from "@/hooks/useSaveORUnSaveCar";
+import { useSendRentRequest } from "@/hooks/useSendRentRequest";
 
-import { FiUsers, FiMapPin, FiCheckCircle, FiAlertCircle, FiInfo  } from "react-icons/fi";
+import { FiUsers, FiMapPin, FiCheckCircle, FiAlertCircle, FiInfo, FiLoader, FiCheck } from "react-icons/fi";
 import { Fuel, GalleryVerticalEnd, Bookmark, BookmarkCheck } from "lucide-react";
+
+import { RequestStatus } from "@prisma/client";
 
 
 type car = {
@@ -132,6 +135,8 @@ type car = {
 type carCardPropType = {
   car: car
   userSavedCars?: {car: car}[];
+  userRentRequests?: { car: car, status: RequestStatus }[];
+  agentGalleryId?: string | null;
 }
 
 const FormattedRentPrice = ({ price, type, className }: {price: number, type: "RENT" | "SALE", className?: string | undefined}) => {
@@ -163,11 +168,23 @@ const calculateReservationFee = (pricePerDay: number, reservationFeePercentage: 
   return formattedValue;
 };
 
-const CarCard = ({ car, userSavedCars }: carCardPropType) => {
+const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCardPropType) => {
   const [saved, setSaved] = useState(false);
+  const [requested, setRequested] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+  const [isAccepted, setIsAccepted] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const { id, title, gallery: { id:galleryId, name, image, phone_numbers, city: { name_en:city_name_en, province: { name_en:province_name_en } }, is_verified }, images, model: { name: modelName, brand: { name: brandName }}, build_year:{year}, category, fuel_type, car_seat, for_rent, for_sale, is_car_rented, description } = car;
 
   const { mutate, data, isSuccess, isLoading, isError, error }: saveORUnSaveCarHookType = useSaveORUnSaveCar();
+
+  const { mutate:sendRentRequest, data:rentRequestData, isSuccess:rentRequestIsSuccess, isLoading:rentRequestIsLoading, isError:rentRequestIsError, error:rentRequestError} = useSendRentRequest();
+
+  useEffect(()=> {
+    rentRequestIsSuccess === true && rentRequestData?.message && (toast.success(rentRequestData.message));
+    //@ts-ignore
+    rentRequestIsError === true && rentRequestError && toast.error(rentRequestError?.response.data.error);
+  }, [rentRequestIsSuccess, rentRequestIsError])
 
   useEffect(()=> {
     isSuccess === true && data?.message && (toast.success(data.message));
@@ -180,8 +197,40 @@ const CarCard = ({ car, userSavedCars }: carCardPropType) => {
     }
   }, [data, userSavedCars])
 
+  useEffect(()=> {
+    if (rentRequestData) {
+      if (rentRequestData?.status === "PENDING") {
+        setIsPending(true)
+      }
+      if (rentRequestData?.status === "ACCEPTED") {
+        setIsAccepted(true)
+      }
+      setRequested(true);
+    }
+  }, [rentRequestData, userRentRequests])
+
   useEffect(() => {
     const isCarSaved = userSavedCars?.some(savedCar => savedCar.car.id === id);
+    const isCarRequested = userRentRequests?.find(requests => requests.car.id === id);
+    if (agentGalleryId === galleryId) {
+      setIsOwner(true);
+    }
+     else {
+      setIsOwner(false);
+    }
+
+    if (isCarRequested) {
+      if (rentRequestData?.status === "PENDING") {
+        setIsPending(true)
+      }
+      if (rentRequestData?.status === "ACCEPTED") {
+        setIsAccepted(true)
+      }
+      setRequested(true);
+    } else {
+      setRequested(false);
+    }
+
     if (isCarSaved) {
       setSaved(true);
     } else {
@@ -198,6 +247,8 @@ const CarCard = ({ car, userSavedCars }: carCardPropType) => {
               <Image src={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`} quality={100} className="rounded-t-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`}/>
               <div className="flex absolute top-2 right-2 gap-2">
                 {saved && <BookmarkCheck size={28} className="py-1 px-1.5 bg-muted rounded"/>}
+                {isOwner && <Badge variant={"default"} className="rounded-md">Owned</Badge>}
+                {isPending ? <FiLoader size={28} className="py-1 px-1.5 bg-muted rounded"/> : isAccepted ? <FiCheck size={28} className="text-white py-1 px-1.5 bg-success rounded"/> : "" }
                 {images.length > 1 && <GalleryVerticalEnd size={28} className="py-1 px-1.5 bg-muted rounded"/>} 
               </div>
             </AspectRatio>
@@ -288,13 +339,15 @@ const CarCard = ({ car, userSavedCars }: carCardPropType) => {
                     </Badge>
                   ) : (
                     for_rent && (
-                      <Badge className="bg-success !rounded-md w-fit hover:!bg-success">Available</Badge>
+                      <Badge className="bg-success !rounded-md w-fit hover:!bg-success h-8">Available</Badge>
                     )
                   )}
-                  {saved ? (
-                    <Button isLoading={isLoading} onClick={() => mutate({ car_id: id, action: "UNSAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <BookmarkCheck size={16} className="me-1"/>}{isLoading ? "Unsaving" : "Saved"}</Button>
-                  ) : (
-                    <Button isLoading={isLoading} onClick={() => mutate({ car_id: id, action: "SAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <Bookmark size={16} className="me-1"/>}{isLoading ? "Saving" : "Save"}</Button>
+                  {!isOwner && (
+                    saved ? (
+                      <Button isLoading={isLoading} onClick={() => mutate({ car_id: id, action: "UNSAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <BookmarkCheck size={16} className="me-1"/>}{isLoading ? "Unsaving" : "Saved"}</Button>
+                    ) : (
+                      <Button isLoading={isLoading} onClick={() => mutate({ car_id: id, action: "SAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <Bookmark size={16} className="me-1"/>}{isLoading ? "Saving" : "Save"}</Button>
+                    )
                   )}
                 </div>
               </div>
@@ -319,7 +372,7 @@ const CarCard = ({ car, userSavedCars }: carCardPropType) => {
                       <h3 className="text-sm font-bold mb-2">Extra Time</h3>
                       <h4 className="text-xs font-semibold">Late return fee per hour: </h4>
                       <FormattedLateReturnPrice price={for_rent.reservation_fee_percentage} className="text-lg"/>
-                      <h5 className="text-xs text-orange-500 inline-flex items-center gap-1 mt-2"><FiInfo size={16} />This is a penalty in case you return car late.</h5>
+                      <h5 className="text-xs text-orange-800 inline-flex items-center gap-1 mt-2"><FiInfo size={16} />This is a penalty in case you return car late.</h5>
                     </div>
                   )}
                   <div className="flex flex-col flex-wrap w-full justify-evenly bg-white rounded-md gap-3 p-3">
@@ -395,9 +448,9 @@ const CarCard = ({ car, userSavedCars }: carCardPropType) => {
                   )}
                 </div>
                 <h4 className="text-xs text-muted-foreground font-semibold mb-1">Phone numbers: </h4>
-                <div className="flex flex-wrap w-full justify-between gap-3">
+                <div className="flex flex-wrap flex-col w-full sm:grid grid-cols-3 justify-between gap-x-3 gap-y-5">
                   {phone_numbers.map((phone_number, index) => (
-                    <h5 key={phone_number.id} className="text-white text-sm font-semibold">
+                    <h5 key={phone_number.id} className="text-white text-sm font-semibold col-span-1">
                       <span className="py-1 px-1.5 text-muted-foreground border border-muted-foreground rounded-md">{index+1}</span>
                       {" "}-{" "}
                       {formatPhoneNumber(phone_number.number)}
@@ -417,9 +470,27 @@ const CarCard = ({ car, userSavedCars }: carCardPropType) => {
           {for_rent && (
             <div className="flex-col w-full">
               <Badge variant={"secondary"} className="mb-2 text-base rounded-md">Reservation Fee&nbsp;<span className="text-black font-bold">{calculateReservationFee(for_rent.price_per_day, for_rent.reservation_fee_percentage)}</span></Badge>
-              <Button type="button" variant="default" className="w-full">
-                Send Rent Request
-              </Button>
+              {isAccepted && (
+                <Button isLoading={rentRequestIsLoading} type="button" className="w-full bg-success hover:bg-success">
+                  Request Accepted
+                </Button>
+              )} 
+              {isPending && (
+                <Button disabled type="button" variant="secondary" className="w-full gap-1.5">
+                  <FiLoader size={16}/>
+                  Pending Rent Request
+                </Button>
+              )}
+              {(!requested && !isOwner) && (
+                <Button onClick={() => sendRentRequest({ car_id:id, auto_gallery_id: galleryId })} disabled={rentRequestIsLoading} isLoading={rentRequestIsLoading} type="button" variant="default" className="w-full">
+                  {rentRequestIsLoading ? "Sending Rent Request" : "Send Rent Request"}
+                </Button>
+              )}
+              {isOwner && (
+                <Button disabled={rentRequestIsLoading} type="button" variant="outline" className="w-full">
+                  This is your car in rentals list
+                </Button>
+              )}
             </div>
           )}
         </DialogFooter>

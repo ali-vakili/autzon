@@ -5,11 +5,13 @@ import CarsFilter from "@/components/module/CarsFilter";
 import City from "@/components/module/filters/City";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useGetRentalCars } from "@/hooks/useGetRentalCars";
-import { useGetUserSavedCars } from "@/hooks/useGetUserSavedCars";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+
+import { useGetRentalCars } from "@/hooks/useGetRentalCars";
+import { useGetUserSavedCars } from "@/hooks/useGetUserSavedCars";
+import { useGetRentRequests } from "@/hooks/useGetUserRentRequests";
 
 import { Loader2 } from "lucide-react"
 
@@ -95,6 +97,7 @@ type rentalCars = {
 }
 
 type rentalCarsPropType = {
+  agentGalleryId: string | null;
   userCityId: number|null|undefined;
   brandsAndModels: {
     id: number;
@@ -142,14 +145,17 @@ type models = {
   } | null;
 }
 
-const RentalCars = ({ cities, provinces, brandsAndModels, buildYears, categories, fuelTypes, carSeats, userCityId }: rentalCarsPropType) => {
+const RentalCars = ({ cities, provinces, brandsAndModels, buildYears, categories, fuelTypes, carSeats, userCityId, agentGalleryId }: rentalCarsPropType) => {
   const [carsData, setCarsData] = useState<rentalCars[]>([]);
-  const [selectedCityId, setSelectedCityId] = useState<string>(`${userCityId}` ?? "52");
+  const [selectedCityId, setSelectedCityId] = useState<string>(userCityId ? `${userCityId}` : "52");
   const cityName = cities.find(city => `${city.id}` === selectedCityId)?.name_en;
   const router = useRouter();
 
   const { data: carsFromApi, isSuccess, isLoading, isFetching, isError, error, refetch } = useGetRentalCars(selectedCityId);
-  const { data: userSavedCars={data: []}, isLoading: isSavedCarsLoading, refetch: refetchUserSavedCars } = useGetUserSavedCars();
+
+  const { data: userSavedCars={data: []}, isLoading: isLoadingSavedCars, refetch: refetchUserSavedCars } = useGetUserSavedCars();
+
+  const { data: userRentRequests={data: []}, isLoading: isLoadingRentRequests, refetch: refetchRentRequests } = useGetRentRequests();
 
   const handleCityChange = (newCityId: string) => {
     setSelectedCityId(newCityId);
@@ -187,8 +193,8 @@ const RentalCars = ({ cities, provinces, brandsAndModels, buildYears, categories
         {isFetching && (
           <Badge variant={"secondary"} className="gap-2 text-sm w-fit text-muted-foreground mb-4"><Loader2 className="h-4 w-4 animate-spin" /> Loading</Badge>
         )}
-        <div className={`grid ${((carsData && carsData.length > 0) || isLoading) && 'LPhone:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] grid-cols-[repeat(auto-fill,minmax(auto,1fr))]'} gap-y-4 gap-x-2`}>
-          {(isLoading || isSavedCarsLoading) ? (
+        <div className={`grid ${((carsData && carsData.length > 0) || isLoading || isLoadingSavedCars || isLoadingRentRequests) && 'LPhone:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] grid-cols-[repeat(auto-fill,minmax(auto,1fr))]'} gap-y-4 gap-x-2`}>
+          {(isLoading || isLoadingSavedCars || isLoadingRentRequests) ? (
               <>
                 <Skeleton className="h-96 w-full rounded-md"/>
                 <Skeleton className="h-96 w-full rounded-md"/>
@@ -199,7 +205,7 @@ const RentalCars = ({ cities, provinces, brandsAndModels, buildYears, categories
             ) : (
               carsData && carsData.length > 0 ? (
                 carsData.map((car) => (
-                  <CarCard key={car.id} car={car} userSavedCars={userSavedCars.data}/>
+                  <CarCard key={car.id} car={car} agentGalleryId={agentGalleryId} userSavedCars={userSavedCars.data} userRentRequests={userRentRequests.data}/>
                 ))
               ) : (
                 <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">

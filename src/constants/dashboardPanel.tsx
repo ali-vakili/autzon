@@ -82,7 +82,7 @@ const dashboardPanelRequestItems = [
       {
         id: 4.1,
         title: "Rent Car",
-        href: "request/rent-car",
+        href: "requests/rent-car",
         icon: <FiFile size={16} className="me-1.5"/>,
       },
     ]

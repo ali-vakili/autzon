@@ -17,7 +17,7 @@ import { Skeleton } from "@/ui/skeleton";
 
 import { useGetUserSavedCars } from "@/hooks/useGetUserSavedCars";
 
-import { FiAlertCircle, FiArrowLeft, FiCheckCircle, FiInfo, FiMapPin, FiPhone } from "react-icons/fi";
+import { FiAlertCircle, FiCheckCircle, FiInfo, FiMapPin, FiPhone } from "react-icons/fi";
 import { Blocks } from "lucide-react";
 
 
@@ -26,7 +26,7 @@ type galleryPagePropType= {
 }
 
 const GalleryPage = ({ gallery }: galleryPagePropType) => {
-  const { id, name, image, is_verified, phone_numbers, categories, address, city: {name_en: city_name_en, province: { name_en: province_name_en }}, cars, about, createdAt } = gallery;
+  const { id: gallery_id, name, image, is_verified, phone_numbers, categories, address, city: {name_en: city_name_en, province: { name_en: province_name_en }}, cars, about, createdAt } = gallery;
   const gallery_created_at = getCreatedAndJoinDate(createdAt);
 
   const { data: userSavedCars={data: []}, isLoading } = useGetUserSavedCars();
@@ -83,7 +83,7 @@ const GalleryPage = ({ gallery }: galleryPagePropType) => {
             <h3 className="flex items-center text-sm font-semibold mb-3 w-fit"><Blocks className="me-1.5 inline" size={16}/>Categories</h3>
             <div className="flex flex-wrap gap-1">
               {categories.map(category => (
-                <Badge variant={"secondary"} className="items-start w-fit rounded-md">
+                <Badge key={category.id} variant={"secondary"} className="items-start w-fit rounded-md">
                   {category.category}&nbsp;
                   {category.abbreviation && (
                     <p className="text-gray-400 inline">
@@ -132,7 +132,7 @@ const GalleryPage = ({ gallery }: galleryPagePropType) => {
             ) : 
             cars.filter(car => car.for_rent).length > 0 ? cars.filter(car => car.for_rent).map(car => (
               //@ts-ignore
-              <CarCard key={car.id} car={car} userSavedCars={userSavedCars.data}/>
+              <CarCard key={car.id} car={car} userSavedCars={userSavedCars.data} agentGalleryId={gallery_id}/>
             )) : (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">
                 <h3 className="text-lg font-semibold">No Rental Car</h3>
