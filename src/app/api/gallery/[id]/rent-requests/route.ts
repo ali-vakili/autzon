@@ -25,6 +25,8 @@ export const GET = async (req: Request, { params }: requestProps) => {
       },
       select: {
         id: true,
+        createdAt: true,
+        updatedAt: true,
         status: true,
         user: {
           select: {
@@ -95,6 +97,9 @@ export const GET = async (req: Request, { params }: requestProps) => {
             updatedAt: true,
           },
         }
+      },
+      orderBy: {
+        createdAt: "desc"
       }
     })
 

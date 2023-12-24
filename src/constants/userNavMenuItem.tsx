@@ -2,7 +2,8 @@ import {
   FiUser,
   FiBookmark,
   FiGrid,
-  FiAlertCircle
+  FiAlertCircle,
+  FiFile
 } from "react-icons/fi"
 import { AGENT } from "./roles"
 
@@ -39,6 +40,13 @@ const userNavDropDownMenuItems = (is_profile_complete: boolean) => {
     },
     {
       id: 3,
+      title: "Requests",
+      icon: <FiFile size={16} className="me-3"/>,
+      href: "/requests",
+      disabled: !is_profile_complete
+    },
+    {
+      id: 4,
       title: "Saves",
       icon: <FiBookmark size={16} className="me-3"/>,
       href: "/saves",

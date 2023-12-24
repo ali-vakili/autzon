@@ -30,15 +30,30 @@ export default async function Galleries() {
   })
 
   let userCityId = null
+  let agentGalleryId = null;
 
   const session = await validateSession();
   if (!(session instanceof NextResponse)) {
     userCityId = session.user.city?.id;
   };
 
+  if (!(session instanceof NextResponse)) {
+    const agentGallery = await prisma.autoGallery.findFirst({
+      where: {
+        agent_id: session.user.id
+      },
+      select: {
+        id: true
+      }
+    })
+    if(agentGallery) {
+      agentGalleryId = agentGallery.id;
+    }
+  };
+
   return (
     <main className="flex min-h-full flex-col px-5 md:px-8 py-8">
-      <GalleriesInCity userCityId={userCityId} provinces={provinces} cities={cities} categories={categories}/>
+      <GalleriesInCity userCityId={userCityId} provinces={provinces} cities={cities} categories={categories} agentGalleryId={agentGalleryId}/>
     </main>
   )
 }

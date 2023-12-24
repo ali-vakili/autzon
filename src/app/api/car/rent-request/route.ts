@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { connectDB, validateSession, prisma, checkAgent } from "@/lib";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
@@ -17,6 +17,9 @@ export const GET = async (req: Request) => {
         user_id: session.user.id,
       },
       select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
         status: true,
         car: {
           select: {
@@ -101,6 +104,9 @@ export const GET = async (req: Request) => {
             updatedAt: true,
           },
         }
+      },
+      orderBy: {
+        createdAt: "desc"
       }
     })
 
@@ -214,6 +220,65 @@ export const PATCH = async (req: Request) => {
     })
 
     return NextResponse.json({ message: `Request ${action}` }, { status: 200 })
+
+  }
+  catch(err) {
+    if (err instanceof ZodError) {
+      const errorMessages = fromZodError(err);
+      const messages = [...errorMessages.details];
+      const message = messages.map(message => ({ message: message.message, path: message.path[0]} ));
+      return NextResponse.json({ error: message }, { status: 422 });
+    }
+
+    return NextResponse.json({ error: "Something went wrong please try again later" }, { status: 500 })
+  }
+  finally {
+    await prisma.$disconnect()
+  }
+}
+
+
+export const DELETE = async (req: NextRequest) => {
+  try {
+    connectDB();
+  
+    const session = await validateSession();
+    if (session instanceof NextResponse) return session;
+
+    const agent = await checkAgent(session);
+    if (agent instanceof NextResponse) return agent;
+
+    const searchParamCarId = req.nextUrl.searchParams.get("car_id");
+    const searchParamAutoGalleryId = req.nextUrl.searchParams.get("auto_gallery_id");
+    const searchParamRequestId = req.nextUrl.searchParams.get("request_id");
+
+    if (!searchParamCarId || !searchParamAutoGalleryId || !searchParamRequestId) {
+      return NextResponse.json({ error: "Bad Request" }, { status: 400 })
+    }
+
+    const existingRequest = await prisma.rentRequest.findFirst({
+      where: {
+        id: searchParamRequestId,
+        user_id: session.user.id,
+        car_id: searchParamCarId,
+        auto_gallery_id: searchParamAutoGalleryId
+      }
+    })
+
+    if (!existingRequest) {
+      return NextResponse.json({ error: "Request credentials are mismatched" }, { status: 403 })
+    }
+
+    await prisma.rentRequest.delete({
+      where: {
+        id: searchParamRequestId,
+        user_id: session.user.id,
+        car_id: searchParamCarId,
+        auto_gallery_id: searchParamAutoGalleryId
+      }
+    })
+
+    return NextResponse.json({ message: "Request deleted successfully" }, { status: 200 })
 
   }
   catch(err) {

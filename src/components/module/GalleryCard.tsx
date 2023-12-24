@@ -1,3 +1,4 @@
+import Link from "next/link";
 import formatPhoneNumber from "@/helper/formatPhoneNumber";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/tooltip";
 import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar";
@@ -6,7 +7,6 @@ import { Badge } from "@/ui/badge";
 
 import { FiAlertCircle, FiCheckCircle, FiInfo, FiPhone, FiMapPin } from "react-icons/fi";
 import { Blocks } from 'lucide-react';
-import Link from "next/link";
 
 
 
@@ -42,11 +42,12 @@ type gallery = {
 }
 
 type galleryCardPropType = {
+  agentGalleryId? : string|null;
   gallery: gallery
 }
 
 
-const GalleryCard = ({ gallery }: galleryCardPropType) => {
+const GalleryCard = ({ gallery, agentGalleryId }: galleryCardPropType) => {
   const { id, image, name, about, address, categories, phone_numbers, city: { name_en: city_name_en, province:{name_en: province_name_en} }, is_verified } = gallery;
 
   return (
@@ -58,7 +59,7 @@ const GalleryCard = ({ gallery }: galleryCardPropType) => {
         </Avatar>
         <div className="flex flex-col LPhone:items-start items-center space-y-2">
           <h2 className="text-xl font-bold">
-            {name}
+            {name}&nbsp;{id === agentGalleryId && (<Badge variant={"secondary"}>Your Gallery</Badge>)}
           </h2>
           <TooltipProvider>
             <Tooltip>

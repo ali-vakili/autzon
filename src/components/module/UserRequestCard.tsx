@@ -34,12 +34,13 @@ import '../css/common.css';
 import { Pagination } from 'swiper/modules';
 
 import { useSaveORUnSaveCar, saveORUnSaveCarHookType } from "@/hooks/useSaveORUnSaveCar";
-import { useSendRentRequest } from "@/hooks/useSendRentRequest";
+import { useDeleteRentRequest } from "@/hooks/useDeleteUserRequest";
 
-import { FiUsers, FiMapPin, FiCheckCircle, FiAlertCircle, FiInfo, FiLoader, FiCheck } from "react-icons/fi";
-import { Fuel, GalleryVerticalEnd, Bookmark, BookmarkCheck } from "lucide-react";
+import { FiMapPin, FiCheckCircle, FiAlertCircle, FiInfo, FiLoader, FiCheck, FiX, FiPhone } from "react-icons/fi";
+import { GalleryVerticalEnd, Bookmark, BookmarkCheck } from "lucide-react";
 
 import { RequestStatus } from "@prisma/client";
+import { formatDateTime } from "@/helper/getDate";
 
 
 type car = {
@@ -132,11 +133,11 @@ type car = {
   updatedAt: Date;
 }
 
-type carCardPropType = {
-  car: car
+type userRequestCardPropType = {
+  request: { id: string, createdAt:Date, updatedAt:Date, car: car, status: RequestStatus };
   userSavedCars?: {car: car}[];
-  userRentRequests?: { car: car, status: RequestStatus }[];
-  agentGalleryId?: string | null;
+  refetchRequests: any
+  isFetching: boolean;
 }
 
 const FormattedRentPrice = ({ price, type, className }: {price: number, type: "RENT" | "SALE", className?: string | undefined}) => {
@@ -153,39 +154,22 @@ const FormattedLateReturnPrice = ({ price, className }: {price: number, classNam
   )
 }
 
-const formatMileage = (mileage: number) => {
-  const formattedValue = mileage.toLocaleString('en-US', {
-    style: 'unit',
-    unit: 'kilometer',
-  });
-
-  return formattedValue;
-}
-
 const calculateReservationFee = (pricePerDay: number, reservationFeePercentage: number) => {
   const reservationFee: number = (pricePerDay * (reservationFeePercentage / 100));
   const { formattedValue } = formatPrice(reservationFee);
   return formattedValue;
 };
 
-const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCardPropType) => {
-  console.log(agentGalleryId);
+const UserRequestCard = ({ request, refetchRequests, userSavedCars, isFetching }: userRequestCardPropType) => {
   const [saved, setSaved] = useState(false);
-  const [requested, setRequested] = useState(false);
-  const [isPending, setIsPending] = useState(false);
-  const [isAccepted, setIsAccepted] = useState(false);
-  const [isOwner, setIsOwner] = useState(false);
-  const { id, title, gallery: { id:galleryId, name, image, phone_numbers, city: { name_en:city_name_en, province: { name_en:province_name_en } }, is_verified }, images, model: { name: modelName, brand: { name: brandName }}, build_year:{year}, category, fuel_type, car_seat, for_rent, for_sale, is_car_rented, description } = car;
+
+  const { id:car_id, title, gallery: { id:galleryId, name, image, phone_numbers, city: { name_en:city_name_en, province: { name_en:province_name_en } }, is_verified }, images, model: { name: modelName, brand: { name: brandName }}, build_year:{year}, category, fuel_type, car_seat, for_rent, for_sale, is_car_rented, description } = request.car;
+
+  const { status } = request;
 
   const { mutate, data, isSuccess, isLoading, isError, error }: saveORUnSaveCarHookType = useSaveORUnSaveCar();
 
-  const { mutate:sendRentRequest, data:rentRequestData, isSuccess:rentRequestIsSuccess, isLoading:rentRequestIsLoading, isError:rentRequestIsError, error:rentRequestError} = useSendRentRequest();
-
-  useEffect(()=> {
-    rentRequestIsSuccess === true && rentRequestData?.message && (toast.success(rentRequestData.message));
-    //@ts-ignore
-    rentRequestIsError === true && rentRequestError && toast.error(rentRequestError?.response.data.error);
-  }, [rentRequestIsSuccess, rentRequestIsError])
+  const { mutate:deleteRequest, data:dataDeleteRequest, isSuccess: isSuccessDeleteRequest, isLoading:isLoadingDeleteRequest, isError:isErrorDeleteRequest, error:errorDeleteRequest } = useDeleteRentRequest();
 
   useEffect(()=> {
     isSuccess === true && data?.message && (toast.success(data.message));
@@ -193,45 +177,19 @@ const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCa
   }, [isSuccess, isError])
 
   useEffect(()=> {
-    if (data) {
-      setSaved(data?.saved);
+    if (isSuccessDeleteRequest) {
+      refetchRequests();
     }
-  }, [data, userSavedCars])
-
-  useEffect(()=> {
-    if (rentRequestData) {
-      if (rentRequestData?.status === "PENDING") {
-        setIsPending(true)
-      }
-      if (rentRequestData?.status === "ACCEPTED") {
-        setIsAccepted(true)
-      }
-      setRequested(true);
+    if(isErrorDeleteRequest && errorDeleteRequest) {
+      refetchRequests();
     }
-  }, [rentRequestData, userRentRequests])
+    isSuccessDeleteRequest === true && dataDeleteRequest?.message && (toast.success(dataDeleteRequest.message));
+    //@ts-ignore
+    isErrorDeleteRequest === true && errorDeleteRequest && toast.error(errorDeleteRequest?.response.dataDeleteRequest.error);
+  }, [isSuccessDeleteRequest, isErrorDeleteRequest])
 
   useEffect(() => {
-    const isCarSaved = userSavedCars?.some(savedCar => savedCar.car.id === id);
-    const isCarRequested = userRentRequests?.find(requests => requests.car.id === id);
-
-    if (agentGalleryId === galleryId) {
-      setIsOwner(true);
-    }
-     else {
-      setIsOwner(false);
-    }
-
-    if (isCarRequested) {
-      if (isCarRequested?.status === "PENDING") {
-        setIsPending(true)
-      }
-      if (isCarRequested?.status === "ACCEPTED") {
-        setIsAccepted(true)
-      }
-      setRequested(true);
-    } else {
-      setRequested(false);
-    }
+    const isCarSaved = userSavedCars?.some(savedCar => savedCar.car.id === car_id);
 
     if (isCarSaved) {
       setSaved(true);
@@ -240,54 +198,129 @@ const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCa
     }
   }, [])
 
+
   return (
     <Dialog>
+      <div className="relative flex flex-col justify-start h-full w-full border bg-white rounded-md cursor-pointer transition-color overflow-hidden px-2 pb-2">
       <DialogTrigger asChild>
-        <div className="relative flex flex-col justify-start h-full w-full border bg-white rounded-md pb-2 space-y-2 cursor-pointer transition-color overflow-hidden">
-          <div className="w-full min-h-[160px]">
-            <AspectRatio ratio={16 / 9} className="bg-muted rounded-t-md">
-              <Image src={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`} quality={100} className="rounded-t-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`}/>
-              <div className="flex absolute top-2 right-2 gap-2">
-                {saved && <BookmarkCheck size={28} className="py-1 px-1.5 bg-muted rounded"/>}
-                {isOwner && <Badge variant={"default"} className="rounded-md">Owned</Badge>}
-                {isPending ? <FiLoader size={28} className="py-1 px-1.5 bg-muted rounded"/> : isAccepted ? <FiCheck size={28} className="text-white py-1 px-1.5 bg-success rounded"/> : "" }
-                {images.length > 1 && <GalleryVerticalEnd size={28} className="py-1 px-1.5 bg-muted rounded"/>} 
+          <div className="bg-white rounded-md w-full py-2">
+            <div className="flex flex-wrap md:flex-nowrap items-start gap-4">
+              <div className="w-full h-[180px] max-w-[316px]">
+                <AspectRatio ratio={16 / 9} className="bg-muted rounded-md !p-0">
+                  <Image src={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`} quality={100} className="rounded-md object-cover" alt={`car_image_cover_${title}`} fill sizes="(min-width: 2180px) 241px, (min-width: 1820px) calc(5vw + 133px), (min-width: 1460px) calc(22.06vw - 98px), (min-width: 1100px) calc(33.24vw - 143px), (min-width: 1040px) calc(67.5vw - 283px), (min-width: 840px) calc(50vw - 196px), (min-width: 780px) calc(100vw - 378px), (min-width: 400px) 237px, calc(18.75vw + 166px)" placeholder="blur" blurDataURL={images.length > 0 ? images[0].url : `${assetsBucketUrl}default-car-image.png`}/>
+                  <div className="flex absolute top-2 right-2 gap-2">
+                    {saved && <BookmarkCheck size={28} className="py-1 px-1.5 bg-muted rounded"/>}
+                    {images.length > 1 && <GalleryVerticalEnd size={28} className="py-1 px-1.5 bg-muted rounded"/>} 
+                  </div>
+                </AspectRatio>
               </div>
-            </AspectRatio>
-          </div>
-          <div className="flex items-center justify-between p-4 py-2">
-            <div className="space-y-2">
-              <h4 className="text-xl font-semibold gap-x-3">
-                {title}
-              </h4>
-              {for_rent && is_car_rented.length > 0 ? (
-                <Badge variant="destructive" className="!block !rounded-md w-fit ms-4 hover:!bg-destructive">
-                  Not available
-                </Badge>
-              ) : (
-                for_rent && (
-                  <Badge className="!block bg-success !rounded-md w-fit hover:!bg-success">Available</Badge>
-                )
-              )}
-              <Badge variant="secondary" className="!rounded-md">{category.category}</Badge>
+              <div className="flex flex-col gap-2 w-full">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xl font-semibold mt-1">{title}</h4>
+                  {status === "PENDING" && (
+                    <Badge variant={"outline"} className="gap-1.5 py-2"><FiLoader size={16}/> Pending Request</Badge>
+                  )}
+                  {status === "ACCEPTED" && (<Badge variant={"outline"} className="text-success border-success gap-1.5 py-2"><FiCheck size={16}/> Accepted Request</Badge>)}
+                  {status === "DECLINED" && (<Badge variant={"outline"} className="text-destructive border-destructive gap-1.5 py-2"><FiX size={16}/> Declined Request</Badge>)}
+                </div>
+                <div className="flex gap-1">
+                  <Badge variant={"secondary"} className="border rounded-md">{modelName} - {brandName}</Badge>
+                  <Badge variant={"secondary"} className="border rounded-md">{year}</Badge>
+                  <Badge variant={"secondary"} className="border rounded-md">
+                    {category.category}&nbsp;
+                    {category.abbreviation && (
+                      <p className="text-gray-400 inline">
+                        - {category.abbreviation}
+                      </p>
+                    )}
+                  </Badge>
+                </div>
+                {is_car_rented.length > 0 ? (
+                  <Badge variant="destructive" className="!block !rounded-md w-fit ms-4 hover:!bg-destructive">
+                    Not available
+                  </Badge>
+                ) : (
+                  for_rent && (
+                    <Badge className="!block bg-success !rounded-md w-fit hover:!bg-success">Available</Badge>
+                  )
+                )}
+                {for_rent && (
+                  <div className="flex flex-wrap w-full justify-evenly bg-white rounded-md gap-3 !mt-2">
+                    <div className="flex flex-col flex-grow">
+                      <h4 className="text-xs text-muted-foreground font-semibold">Rent Price: </h4>
+                      <FormattedRentPrice price={for_rent.price_per_day} type={"RENT"} className="text-lg"/>
+                    </div>
+                    <div className="flex flex-col flex-grow">
+                      <h4 className="text-xs text-muted-foreground font-semibold">Reservation fee percentage: </h4>
+                      <h3 className="text-lg font-bold">{for_rent.reservation_fee_percentage}%</h3>
+                    </div>
+                    <div className="flex flex-col flex-grow">
+                      <h4 className="text-xs text-muted-foreground font-semibold">Reservation fee: </h4>
+                      {for_rent.reservation_fee_percentage && (
+                        <h3 className="text-lg font-bold">{calculateReservationFee(for_rent.price_per_day, for_rent.reservation_fee_percentage)}</h3>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-            {for_rent && <FormattedRentPrice price={for_rent.price_per_day} type={"RENT"}/>}
-            {for_sale && <FormattedRentPrice price={for_sale.price} type={"SALE"}/>}
-          </div>
-          {for_sale && (
-            <div className="flex items-center ms-4">
-              <span className="w-4 h-4 rounded-full border border-muted me-1.5" style={{backgroundColor: `${for_sale?.color.color_code}`}}></span>
-              <h5 className="text-muted-foreground text-xs">{for_sale?.color.color_name}</h5>
-            </div>
+            {for_rent && for_rent.extra_time && for_rent?.late_return_fee_per_hour && for_rent.reservation_fee_percentage && (
+              <div className="flex flex-col w-full flex-grow bg-orange-300 p-3 rounded-md">
+                <h3 className="text-sm font-bold mb-2">Extra Time</h3>
+                <h4 className="text-xs font-semibold">Penalty in case renter returns car late fee per hour: </h4>
+                <FormattedLateReturnPrice price={for_rent.reservation_fee_percentage} className="text-lg"/>
+              </div>
             )}
-          {description && (<p className="text-xs text-muted-foreground w-full overflow-hidden overflow-ellipsis whitespace-nowrap h-4 px-4 !mb-2">{description}</p>)}
-          <Separator className="!mt-auto"/>
-          <div className="flex items-center justify-around px-2">
-            <h5 className="flex items-center text-sm"><Fuel size={16} className="me-1.5 inline"/>{fuel_type.type}</h5>
-            <h5 className="flex items-center text-sm"><FiUsers size={16} className="me-1.5 inline"/>{car_seat.seats_count} Seats</h5>
           </div>
-        </div>
       </DialogTrigger>
+        {status === "ACCEPTED" && (
+          <>
+            <Separator className="my-4"/>
+            <div className="flex flex-col items-start p-3 bg-white border border-success rounded-md gap-1.5 w-full cursor-text">
+              <div className="flex items-center justify-between w-full">
+                <h4 className="inline-flex items-center text-success text-base font-medium gap-1.5"><FiCheckCircle size={20}/>Your Request Accepted</h4>
+                <h4 className="text-muted-foreground text-xs">Request accepted on <span className="underline">{formatDateTime(request.updatedAt)}</span></h4>
+              </div>
+              <h4 className="text-sm mt-1">Contact with auto gallery to continue</h4>
+              <div className="flex flex-col flex-grow w-full border px-3 py-5 rounded-md gap-2">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center space-x-3">
+                    <Avatar className="w-12 h-12">
+                      <AvatarImage alt="agent_avatar" src={image?.url ?? undefined}/>
+                      <AvatarFallback>{avatarFallBackText(name, null)}</AvatarFallback>
+                    </Avatar>
+                    <h2 className="text-base font-bold">
+                      {name}
+                    </h2>
+                  </div>
+                  {is_verified ? (
+                    <Badge><FiCheckCircle size={16} className="me-1.5"/> Verified</Badge>
+                  ) : (
+                    <Badge variant="destructive"><FiAlertCircle size={16} className="me-1.5"/> Not Verified</Badge>
+                  )}
+                </div>
+                <h4 className="text-xs text-muted-foreground font-semibold">Phone numbers: </h4>
+                <div className="flex flex-wrap flex-col w-fit sm:grid grid-cols-3 justify-between gap-x-3 gap-y-5">
+                  {phone_numbers.map((phoneNumber) => (
+                    <div key={phoneNumber.id} className="flex items-center bg-secondary py-1 px-0.5 rounded-md gap-1.5">
+                      <FiPhone size={32} className="px-2 py-1 ms-1 justify-center inline-flex items-center text-center bg-gray-50 hover:bg-zinc-100 ease-out duration-200 rounded-md outline-none transition-all outline-0 border shadow-sm text-xs" />
+                      <h4 className="text-sm me-1">{formatPhoneNumber(phoneNumber.number)}</h4>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+        {status === "PENDING" && (
+          <>
+            <Separator className="my-4"/>
+            <div className="flex justify-center w-full">
+              <Button onClick={() => deleteRequest({ request_id: request.id, car_id: car_id, auto_gallery_id: galleryId })} isLoading={isLoadingDeleteRequest} disabled={isLoadingDeleteRequest || isSuccessDeleteRequest || isFetching} variant={"destructive"} className="gap-1">{!isLoadingDeleteRequest && <FiX size={16}/>} {isLoadingDeleteRequest ? "Canceling" : isSuccessDeleteRequest ? "Canceled"  : "Cancel"}</Button>
+            </div>
+          </>
+        )} 
+      </div>
       <DialogContent className="SLaptop:max-w-[1000px] STablet:max-w-[580px] LPhone:max-w-[420px] phone:max-w-[360px] max-w-[320px] pe-0">
         <DialogHeader>
           <DialogTitle>Car details</DialogTitle>
@@ -341,15 +374,13 @@ const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCa
                     </Badge>
                   ) : (
                     for_rent && (
-                      <Badge className="bg-success !rounded-md w-fit hover:!bg-success h-8">Available</Badge>
+                      <Badge className="bg-success !rounded-md w-fit hover:!bg-success min-h-[32px]">Available</Badge>
                     )
                   )}
-                  {!isOwner && (
-                    saved ? (
-                      <Button isLoading={isLoading} onClick={() => mutate({ car_id: id, action: "UNSAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <BookmarkCheck size={16} className="me-1"/>}{isLoading ? "Unsaving" : "Saved"}</Button>
-                    ) : (
-                      <Button isLoading={isLoading} onClick={() => mutate({ car_id: id, action: "SAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <Bookmark size={16} className="me-1"/>}{isLoading ? "Saving" : "Save"}</Button>
-                    )
+                  {saved ? (
+                    <Button isLoading={isLoading} onClick={() => mutate({ car_id: car_id, action: "UNSAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <BookmarkCheck size={16} className="me-1"/>}{isLoading ? "Unsaving" : "Saved"}</Button>
+                  ) : (
+                    <Button isLoading={isLoading} onClick={() => mutate({ car_id: car_id, action: "SAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <Bookmark size={16} className="me-1"/>}{isLoading ? "Saving" : "Save"}</Button>
                   )}
                 </div>
               </div>
@@ -390,18 +421,6 @@ const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCa
                     </div>
                   </div>
                 </>
-              )}
-              {for_sale && (
-                <div className="flex flex-wrap w-full justify-evenly bg-white rounded-md gap-3 p-3">
-                  <div className="flex flex-col flex-grow">
-                    <h4 className="text-sm text-muted-foreground font-semibold">Price: </h4>
-                    <FormattedRentPrice price={for_sale.price} type={"SALE"} className="text-lg font"/>
-                  </div>
-                  <div className="flex flex-col flex-grow">
-                    <h4 className="text-sm text-muted-foreground font-semibold">Mileage: </h4>
-                    <h3 className="text-lg font-bold">{formatMileage(for_sale.mileage)}</h3>
-                  </div>
-                </div>
               )}
               <div className="flex flex-wrap w-full justify-evenly bg-white rounded-md gap-3 p-3">
                 <div className="flex flex-col flex-grow">
@@ -469,36 +488,26 @@ const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCa
               Close
             </Button>
           </DialogClose>
-          {for_rent && (
-            <div className="flex-col w-full">
+          <div className="flex-col w-full">
+            {for_rent && (
               <Badge variant={"secondary"} className="mb-2 text-base rounded-md">Reservation Fee&nbsp;<span className="text-black font-bold">{calculateReservationFee(for_rent.price_per_day, for_rent.reservation_fee_percentage)}</span></Badge>
-              {isAccepted && (
-                <Button isLoading={rentRequestIsLoading} type="button" className="w-full bg-success hover:bg-success">
-                  Request Accepted
-                </Button>
-              )} 
-              {isPending && (
-                <Button disabled type="button" variant="secondary" className="w-full gap-1.5">
-                  <FiLoader size={16}/>
-                  Pending Rent Request
-                </Button>
-              )}
-              {(!isAccepted && !isPending && !isOwner) && (
-                <Button onClick={() => sendRentRequest({ car_id:id, auto_gallery_id: galleryId })} disabled={rentRequestIsLoading} isLoading={rentRequestIsLoading} type="button" variant="default" className="w-full">
-                  {rentRequestIsLoading ? "Sending Rent Request" : "Send Rent Request"}
-                </Button>
-              )}
-              {isOwner && (
-                <Button disabled={rentRequestIsLoading} type="button" variant="outline" className="w-full">
-                  This is your car in rentals list
-                </Button>
-              )}
-            </div>
-          )}
+            )}
+            {status === "ACCEPTED" && (
+              <Button type="button" className="w-full bg-success hover:bg-success">
+                Request Accepted
+              </Button>
+            )} 
+            {status === "PENDING" && (
+              <Button disabled type="button" variant="secondary" className="w-full gap-1.5">
+                <FiLoader size={16}/>
+                Pending Rent Request
+              </Button>
+            )}
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   )
 }
 
-export default CarCard
+export default UserRequestCard

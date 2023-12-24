@@ -3,6 +3,7 @@
 import Image from "next/image";
 import formatPrice from "@/helper/formatPrice";
 import formatPhoneNumber from "@/helper/formatPhoneNumber";
+import { formatDateTime } from "@/helper/getDate";
 import { avatarFallBackText } from "@/helper/fallBackText";
 import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar";
 
@@ -17,11 +18,13 @@ import { Button } from "@/ui/button";
 
 import { useAcceptORDeclineRequest, useAcceptORDeclineRequestHookType } from "@/hooks/useAcceptORDeclineRequest";
 
-import { FiPhone, FiCheck, FiX, FiLoader } from "react-icons/fi";
+import { FiPhone, FiCheck, FiX, FiLoader, FiXCircle } from "react-icons/fi";
 
 
 type rentRequestType = {
   id: string;
+  createdAt:Date;
+  updatedAt: Date;
   status: string;
   user: {
     id: string;
@@ -120,15 +123,16 @@ const FormattedLateReturnPrice = ({ price, className }: {price: number, classNam
 type requestCardPropType = {
   request : rentRequestType;
   refetchRequests: any;
+  isFetching: boolean;
 }
 
-const RequestCard = ({ request, refetchRequests }: requestCardPropType) => {
+const RequestCard = ({ request, refetchRequests, isFetching }: requestCardPropType) => {
   const [action, setAction] = useState<"ACCEPT" | "DECLINE" | "NONE">("NONE");
 
-  const { user: { id: userId, firstName, lastName, image, city, phone_number } } = request
-  const { car: { id: carId, title, images, category, build_year, model, for_rent } } = request
-  const { status } = request
-  const { auto_gallery_id, id: requestId } = request
+  const { user: { id: userId, firstName, lastName, image, city, phone_number } } = request;
+  const { car: { id: carId, title, images, category, build_year, model, for_rent } } = request;
+  const { status } = request;
+  const { auto_gallery_id, id: requestId } = request;
 
   const { mutate, data, isSuccess, isLoading, isError, error }: useAcceptORDeclineRequestHookType = useAcceptORDeclineRequest();
 
@@ -148,9 +152,19 @@ const RequestCard = ({ request, refetchRequests }: requestCardPropType) => {
 
   return (
     <>
-      {status === "PENDING" && (<h2 className="text-lg inline-flex items-center gap-1.5 mb-2"><FiLoader size={16}/> Pending Request</h2>)}
-      {status === "ACCEPTED" && (<h2 className="text-lg text-green-600 inline-flex items-center gap-1.5 mb-2"><FiCheck size={16}/> Accepted Request</h2>)}
-      {status === "DECLINED" && (<h2 className="text-lg text-red-600 inline-flex items-center gap-1.5 mb-2"><FiX size={16}/> Declined Request</h2>)}
+      <div className="flex items-center justify-between">
+        <div>
+          {status === "PENDING" && (<h2 className="text-lg inline-flex items-center gap-1.5 mb-2"><FiLoader size={16}/> Pending Request</h2>)}
+          {status === "ACCEPTED" && (<h2 className="text-lg text-green-600 inline-flex items-center gap-1.5 mb-2"><FiCheck size={16}/> Accepted Request</h2>)}
+          {status === "DECLINED" && (<h2 className="text-lg text-red-600 inline-flex items-center gap-1.5 mb-2"><FiXCircle size={20}/> Declined Request</h2>)}
+        </div>
+        <div className="space-y-2 text-end">
+          <h4 className="text-muted-foreground text-xs">Request made on <span className="underline">{formatDateTime(request.createdAt)}</span></h4>
+          {status !== "PENDING" && (
+            <h4 className="text-muted-foreground text-xs">Request {status === "ACCEPTED" ? "accepted" : "declined"} on <span className="underline">{formatDateTime(request.updatedAt)}</span></h4>
+          )}
+        </div>
+      </div>
       <h3 className="text-muted-foreground text-xs mb-3">Requested user:</h3>
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -218,7 +232,7 @@ const RequestCard = ({ request, refetchRequests }: requestCardPropType) => {
         {for_rent && for_rent.extra_time && for_rent?.late_return_fee_per_hour && for_rent.reservation_fee_percentage && (
           <div className="flex flex-col w-full flex-grow bg-orange-300 p-3 rounded-md">
             <h3 className="text-sm font-bold mb-2">Extra Time</h3>
-            <h4 className="text-xs font-semibold">Penalty in case returns late fee per hour: </h4>
+            <h4 className="text-xs font-semibold">Penalty in case renter returns car late fee per hour: </h4>
             <FormattedLateReturnPrice price={for_rent.reservation_fee_percentage} className="text-lg"/>
           </div>
         )}
@@ -228,10 +242,10 @@ const RequestCard = ({ request, refetchRequests }: requestCardPropType) => {
           <Separator className="my-4"/>
           <div className="flex justify-center w-full gap-2">
             {action !== "ACCEPT" && (
-              <Button onClick={() => {mutate({ action:"DECLINED", car_id:carId, gallery_id: auto_gallery_id, user_id: userId, request_id: requestId }), setAction("DECLINE")}} variant={"ghost"} className="bg-white text-destructive hover:text-destructive hover:bg-white border border-destructive gap-1">{!isLoading && (<FiX size={16}/>)}&nbsp;{isLoading ? "Declining" : isSuccess ? "Declined" : "Decline"}</Button>
+              <Button onClick={() => {mutate({ action:"DECLINED", car_id:carId, gallery_id: auto_gallery_id, user_id: userId, request_id: requestId }), setAction("DECLINE")}} isLoading={isLoading} disabled={isLoading || isSuccess || isFetching} variant={"ghost"} className="bg-white text-destructive hover:text-destructive hover:bg-white border border-destructive gap-1">{!isLoading && <FiX size={16}/>}&nbsp;{isLoading ? "Declining" : isSuccess ? "Declined" : "Decline"}</Button>
             )}
             {action !== "DECLINE" && (
-              <Button onClick={() => {mutate({ action:"ACCEPTED", car_id:carId, gallery_id: auto_gallery_id, user_id: userId, request_id: requestId }), setAction("ACCEPT")}} isLoading={isLoading} disabled={isLoading || isSuccess} variant={"ghost"} className="bg-white text-success hover:text-success hover:bg-white border border-success gap-1">{!isLoading && (<FiCheck size={16}/>)}&nbsp;{isLoading ? "Accepting" : isSuccess ? "Accepted" : "Accept"}</Button>
+              <Button onClick={() => {mutate({ action:"ACCEPTED", car_id:carId, gallery_id: auto_gallery_id, user_id: userId, request_id: requestId }), setAction("ACCEPT")}} isLoading={isLoading} disabled={isLoading || isSuccess || isFetching} variant={"ghost"} className="bg-white text-success hover:text-success hover:bg-white border border-success gap-1">{!isLoading && <FiCheck size={16}/>}&nbsp;{isLoading ? "Accepting" : isSuccess ? "Accepted" : "Accept"}</Button>
             )}
           </div>
         </>

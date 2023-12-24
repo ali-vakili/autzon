@@ -11,7 +11,7 @@ export const useGetRentRequests = () => {
   return useQuery({
     queryKey: ["rent-request"],
     queryFn: () => getRentRequests(),
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchOnReconnect: true,
   })
 }

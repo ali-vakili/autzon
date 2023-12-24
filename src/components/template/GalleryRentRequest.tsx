@@ -1,19 +1,21 @@
 "use client"
 
-import RequestCard from "../module/RequestCard";
+import RequestCard from "@/module/RequestCard";
 import { useEffect, useState } from "react";
-import { Button } from "@/ui/button"
 import { toast } from "sonner";
+import { Button } from "@/ui/button"
+import { Skeleton } from "@/ui/skeleton";
 
 import { useGalleryRequests } from "@/hooks/useGetGalleryRequests";
 
 import { FiRefreshCw, FiFileMinus } from "react-icons/fi"
-import { Skeleton } from "@/ui/skeleton";
 
 
 
 type rentRequestType = {
   id: string;
+  createdAt: Date;
+  updatedAt: Date;
   status: string;
   user: {
     id: string;
@@ -104,16 +106,17 @@ const GalleryRentRequest = ({ galleryId } : galleryRentRequestPropType) => {
   }, [requestsFromApi, isSuccess, isError])
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col space-y-4">
       <h2 className="text-xl font-semibold">Renting Car Requests</h2>
+      <h4 className="text-sm text-muted-foreground font-medium !mt-1">You can find who requested for cars that you have in your auto gallery.</h4>
       <Button onClick={() => refetch()} size="sm" variant={"outline"} type="button" disabled={isFetching} isLoading={isFetching} className="w-fit text-xs h-8">{isFetching ? 'Refreshing' : <><FiRefreshCw className="me-1.5" />Refresh</>}</Button>
       {isLoading ? (
         <Skeleton className="h-96 w-full rounded-md"/>
       ) : (
         requests.length > 0 ? (
           requests.map(request => (
-            <div className="flex flex-col w-full bg-muted p-4 rounded-md !mt-4" key={request.user.id}>
-              <RequestCard request={request} refetchRequests={refetch}/>
+            <div className="flex flex-col w-full bg-muted p-4 rounded-md !mt-4" key={`${request.car.id}${Math.floor(Math.random() * 1000) + 1}`}>
+              <RequestCard request={request} refetchRequests={refetch} isFetching={isFetching}/>
             </div>
           ))
         ) : (

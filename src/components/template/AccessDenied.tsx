@@ -6,7 +6,7 @@ import { buttonVariants } from "@/ui/button";
 const AccessDenied = () => {
 
   return (
-    <div className="flex flex-col items-center justify-center w-full mt-24 gap-4">
+    <div className="flex flex-col items-center justify-center w-full h-[80svh] gap-4">
       <h1 className="text-6xl font-semibold">
         Access Denied
       </h1>

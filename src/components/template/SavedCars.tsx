@@ -1,13 +1,15 @@
 "use client"
 
 import CarCard from "@/module/CarCard"
-import { Button } from "@/ui/button"
-import { FiRefreshCw } from "react-icons/fi"
-import { useGetUserSavedCars } from "@/hooks/useGetUserSavedCars"
 import { useEffect, useState } from "react"
+import { Button } from "@/ui/button"
 import { Skeleton } from "@/ui/skeleton"
 import { Badge } from "@/ui/badge"
 
+import { useGetRentRequests } from "@/hooks/useGetUserRentRequests"
+import { useGetUserSavedCars } from "@/hooks/useGetUserSavedCars"
+
+import { FiRefreshCw } from "react-icons/fi"
 import { BookmarkMinus } from "lucide-react"
 
 
@@ -104,6 +106,7 @@ type savedCar = {
 const SavedCars = () => {
   const [carsData, setCarsData] = useState<{car :savedCar}[]>([]);
   const { data: userSavedCars, isSuccess, isLoading, isFetching, isError, error, refetch } = useGetUserSavedCars();
+  const { data: userRentRequests={data: []}, isLoading: isLoadingRentRequests, refetch: refetchRentRequests } = useGetRentRequests();
 
   useEffect(() => {
     isSuccess && setCarsData(userSavedCars.data);
@@ -123,8 +126,8 @@ const SavedCars = () => {
       </div>
       <Button onClick={() => refetch()} size="sm" variant={"outline"} type="button" disabled={isFetching} isLoading={isFetching} className="w-fit text-xs h-8">{isFetching ? 'Refreshing' : <><FiRefreshCw className="me-1.5" />Refresh</>}</Button>
       <div className="grid w-full">
-        <div className={`grid ${((carsData && carsData.length > 0) || isLoading) && 'LPhone:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] grid-cols-[repeat(auto-fill,minmax(auto,1fr))]'} gap-y-4 gap-x-2`}>
-          {isLoading ? (
+        <div className={`grid ${((carsData && carsData.length > 0) || isLoading || isLoadingRentRequests) && 'LPhone:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] grid-cols-[repeat(auto-fill,minmax(auto,1fr))]'} gap-y-4 gap-x-2`}>
+          {isLoading || isLoadingRentRequests ? (
             <>
               <Skeleton className="h-72 w-full rounded-md"/>
               <Skeleton className="h-72 w-full rounded-md"/>
@@ -134,7 +137,7 @@ const SavedCars = () => {
             carsData && carsData.length > 0 ? (
               carsData.map(({ car }) => (
                 //@ts-ignore
-                <CarCard key={car.id} car={car} userSavedCars={userSavedCars.data} savedCarsRefetch={refetch}/>
+                <CarCard key={car.id} car={car} userSavedCars={userSavedCars.data} savedCarsRefetch={refetch} userRentRequests={userRentRequests.data}/>
               ))
             ) : (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-3">

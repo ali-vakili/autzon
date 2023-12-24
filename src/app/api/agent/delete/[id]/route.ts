@@ -35,7 +35,7 @@ export const DELETE = async (req: Request, { params }: requestProps) => {
 
     return NextResponse.json(
       {
-        message: "Your agent account deleted successfully"
+        message: "Your autzon account deleted successfully"
       },
       { status: 200 }
     )

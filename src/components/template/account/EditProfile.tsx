@@ -147,7 +147,7 @@ const EditProfile = ({ user, cities, provinces }: editProfilePropType) => {
       imageUrl: "",
       imageFile: null,
       firstName: firstName || undefined,
-      city: `${selectedCity?.id}` ?? "",
+      city: selectedCity ? `${selectedCity?.id}` : "",
       lastName: lastName || undefined,
       phone_number: phone_number || undefined,
       bio: bio || undefined

@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/tabs"
 import { Skeleton } from "@/ui/skeleton";
 
+import { useGetRentRequests } from "@/hooks/useGetUserRentRequests";
 import { useGetUserSavedCars } from "@/hooks/useGetUserSavedCars";
 
 import { FiAlertCircle, FiCheckCircle, FiInfo, FiMapPin, FiPhone } from "react-icons/fi";
@@ -22,18 +23,22 @@ import { Blocks } from "lucide-react";
 
 
 type galleryPagePropType= {
-  gallery: galleryDetailType
+  gallery: galleryDetailType;
+  agentGalleryId: string|null;
 }
 
-const GalleryPage = ({ gallery }: galleryPagePropType) => {
+const GalleryPage = ({ gallery, agentGalleryId }: galleryPagePropType) => {
   const { id: gallery_id, name, image, is_verified, phone_numbers, categories, address, city: {name_en: city_name_en, province: { name_en: province_name_en }}, cars, about, createdAt } = gallery;
   const gallery_created_at = getCreatedAndJoinDate(createdAt);
 
   const { data: userSavedCars={data: []}, isLoading } = useGetUserSavedCars();
 
+  const { data: userRentRequests={data: []}, isLoading: isLoadingRentRequests, refetch: refetchRentRequests } = useGetRentRequests();
+
   return (
     <>
       <div className="flex flex-col items-center w-full gap-4">
+        {gallery_id === agentGalleryId && (<Badge variant={"secondary"}>Your Gallery</Badge>)}
         <div className="text-center space-y-2">
           <Avatar className="w-36 h-36">
             <AvatarImage alt="agent_avatar" src={image?.url ?? undefined}/>
@@ -122,8 +127,8 @@ const GalleryPage = ({ gallery }: galleryPagePropType) => {
             </div>
             <Badge variant={"outline"} className="gap-2 text-base">{cars.filter(car => car.for_rent).length} Rental Cars</Badge>
           </div>
-          <div className={`grid ${(cars.filter(car => car.for_rent).length > 0) && 'grid-cols-[repeat(auto-fill,minmax(320px,1fr))]'} gap-3`}>
-            {(isLoading) ? (
+          <div className={`grid ${(cars.filter(car => car.for_rent).length > 0 || isLoadingRentRequests || isLoading) && 'grid-cols-[repeat(auto-fill,minmax(320px,1fr))]'} gap-3`}>
+            {(isLoading || isLoadingRentRequests) ? (
               <>
                 <Skeleton className="h-96 w-full rounded-md"/>
                 <Skeleton className="h-96 w-full rounded-md"/>
@@ -132,7 +137,7 @@ const GalleryPage = ({ gallery }: galleryPagePropType) => {
             ) : 
             cars.filter(car => car.for_rent).length > 0 ? cars.filter(car => car.for_rent).map(car => (
               //@ts-ignore
-              <CarCard key={car.id} car={car} userSavedCars={userSavedCars.data} agentGalleryId={gallery_id}/>
+              <CarCard key={car.id} car={car} userSavedCars={userSavedCars.data} agentGalleryId={agentGalleryId} userRentRequests={userRentRequests.data}/>
             )) : (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">
                 <h3 className="text-lg font-semibold">No Rental Car</h3>

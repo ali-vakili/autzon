@@ -11,7 +11,7 @@ export const useGalleryRequests = (gallery_id: string) => {
   return useQuery({
     queryKey: ["gallery-requests"],
     queryFn: () => getGalleryRequests (gallery_id),
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchOnReconnect: true,
   })
 }

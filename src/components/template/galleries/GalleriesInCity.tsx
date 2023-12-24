@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useGetGalleries } from "@/hooks/useGetGalleries";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 import { Loader2 } from "lucide-react";
 
@@ -45,6 +46,7 @@ type galleries = {
 
 type galleriesInCityPropType = {
   userCityId: number|null|undefined;
+  agentGalleryId: string|null;
   categories: {
     id: number;
     category: string;
@@ -63,7 +65,7 @@ type galleriesInCityPropType = {
 }
 
 
-const GalleriesInCity = ({ cities, provinces, categories, userCityId }: galleriesInCityPropType) => {
+const GalleriesInCity = ({ cities, provinces, categories, userCityId, agentGalleryId }: galleriesInCityPropType) => {
   const [galleriesData, setGalleriesData] = useState<galleries[]>([]);
   const [selectedCityId, setSelectedCityId] = useState<string>(userCityId ? `${userCityId}` : "52");
   const cityName = cities.find(city => `${city.id}` === selectedCityId)?.name_en;
@@ -118,7 +120,7 @@ const GalleriesInCity = ({ cities, provinces, categories, userCityId }: gallerie
             ) : (
               galleriesData && galleriesData.length > 0 ? (
                 galleriesData.map((gallery) => (
-                  <GalleryCard key={gallery.id} gallery={gallery} />
+                  <GalleryCard key={gallery.id} gallery={gallery} agentGalleryId={agentGalleryId}/>
                 ))
               ) : (
                 <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">

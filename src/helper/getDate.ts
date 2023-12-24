@@ -21,4 +21,21 @@ const getUpdatedAtDate = (updated_at: Date) => {
   }
 }
 
-export { getCreatedAndJoinDate, getUpdatedAtDate }
+function formatDateTime(date_time: Date) {
+
+  const options: Intl.DateTimeFormatOptions = { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false
+  };
+
+  const formatted_date_time = new Date(date_time).toLocaleDateString('en-US', options);
+
+  return formatted_date_time;
+}
+
+
+export { getCreatedAndJoinDate, getUpdatedAtDate, formatDateTime }

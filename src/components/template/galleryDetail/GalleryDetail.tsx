@@ -2,22 +2,25 @@
 
 import GalleryPage from "./GalleryPage";
 import galleryDetailType from "./galleryDetailType";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { useGetGalleryDetail } from "@/hooks/useGetGalleryDetail";
-
+import { toast } from "sonner";
 import { Button } from "@/ui/button";
 import { Skeleton } from "@/ui/skeleton";
-import { useEffect, useState } from "react";
+
+import { useGetGalleryDetail } from "@/hooks/useGetGalleryDetail";
 
 import { Building } from "lucide-react";
 import { FiArrowLeft} from "react-icons/fi";
 
+
 type galleryDetailPropType = {
-  galleryId: string
+  galleryId: string;
+  agentGalleryId: string|null
 }
 
-const GalleryDetail = ({ galleryId }: galleryDetailPropType) => {
+const GalleryDetail = ({ galleryId, agentGalleryId }: galleryDetailPropType) => {
   const [gallery, setGallery] = useState<galleryDetailType | null>(null);
   const router = useRouter();
 
@@ -42,7 +45,7 @@ const GalleryDetail = ({ galleryId }: galleryDetailPropType) => {
           <Button onClick={() => router.back()} variant={"default"} className="gap-1"><FiArrowLeft size={16}/>Go Back</Button>
         </div>
       ) : gallery && (
-        <GalleryPage gallery={gallery} />
+        <GalleryPage gallery={gallery} agentGalleryId={agentGalleryId}/>
       )}
     </div>
   )
