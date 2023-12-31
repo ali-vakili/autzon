@@ -35,6 +35,9 @@ export default async function Home() {
   }
 
   const cars = await prisma.car.findMany({
+    where: {
+      gallery_id: gallery.id
+    },
     select: {
       for_rent: {
         select: {

@@ -93,6 +93,7 @@ type saleCars = {
 
 type saleCarsPropType = {
   userCityId: number|null|undefined;
+  agentGalleryId: string | null;
   brandsAndModels: {
     id: number;
     name: string;
@@ -144,7 +145,7 @@ type models = {
   } | null;
 }
 
-const SaleCars = ({ cities, provinces, brandsAndModels, buildYears, categories, fuelTypes, carSeats, colors, userCityId }: saleCarsPropType) => {
+const SaleCars = ({ cities, provinces, brandsAndModels, buildYears, categories, fuelTypes, carSeats, colors, userCityId, agentGalleryId }: saleCarsPropType) => {
   const [carsData, setCarsData] = useState<saleCars[]>([]);
   const [selectedCityId, setSelectedCityId] = useState<string>(userCityId ? `${userCityId}` : "52");
   const cityName = cities.find(city => `${city.id}` === selectedCityId)?.name_en;
@@ -200,7 +201,7 @@ const SaleCars = ({ cities, provinces, brandsAndModels, buildYears, categories, 
             ) : (
               carsData && carsData.length > 0 ? (
                 carsData.map((car) => (
-                  <CarCard key={car.id} car={car} />
+                  <CarCard key={car.id} car={car} agentGalleryId={agentGalleryId}/>
                 ))
               ) : (
                 <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">

@@ -188,6 +188,12 @@ const UserRequestCard = ({ request, refetchRequests, userSavedCars, isFetching }
     isErrorDeleteRequest === true && errorDeleteRequest && toast.error(errorDeleteRequest?.response.dataDeleteRequest.error);
   }, [isSuccessDeleteRequest, isErrorDeleteRequest])
 
+  useEffect(()=> {
+    if (data) {
+      setSaved(data?.saved);
+    }
+  }, [data, userSavedCars])
+
   useEffect(() => {
     const isCarSaved = userSavedCars?.some(savedCar => savedCar.car.id === car_id);
 
@@ -236,7 +242,7 @@ const UserRequestCard = ({ request, refetchRequests, userSavedCars, isFetching }
                   </Badge>
                 </div>
                 {is_car_rented.length > 0 ? (
-                  <Badge variant="destructive" className="!block !rounded-md w-fit ms-4 hover:!bg-destructive">
+                  <Badge variant="destructive" className="!block !rounded-md w-fit hover:!bg-destructive">
                     Not available
                   </Badge>
                 ) : (

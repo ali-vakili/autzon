@@ -160,6 +160,42 @@ export interface Database {
           }
         ]
       }
+      Announcement: {
+        Row: {
+          city_id: number
+          content: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          city_id: number
+          content: string
+          id: string
+          user_id: string
+        }
+        Update: {
+          city_id?: number
+          content?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Announcement_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "City"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Announcement_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "AutoGalleryAgent"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       AutoGallery: {
         Row: {
           about: string | null
@@ -214,6 +250,7 @@ export interface Database {
       AutoGalleryAgent: {
         Row: {
           bio: string | null
+          city_id: number | null
           email: string
           firstName: string | null
           id: string
@@ -229,6 +266,7 @@ export interface Database {
         }
         Insert: {
           bio?: string | null
+          city_id?: number | null
           email: string
           firstName?: string | null
           id: string
@@ -244,6 +282,7 @@ export interface Database {
         }
         Update: {
           bio?: string | null
+          city_id?: number | null
           email?: string
           firstName?: string | null
           id?: string
@@ -257,7 +296,15 @@ export interface Database {
           role?: Database["public"]["Enums"]["Role"]
           updatedAt?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "AutoGalleryAgent_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "City"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       AutoGalleryAndCarCategory: {
         Row: {
@@ -310,6 +357,7 @@ export interface Database {
       Car: {
         Row: {
           build_year_id: number
+          car_seat_id: number
           category_id: number
           createdAt: string
           description: string
@@ -323,6 +371,7 @@ export interface Database {
         }
         Insert: {
           build_year_id: number
+          car_seat_id: number
           category_id: number
           createdAt?: string
           description: string
@@ -336,6 +385,7 @@ export interface Database {
         }
         Update: {
           build_year_id?: number
+          car_seat_id?: number
           category_id?: number
           createdAt?: string
           description?: string
@@ -353,6 +403,13 @@ export interface Database {
             columns: ["build_year_id"]
             isOneToOne: false
             referencedRelation: "BuildYear"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Car_car_seat_id_fkey"
+            columns: ["car_seat_id"]
+            isOneToOne: false
+            referencedRelation: "CarSeat"
             referencedColumns: ["id"]
           },
           {
@@ -384,6 +441,42 @@ export interface Database {
             referencedColumns: ["id"]
           }
         ]
+      }
+      CarColor: {
+        Row: {
+          color_code: string
+          color_name: string
+          id: number
+        }
+        Insert: {
+          color_code: string
+          color_name: string
+          id: number
+        }
+        Update: {
+          color_code?: string
+          color_name?: string
+          id?: number
+        }
+        Relationships: []
+      }
+      CarSeat: {
+        Row: {
+          id: number
+          seats: string
+          seats_count: string
+        }
+        Insert: {
+          id: number
+          seats: string
+          seats_count: string
+        }
+        Update: {
+          id?: number
+          seats?: string
+          seats_count?: string
+        }
+        Relationships: []
       }
       City: {
         Row: {
@@ -754,25 +847,83 @@ export interface Database {
           }
         ]
       }
-      SaleCar: {
+      RentRequest: {
         Row: {
+          auto_gallery_id: string
           car_id: string
           createdAt: string
           id: string
+          status: Database["public"]["Enums"]["RequestStatus"]
+          updatedAt: string
+          user_id: string
+        }
+        Insert: {
+          auto_gallery_id: string
+          car_id: string
+          createdAt?: string
+          id: string
+          status?: Database["public"]["Enums"]["RequestStatus"]
+          updatedAt: string
+          user_id: string
+        }
+        Update: {
+          auto_gallery_id?: string
+          car_id?: string
+          createdAt?: string
+          id?: string
+          status?: Database["public"]["Enums"]["RequestStatus"]
+          updatedAt?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "RentRequest_auto_gallery_id_fkey"
+            columns: ["auto_gallery_id"]
+            isOneToOne: false
+            referencedRelation: "AutoGallery"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "RentRequest_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "Car"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "RentRequest_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "AutoGalleryAgent"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      SaleCar: {
+        Row: {
+          car_id: string
+          color_id: number
+          createdAt: string
+          id: string
+          mileage: number
           price: number
           updatedAt: string
         }
         Insert: {
           car_id: string
+          color_id: number
           createdAt?: string
           id: string
+          mileage: number
           price: number
           updatedAt: string
         }
         Update: {
           car_id?: string
+          color_id?: number
           createdAt?: string
           id?: string
+          mileage?: number
           price?: number
           updatedAt?: string
         }
@@ -782,6 +933,13 @@ export interface Database {
             columns: ["car_id"]
             isOneToOne: false
             referencedRelation: "Car"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "SaleCar_color_id_fkey"
+            columns: ["color_id"]
+            isOneToOne: false
+            referencedRelation: "CarColor"
             referencedColumns: ["id"]
           }
         ]
@@ -815,6 +973,36 @@ export interface Database {
           }
         ]
       }
+      UserSavedCars: {
+        Row: {
+          car_id: string
+          user_id: string
+        }
+        Insert: {
+          car_id: string
+          user_id: string
+        }
+        Update: {
+          car_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "UserSavedCars_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "Car"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserSavedCars_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "AutoGalleryAgent"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -823,7 +1011,8 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      Role: "USER" | "AGENT"
+      RequestStatus: "PENDING" | "ACCEPTED" | "DECLINED"
+      Role: "USER" | "AGENT" | "ADMIN"
     }
     CompositeTypes: {
       [_ in never]: never

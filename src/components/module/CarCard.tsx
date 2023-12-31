@@ -169,7 +169,6 @@ const calculateReservationFee = (pricePerDay: number, reservationFeePercentage: 
 };
 
 const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCardPropType) => {
-  console.log(agentGalleryId);
   const [saved, setSaved] = useState(false);
   const [requested, setRequested] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -261,7 +260,7 @@ const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCa
                 {title}
               </h4>
               {for_rent && is_car_rented.length > 0 ? (
-                <Badge variant="destructive" className="!block !rounded-md w-fit ms-4 hover:!bg-destructive">
+                <Badge variant="destructive" className="!block !rounded-md w-fit hover:!bg-destructive">
                   Not available
                 </Badge>
               ) : (
@@ -336,12 +335,12 @@ const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCa
                 </div>
                 <div className="flex gap-2">
                   {for_rent && is_car_rented.length > 0 ? (
-                    <Badge variant="destructive" className="rounded-md w-fit ms-4 hover:!bg-destructive">
+                    <Badge variant="destructive" className="rounded-md w-fit ms-4 min-h-[32px] hover:!bg-destructive">
                       Not available
                     </Badge>
                   ) : (
                     for_rent && (
-                      <Badge className="bg-success !rounded-md w-fit hover:!bg-success h-8">Available</Badge>
+                      <Badge className="bg-success !rounded-md w-fit hover:!bg-success min-h-[32px]">Available</Badge>
                     )
                   )}
                   {!isOwner && (
