@@ -10,17 +10,13 @@ const emailSchema = z
   .min(1, "Email is required")
   .email();
 
-const phoneNumberRegex = /^(98\d{10}|9\d{8}|09\d{9}|\+98\d{10})$/;
+const phoneNumberRegex = /^(98\d{10}|9\d{9}|09\d{9}|\+98\d{10})$/;
 
 const phoneNumberSchema = z
   .string()
   .min(1, "Phone number is required")
-  .max(11, "Phone number is too long")
+  .max(13, "Phone number is too long")
   .refine((value) => !value.includes(" "), "Phone number cannot contain spaces")
-  .refine(
-    (value) => /^\d+$/.test(value),
-    "Phone number can only contain digits"
-  )
   .refine((value) => phoneNumberRegex.test(value), {
     message: "Invalid Mobile number format",
   });
