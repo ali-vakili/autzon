@@ -159,7 +159,7 @@ const GalleryPage = ({ gallery, agentGalleryId }: galleryPagePropType) => {
             </div>
             <Badge variant={"outline"} className="gap-2 text-base">{cars.filter(car => car.for_sale).length} Sale Cars</Badge>
           </div>
-          <div className={`grid ${(cars.filter(car => car.for_sale).length > 0) && 'grid-cols-[repeat(auto-fill,minmax(320px,1fr))]'} gap-3`}>
+          <div className={`grid ${(cars.filter(car => car.for_sale).length > 0 || isLoadingRentRequests || isLoading) && 'grid-cols-[repeat(auto-fill,minmax(320px,1fr))]'} gap-3`}>
             {(isLoading) ? (
               <>
                 <Skeleton className="h-96 w-full rounded-md"/>
@@ -169,7 +169,7 @@ const GalleryPage = ({ gallery, agentGalleryId }: galleryPagePropType) => {
             ) : 
             cars.filter(car => car.for_sale).length > 0 ? cars.filter(car => car.for_sale).map(car => (
               //@ts-ignore
-              <CarCard key={car.id} car={car} userSavedCars={userSavedCars.data}/>
+              <CarCard key={car.id} car={car} agentGalleryId={agentGalleryId} userSavedCars={userSavedCars.data}/>
             )) : (
               <div className="flex flex-col place-items-center mx-auto col-span-1 gap-2">
                 <h3 className="text-lg font-semibold">No Sale Car</h3>

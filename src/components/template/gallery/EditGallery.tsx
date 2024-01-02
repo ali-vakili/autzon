@@ -441,7 +441,7 @@ const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGallery
               />
             </div>
             <div className="text-end">
-              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading}className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Updating Gallery...' : 'Update Gallery'}</Button>
+              <Button size="lg" type="submit" disabled={isLoading} isLoading={isLoading}className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Updating Gallery...' : 'Update Gallery'}</Button>
             </div>
           </form>
         </Form>
