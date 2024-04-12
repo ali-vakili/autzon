@@ -20,7 +20,7 @@ export type saveORUnSaveCarHookType = {
   mutate: UseMutateFunction<any, unknown, { car_id: string, action: "SAVE" | "UNSAVE" }, unknown>
   data: any,
   error: any,
-  isLoading: boolean,
+  isPending: boolean,
   isSuccess: boolean,
   isError: boolean,
 }

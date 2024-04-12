@@ -171,14 +171,14 @@ const calculateReservationFee = (pricePerDay: number, reservationFeePercentage: 
 const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCardPropType) => {
   const [saved, setSaved] = useState(false);
   const [requested, setRequested] = useState(false);
-  const [isPending, setIsPending] = useState(false);
+  const [isPendingRequest, setIsPending] = useState(false);
   const [isAccepted, setIsAccepted] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const { id, title, gallery: { id:galleryId, name, image, phone_numbers, city: { name_en:city_name_en, province: { name_en:province_name_en } }, is_verified }, images, model: { name: modelName, brand: { name: brandName }}, build_year:{year}, category, fuel_type, car_seat, for_rent, for_sale, is_car_rented, description } = car;
 
-  const { mutate, data, isSuccess, isLoading, isError, error }: saveORUnSaveCarHookType = useSaveORUnSaveCar();
+  const { mutate, data, isSuccess, isPending, isError, error }: saveORUnSaveCarHookType = useSaveORUnSaveCar();
 
-  const { mutate:sendRentRequest, data:rentRequestData, isSuccess:rentRequestIsSuccess, isLoading:rentRequestIsLoading, isError:rentRequestIsError, error:rentRequestError} = useSendRentRequest();
+  const { mutate:sendRentRequest, data:rentRequestData, isSuccess:rentRequestIsSuccess, isPending:rentRequestIsLoading, isError:rentRequestIsError, error:rentRequestError} = useSendRentRequest();
 
   useEffect(()=> {
     rentRequestIsSuccess === true && rentRequestData?.message && (toast.success(rentRequestData.message));
@@ -249,7 +249,7 @@ const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCa
               <div className="flex absolute top-2 right-2 gap-2">
                 {saved && <BookmarkCheck size={28} className="py-1 px-1.5 bg-muted rounded"/>}
                 {isOwner && <Badge variant={"default"} className="rounded-md">Owned</Badge>}
-                {isPending ? <FiLoader size={28} className="py-1 px-1.5 bg-muted rounded"/> : isAccepted ? <FiCheck size={28} className="text-white py-1 px-1.5 bg-success rounded"/> : "" }
+                {isPendingRequest ? <FiLoader size={28} className="py-1 px-1.5 bg-muted rounded"/> : isAccepted ? <FiCheck size={28} className="text-white py-1 px-1.5 bg-success rounded"/> : "" }
                 {images.length > 1 && <GalleryVerticalEnd size={28} className="py-1 px-1.5 bg-muted rounded"/>} 
               </div>
             </AspectRatio>
@@ -345,9 +345,9 @@ const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCa
                   )}
                   {!isOwner && (
                     saved ? (
-                      <Button isLoading={isLoading} onClick={() => mutate({ car_id: id, action: "UNSAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <BookmarkCheck size={16} className="me-1"/>}{isLoading ? "Unsaving" : "Saved"}</Button>
+                      <Button isLoading={isPending} onClick={() => mutate({ car_id: id, action: "UNSAVE" })} variant={"outline"} size={"sm"}>{isPending ? "" : <BookmarkCheck size={16} className="me-1"/>}{isPending ? "Unsaving" : "Saved"}</Button>
                     ) : (
-                      <Button isLoading={isLoading} onClick={() => mutate({ car_id: id, action: "SAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <Bookmark size={16} className="me-1"/>}{isLoading ? "Saving" : "Save"}</Button>
+                      <Button isLoading={isPending} onClick={() => mutate({ car_id: id, action: "SAVE" })} variant={"outline"} size={"sm"}>{isPending ? "" : <Bookmark size={16} className="me-1"/>}{isPending ? "Saving" : "Save"}</Button>
                     )
                   )}
                 </div>
@@ -476,13 +476,13 @@ const CarCard = ({ car, userSavedCars, userRentRequests, agentGalleryId }: carCa
                   Request Accepted
                 </Button>
               )} 
-              {isPending && (
+              {isPendingRequest && (
                 <Button disabled type="button" variant="secondary" className="w-full gap-1.5">
                   <FiLoader size={16}/>
                   Pending Rent Request
                 </Button>
               )}
-              {(!isAccepted && !isPending && !isOwner) && (
+              {(!isAccepted && !isPendingRequest && !isOwner) && (
                 <Button onClick={() => sendRentRequest({ car_id:id, auto_gallery_id: galleryId })} disabled={rentRequestIsLoading} isLoading={rentRequestIsLoading} type="button" variant="default" className="w-full">
                   {rentRequestIsLoading ? "Sending Rent Request" : "Send Rent Request"}
                 </Button>

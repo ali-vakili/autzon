@@ -3,6 +3,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { GoogleProfile } from "next-auth/providers/google";
+import { Adapter } from "next-auth/adapters";
 import { connectDB } from "./connectDB";
 import { verifyPassword } from "./hash";
 import { USER } from "@/constants/roles";
@@ -10,7 +11,7 @@ import prisma from "./prisma";
 
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as Adapter,
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {

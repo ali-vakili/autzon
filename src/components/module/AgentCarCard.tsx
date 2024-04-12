@@ -13,7 +13,7 @@ import { assetsBucketUrl } from "@/constants/supabaseStorage";
 import { FiUsers, FiEdit } from "react-icons/fi";
 import { Fuel } from 'lucide-react';
 
-import { useDeleteCar, deleteCarHookType } from "@/hooks/useDeleteCar";
+import { deleteCarHookType, useDeleteCar } from "@/hooks/useDeleteCar";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/ui/button";
@@ -45,7 +45,7 @@ const useDialog = () => {
 };
 
 const ImageBadge = ({ id, title, isPublished, for_rent, for_sale, refetchCarData }: ImageBadgeProps) => {
-  const { mutate: deleteCar, data, isSuccess, isLoading, isError, error }: deleteCarHookType = useDeleteCar();
+  const { mutate: deleteCar, data, isSuccess, isPending, isError, error }: deleteCarHookType = useDeleteCar();
   const { isOpen, openDialog, closeDialog } = useDialog();
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const ImageBadge = ({ id, title, isPublished, for_rent, for_sale, refetchCarData
           closeDialog={closeDialog}
           onDelete={() => deleteCar(id)}
           openDialog={openDialog}
-          isLoading={isLoading}
+          isLoading={isPending}
           title={title}
           subText="Are you sure you want to delete the car?"
         />

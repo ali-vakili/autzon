@@ -47,9 +47,9 @@ const Management = ({ user }: managementPropType) => {
   const { data: session, update } = useSession();
 
 
-  const { mutate: changePassword, data: CPData, isLoading:CPIsLoading, isSuccess:CPIsSuccess, isError:CPIsError, error:CPError }: changePasswordHookType = useChangePassword();
+  const { mutate: changePassword, data: CPData, isPending:CPIsLoading, isSuccess:CPIsSuccess, isError:CPIsError, error:CPError }: changePasswordHookType = useChangePassword();
 
-  const { mutate: changeEmail, data: CEData, isLoading:CEIsLoading, isSuccess:CEIsSuccess, isError:CEIsError, error:CEError }: changeEmailHookType = useAccountManagement();
+  const { mutate: changeEmail, data: CEData, isPending:CEIsLoading, isSuccess:CEIsSuccess, isError:CEIsError, error:CEError }: changeEmailHookType = useAccountManagement();
 
   const onSubmitAccount = async (values: AccountManagementSchemaType) => {
     changeEmail(values);

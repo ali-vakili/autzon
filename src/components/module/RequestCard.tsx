@@ -134,7 +134,7 @@ const RequestCard = ({ request, refetchRequests, isFetching }: requestCardPropTy
   const { status } = request;
   const { auto_gallery_id, id: requestId } = request;
 
-  const { mutate, data, isSuccess, isLoading, isError, error }: useAcceptORDeclineRequestHookType = useAcceptORDeclineRequest();
+  const { mutate, data, isSuccess, isPending, isError, error }: useAcceptORDeclineRequestHookType = useAcceptORDeclineRequest();
 
   useEffect(()=> {
     isSuccess === true && data?.message && (toast.success(data.message));
@@ -242,10 +242,10 @@ const RequestCard = ({ request, refetchRequests, isFetching }: requestCardPropTy
           <Separator className="my-4"/>
           <div className="flex justify-center w-full gap-2">
             {action !== "ACCEPT" && (
-              <Button onClick={() => {mutate({ action:"DECLINED", car_id:carId, gallery_id: auto_gallery_id, user_id: userId, request_id: requestId }), setAction("DECLINE")}} isLoading={isLoading} disabled={isLoading || isSuccess || isFetching} variant={"ghost"} className="bg-white text-destructive hover:text-destructive hover:bg-white border border-destructive gap-1">{!isLoading && <FiX size={16}/>}&nbsp;{isLoading ? "Declining" : isSuccess ? "Declined" : "Decline"}</Button>
+              <Button onClick={() => {mutate({ action:"DECLINED", car_id:carId, gallery_id: auto_gallery_id, user_id: userId, request_id: requestId }), setAction("DECLINE")}} isLoading={isPending} disabled={isPending || isSuccess || isFetching} variant={"ghost"} className="bg-white text-destructive hover:text-destructive hover:bg-white border border-destructive gap-1">{!isPending && <FiX size={16}/>}&nbsp;{isPending ? "Declining" : isSuccess ? "Declined" : "Decline"}</Button>
             )}
             {action !== "DECLINE" && (
-              <Button onClick={() => {mutate({ action:"ACCEPTED", car_id:carId, gallery_id: auto_gallery_id, user_id: userId, request_id: requestId }), setAction("ACCEPT")}} isLoading={isLoading} disabled={isLoading || isSuccess || isFetching} variant={"ghost"} className="bg-white text-success hover:text-success hover:bg-white border border-success gap-1">{!isLoading && <FiCheck size={16}/>}&nbsp;{isLoading ? "Accepting" : isSuccess ? "Accepted" : "Accept"}</Button>
+              <Button onClick={() => {mutate({ action:"ACCEPTED", car_id:carId, gallery_id: auto_gallery_id, user_id: userId, request_id: requestId }), setAction("ACCEPT")}} isLoading={isPending} disabled={isPending || isSuccess || isFetching} variant={"ghost"} className="bg-white text-success hover:text-success hover:bg-white border border-success gap-1">{!isPending && <FiCheck size={16}/>}&nbsp;{isPending ? "Accepting" : isSuccess ? "Accepted" : "Accept"}</Button>
             )}
           </div>
         </>

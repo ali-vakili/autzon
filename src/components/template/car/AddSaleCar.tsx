@@ -97,7 +97,7 @@ const AddSaleCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears
 
   const router = useRouter();
 
-  const { mutate: createSaleCar, data, isLoading, isSuccess, isError, error }: createSaleCarHookType = useCreateSaleCar();
+  const { mutate: createSaleCar, data, isPending, isSuccess, isError, error }: createSaleCarHookType = useCreateSaleCar();
 
   useEffect(() => {
     isSuccess === true && data?.message && (toast.success(data.message)) && router.push("/dashboard/cars");
@@ -199,7 +199,7 @@ const AddSaleCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears
                   type="button"
                   variant="outline"
                   size="sm"
-                  disabled={isLoading}
+                  disabled={isPending}
                   className="text-gray-600 my-auto"
                   onClick={() => (ImagesUrlAppend({ imageUrl: "" }), setLeftImageCount(prev => prev - 1), ImagesFileAppend({ imageFile: null }))}
                 >
@@ -586,7 +586,7 @@ const AddSaleCarForm = ({ galleryAddress, brandsAndModels, fuelTypes, buildYears
               )}
             />
             <div className="text-end">
-              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Adding Sale Car...' : 'Add Sale Car'}</Button>
+              <Button size="lg" type="submit" disabled={isPending || !isDirty} isLoading={isPending} className="w-fit" style={{ marginTop: "44px" }}>{isPending ? 'Adding Sale Car...' : 'Add Sale Car'}</Button>
             </div>
           </form>
         </Form>

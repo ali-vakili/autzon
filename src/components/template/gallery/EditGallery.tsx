@@ -88,7 +88,7 @@ const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGallery
   const arrayOfCategories = galleryCategories.map(category => `${category.id}`);
   const { url } = image ?? { url: null };
 
-  const { mutate: updateGalley, data, isLoading, isSuccess, isError, error }: updateGalleryHookType = useUpdateGallery();
+  const { mutate: updateGalley, data, isPending, isSuccess, isError, error }: updateGalleryHookType = useUpdateGallery();
 
   useEffect(() => {
     isSuccess === true && data?.message && toast.success(data.message);
@@ -441,7 +441,7 @@ const EditGalleryForm = ({ gallery, categories, cities, provinces }: editGallery
               />
             </div>
             <div className="text-end">
-              <Button size="lg" type="submit" disabled={isLoading} isLoading={isLoading}className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Updating Gallery...' : 'Update Gallery'}</Button>
+              <Button size="lg" type="submit" disabled={isPending} isLoading={isPending}className="w-fit" style={{ marginTop: "44px" }}>{isPending ? 'Updating Gallery...' : 'Update Gallery'}</Button>
             </div>
           </form>
         </Form>

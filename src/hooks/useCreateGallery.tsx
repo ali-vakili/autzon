@@ -39,7 +39,7 @@ export type createGalleryHookType = {
   mutate: UseMutateFunction<any, unknown, GalleryCreateAndUpdateSchemaType, unknown>
   data: any,
   error: any,
-  isLoading: boolean,
+  isPending: boolean,
   isSuccess: boolean,
   isError: boolean,
 }

@@ -36,12 +36,7 @@ const ResetPassword = ({ token }: RestPasswordPropsType) => {
   const [togglePasswordType, setTogglePasswordType] = useState<boolean>(false);
   const router = useRouter();
 
-  const { data: session } = useSession();
-  if (session?.user) {
-    return redirect('/');
-  }
-
-  const { mutate: resetPassword, data, isLoading, isSuccess, isError, error }: resetPasswordHookType = useResetPassword();
+  const { mutate: resetPassword, data, isPending, isSuccess, isError, error }: resetPasswordHookType = useResetPassword();
 
   useEffect(() => {
     if(isError) {
@@ -69,6 +64,11 @@ const ResetPassword = ({ token }: RestPasswordPropsType) => {
     },
     mode: "onTouched"
   })
+
+  const { data: session } = useSession();
+  if (session?.user) {
+    return redirect('/');
+  }
 
   const { isDirty } = form.formState;
 
@@ -121,7 +121,7 @@ const ResetPassword = ({ token }: RestPasswordPropsType) => {
               )}
             />
             <Separator className="!mt-8" />
-            <Button type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-full" style={{ marginTop: "16px" }}>{isLoading ? 'Resetting Password...' : 'Reset Password'}</Button>
+            <Button type="submit" disabled={isPending || !isDirty} isLoading={isPending} className="w-full" style={{ marginTop: "16px" }}>{isPending ? 'Resetting Password...' : 'Reset Password'}</Button>
           </form>
         </Form>
         

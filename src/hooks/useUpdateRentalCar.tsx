@@ -74,7 +74,7 @@ export type updateRentalCarHookType = {
   }, unknown>
   data: any,
   error: any,
-  isLoading: boolean,
+  isPending: boolean,
   isSuccess: boolean,
   isError: boolean,
 }

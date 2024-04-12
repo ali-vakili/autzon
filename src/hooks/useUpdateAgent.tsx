@@ -40,7 +40,7 @@ export type updateAgentHookType = {
   }, unknown>
   data: any,
   error: any,
-  isLoading: boolean,
+  isPending: boolean,
   isSuccess: boolean,
   isError: boolean,
 }

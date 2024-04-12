@@ -22,7 +22,7 @@ export type changePasswordHookType = {
   mutate: UseMutateFunction<any, unknown, ChangePasswordSchemaType, unknown>
   data: any,
   error: any,
-  isLoading: boolean,
+  isPending: boolean,
   isSuccess: boolean,
   isError: boolean,
 }

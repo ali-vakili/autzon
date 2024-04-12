@@ -138,7 +138,7 @@ const EditSaleCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories, c
   const { price, mileage, color_id } = saleCarDetail;
 
 
-  const { mutate: updateSaleCar, data, isLoading, isSuccess, isError, error }: updateSaleCarHookType = useUpdateSaleCar();
+  const { mutate: updateSaleCar, data, isPending, isSuccess, isError, error }: updateSaleCarHookType = useUpdateSaleCar();
 
   useEffect(() => {
     const brandWithId = brandsAndModels.find((brand) => brand.id === model.brand_id);
@@ -267,7 +267,7 @@ const EditSaleCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories, c
                   type="button"
                   variant="outline"
                   size="sm"
-                  disabled={isLoading}
+                  disabled={isPending}
                   className="text-gray-600 my-auto"
                   onClick={() => (ImagesUrlAppend({ imageUrl: "" }), setLeftImageCount(prev => prev - 1), ImagesFileAppend({ imageFile: null }))}
                 >
@@ -653,7 +653,7 @@ const EditSaleCarForm = ({ brandsAndModels, fuelTypes, buildYears, categories, c
               )}
             />
             <div className="text-end">
-              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Editing Sale Car...' : 'Edit Sale Car'}</Button>
+              <Button size="lg" type="submit" disabled={isPending || !isDirty} isLoading={isPending} className="w-fit" style={{ marginTop: "44px" }}>{isPending ? 'Editing Sale Car...' : 'Edit Sale Car'}</Button>
             </div>
           </form>
         </Form>

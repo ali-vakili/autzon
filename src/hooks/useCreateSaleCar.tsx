@@ -53,7 +53,7 @@ export type createSaleCarHookType = {
   mutate: UseMutateFunction<any, unknown, AddAndUpdateSaleCarSchemaType, unknown>
   data: any,
   error: any,
-  isLoading: boolean,
+  isPending: boolean,
   isSuccess: boolean,
   isError: boolean,
 }

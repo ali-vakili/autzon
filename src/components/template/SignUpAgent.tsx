@@ -36,12 +36,7 @@ const SignUpAgent = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [togglePasswordType, setTogglePasswordType] = useState<boolean>(false);
 
-  const { data } = useSession();
-  if (data?.user) {
-    return redirect('/');
-  }
-
-  const { mutate: createAgent, isLoading, isSuccess, isError, error } = useCreateAgent();
+  const { mutate: createAgent, isPending, isSuccess, isError, error } = useCreateAgent();
 
   useEffect(() => {
     if(isError) {
@@ -65,6 +60,11 @@ const SignUpAgent = () => {
     },
     mode: "onTouched"
   })
+
+  const { data } = useSession();
+  if (data?.user) {
+    return redirect('/');
+  }
 
   const { isDirty } = form.formState;
 
@@ -93,7 +93,7 @@ const SignUpAgent = () => {
       <div className="flex flex-col flex-1 col-span-3 LPhone:max-w-sm w-full mx-auto">
         <h1 className="mt-8 mb-2 text-2xl font-semibold">Get started as an agent</h1>
         <h2 className="text-sm text-foreground-light mb-10">Create a new account</h2>
-        <ContinueWithGoogle text='Sign up with Google' callbackUrl={"/"} role={AGENT} isLoading={isLoading}/>
+        <ContinueWithGoogle text='Sign up with Google' callbackUrl={"/"} role={AGENT} isLoading={isPending}/>
         <hr className="divider sign-up"></hr>
         {isError && (
           <div className="w-full bg-destructive/80 rounded mb-3">
@@ -161,7 +161,7 @@ const SignUpAgent = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-full" style={{ marginTop: "32px" }}>{isLoading ? 'Signing up...' : 'Sign Up'}</Button>
+              <Button type="submit" disabled={isPending || !isDirty} isLoading={isPending} className="w-full" style={{ marginTop: "32px" }}>{isPending ? 'Signing up...' : 'Sign Up'}</Button>
             </form>
           </Form>
         )}

@@ -41,7 +41,7 @@ export type updateGalleryHookType = {
   }, unknown>
   data: any,
   error: any,
-  isLoading: boolean,
+  isPending: boolean,
   isSuccess: boolean,
   isError: boolean,
 }

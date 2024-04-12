@@ -69,7 +69,7 @@ const CreateGalleryForm = ({ agentCityId, categories, cities, provinces }: creat
   const [selectedProvince, setSelectedProvince] = useState<{id:number, name: string}|null>(null);
   const router = useRouter();
 
-  const { mutate: createGalley, data, isLoading, isSuccess, isError, error }: createGalleryHookType = useCreateGallery();
+  const { mutate: createGalley, data, isPending, isSuccess, isError, error }: createGalleryHookType = useCreateGallery();
 
   useEffect(() => {
     isSuccess === true && data?.message && (toast.success(data.message), router.replace("/dashboard"), router.refresh());
@@ -422,7 +422,7 @@ const CreateGalleryForm = ({ agentCityId, categories, cities, provinces }: creat
               />
             </div>
             <div className="text-end">
-              <Button size="lg" type="submit" disabled={isLoading || !isDirty} isLoading={isLoading}className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Creating Gallery...' : 'Create Gallery'}</Button>
+              <Button size="lg" type="submit" disabled={isPending || !isDirty} isLoading={isPending}className="w-fit" style={{ marginTop: "44px" }}>{isPending ? 'Creating Gallery...' : 'Create Gallery'}</Button>
             </div>
           </form>
         </Form>

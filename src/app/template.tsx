@@ -9,7 +9,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const body = document.getElementById('body');
     pathname.startsWith("/dashboard") ? body?.classList.add("overflow-hidden") : body?.classList.remove("overflow-hidden")
-  }, [])
+  }, [pathname])
 
   return <>{children}</>
 }

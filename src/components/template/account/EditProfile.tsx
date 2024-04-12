@@ -98,7 +98,7 @@ const EditProfile = ({ user, cities, provinces }: editProfilePropType) => {
     }
   }, [])
 
-  const { mutate: updateAgent, data, isLoading, isSuccess, isError, error }: updateAgentHookType = useUpdateAgent();
+  const { mutate: updateAgent, data, isPending, isSuccess, isError, error }: updateAgentHookType = useUpdateAgent();
 
   const onSubmit = async (values: AgentUpdateType) => {
     const { firstName, lastName } = values;
@@ -353,7 +353,7 @@ const EditProfile = ({ user, cities, provinces }: editProfilePropType) => {
             )}
           />
           <div className="text-end">
-            <Button type="submit" disabled={isLoading} isLoading={isLoading} className="w-fit" style={{ marginTop: "44px" }}>{isLoading ? 'Saving Profile...' : 'Save Profile'}</Button>
+            <Button type="submit" disabled={isPending} isLoading={isPending} className="w-fit" style={{ marginTop: "44px" }}>{isPending ? 'Saving Profile...' : 'Save Profile'}</Button>
           </div>
         </form>
       </Form>

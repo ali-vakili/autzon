@@ -30,12 +30,7 @@ const ForgotPassword = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const router = useRouter();
 
-  const { data } = useSession();
-  if (data?.user) {
-    return redirect('/');
-  }
-
-  const { mutate: sendResetPasswordLink, isLoading, isSuccess, isError, error } = useForgotPassword();
+  const { mutate: sendResetPasswordLink, isPending, isSuccess, isError, error } = useForgotPassword();
 
   useEffect(() => {
     if(isError) {
@@ -56,6 +51,11 @@ const ForgotPassword = () => {
       email: ""
     }
   })
+
+  const { data } = useSession();
+  if (data?.user) {
+    return redirect('/');
+  }
 
   const { isDirty } = form.formState;
 
@@ -103,7 +103,7 @@ const ForgotPassword = () => {
                 )}
               />
               <Separator className="!mt-8" />
-              <Button type="submit" disabled={isLoading || !isDirty} isLoading={isLoading} className="w-full" style={{ marginTop: "16px" }}>{isLoading ? 'Sending Reset Email...' : 'Send Reset Email'}</Button>
+              <Button type="submit" disabled={isPending || !isDirty} isLoading={isPending} className="w-full" style={{ marginTop: "16px" }}>{isPending ? 'Sending Reset Email...' : 'Send Reset Email'}</Button>
             </form>
           </Form>
         )}

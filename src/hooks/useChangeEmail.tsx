@@ -22,7 +22,7 @@ export type changeEmailHookType = {
   mutate: UseMutateFunction<any, unknown, AccountManagementSchemaType, unknown>
   data: any,
   error: any,
-  isLoading: boolean,
+  isPending: boolean,
   isSuccess: boolean,
   isError: boolean,
 }

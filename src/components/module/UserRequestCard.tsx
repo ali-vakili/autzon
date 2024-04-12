@@ -167,9 +167,9 @@ const UserRequestCard = ({ request, refetchRequests, userSavedCars, isFetching }
 
   const { status } = request;
 
-  const { mutate, data, isSuccess, isLoading, isError, error }: saveORUnSaveCarHookType = useSaveORUnSaveCar();
+  const { mutate, data, isSuccess, isPending, isError, error }: saveORUnSaveCarHookType = useSaveORUnSaveCar();
 
-  const { mutate:deleteRequest, data:dataDeleteRequest, isSuccess: isSuccessDeleteRequest, isLoading:isLoadingDeleteRequest, isError:isErrorDeleteRequest, error:errorDeleteRequest } = useDeleteRentRequest();
+  const { mutate:deleteRequest, data:dataDeleteRequest, isSuccess: isSuccessDeleteRequest, isPending:isLoadingDeleteRequest, isError:isErrorDeleteRequest, error:errorDeleteRequest } = useDeleteRentRequest();
 
   useEffect(()=> {
     isSuccess === true && data?.message && (toast.success(data.message));
@@ -384,9 +384,9 @@ const UserRequestCard = ({ request, refetchRequests, userSavedCars, isFetching }
                     )
                   )}
                   {saved ? (
-                    <Button isLoading={isLoading} onClick={() => mutate({ car_id: car_id, action: "UNSAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <BookmarkCheck size={16} className="me-1"/>}{isLoading ? "Unsaving" : "Saved"}</Button>
+                    <Button isLoading={isPending} onClick={() => mutate({ car_id: car_id, action: "UNSAVE" })} variant={"outline"} size={"sm"}>{isPending ? "" : <BookmarkCheck size={16} className="me-1"/>}{isPending ? "Unsaving" : "Saved"}</Button>
                   ) : (
-                    <Button isLoading={isLoading} onClick={() => mutate({ car_id: car_id, action: "SAVE" })} variant={"outline"} size={"sm"}>{isLoading ? "" : <Bookmark size={16} className="me-1"/>}{isLoading ? "Saving" : "Save"}</Button>
+                    <Button isLoading={isPending} onClick={() => mutate({ car_id: car_id, action: "SAVE" })} variant={"outline"} size={"sm"}>{isPending ? "" : <Bookmark size={16} className="me-1"/>}{isPending ? "Saving" : "Save"}</Button>
                   )}
                 </div>
               </div>
