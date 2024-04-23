@@ -12,6 +12,13 @@ export default withAuth(
       )
     }
 
+    if (request.nextUrl.pathname.includes("/sign-in" || "/sing-up")
+      && request.nextauth.token) {
+      return NextResponse.redirect(
+        new URL("/", request.url)
+      )
+    }
+
     if (request.nextUrl.pathname.startsWith("/dashboard")
       && request.nextauth.token?.is_profile_complete === false) {
       const redirectURL = new URL("/account/profile", request.url);
