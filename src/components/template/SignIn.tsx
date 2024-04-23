@@ -19,7 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { SignInFormSchema, SignInFormSchemaType } from "@/validation/validations"
 
 import { signIn } from "next-auth/react"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 import { USER } from "@/constants/roles";
@@ -29,7 +29,7 @@ import Image from "next/image";
 import "../css/common.css"
 
 
-const SignIn = () => {
+const SignInForm = () => {
   const[loader, setLoader] = useState(false);
   const[success, setSuccess] = useState(false);
   const router = useRouter();
@@ -161,6 +161,14 @@ const SignIn = () => {
         </div>
       </div>
     </div>
+  )
+}
+
+const SignIn = () => {
+  return(
+    <Suspense>
+      <SignInForm />
+    </Suspense>
   )
 }
 
