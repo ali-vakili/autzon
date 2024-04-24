@@ -4,7 +4,6 @@ import { AGENT } from "./constants/roles"
 
 export default withAuth(
   function middleware(request: NextRequestWithAuth) {
-    console.log(request.nextUrl.pathname)
 
     if (request.nextUrl.pathname.startsWith("/dashboard")
       && request.nextauth.token?.role !== AGENT) {

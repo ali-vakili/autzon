@@ -18,11 +18,9 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SignInFormSchema, SignInFormSchemaType } from "@/validation/validations"
 
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import { Suspense, useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import { useSession } from "next-auth/react"
-import { redirect } from "next/navigation"
+import { useRouter, useSearchParams, redirect } from "next/navigation"
 
 import { USER } from "@/constants/roles";
 import logoIcon from "../../../public/logo-icon.svg";
@@ -39,6 +37,8 @@ const SignInForm = () => {
   const message = searchParams.get("message");
   const messageType = searchParams.get("messageType");
   const callbackUrl = searchParams.get("callbackUrl") || "/";
+
+  const { status } = useSession();
   
   useEffect(() => {
     if (message) {
@@ -47,6 +47,12 @@ const SignInForm = () => {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      redirect("/");
+    }
+  }, [status])
 
   const form = useForm<SignInFormSchemaType>({
     resolver: zodResolver(SignInFormSchema),
@@ -88,11 +94,6 @@ const SignInForm = () => {
     finally {
       setLoader(false);
     }
-  }
-  
-  const { data } = useSession();
-  if (data?.user) {
-    return redirect('/');
   }
 
   return (
