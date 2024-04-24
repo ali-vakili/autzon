@@ -4,6 +4,7 @@ import { AGENT } from "./constants/roles"
 
 export default withAuth(
   function middleware(request: NextRequestWithAuth) {
+    console.log(request.nextUrl.pathname)
 
     if (request.nextUrl.pathname.startsWith("/dashboard")
       && request.nextauth.token?.role !== AGENT) {
@@ -12,7 +13,7 @@ export default withAuth(
       )
     }
 
-    if (request.nextUrl.pathname.includes("/sign-in" || "/sign-up")
+    if (request.nextUrl.pathname.includes("/sign-up")
       && request.nextauth.token) {
       return NextResponse.redirect(
         new URL("/", request.url)
@@ -42,4 +43,4 @@ export default withAuth(
   },
 )
 
-export const config = { matcher: ["/dashboard/:path*", "/account/:path*"] }
+export const config = { matcher: ["/dashboard/:path*", "/account/:path*", "/:path*/sign-up"] }

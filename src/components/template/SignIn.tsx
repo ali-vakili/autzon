@@ -21,6 +21,8 @@ import { SignInFormSchema, SignInFormSchemaType } from "@/validation/validations
 import { signIn } from "next-auth/react"
 import { Suspense, useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
+import { useSession } from "next-auth/react"
+import { redirect } from "next/navigation"
 
 import { USER } from "@/constants/roles";
 import logoIcon from "../../../public/logo-icon.svg";
@@ -45,6 +47,14 @@ const SignInForm = () => {
       }
     }
   }, [])
+
+  const form = useForm<SignInFormSchemaType>({
+    resolver: zodResolver(SignInFormSchema),
+    defaultValues: {
+      email: "",
+      password: ""
+    },
+  })
 
   const onSubmit = async (values: SignInFormSchemaType) => {
     toast.loading("Signing in...");
@@ -79,14 +89,11 @@ const SignInForm = () => {
       setLoader(false);
     }
   }
-
-  const form = useForm<SignInFormSchemaType>({
-    resolver: zodResolver(SignInFormSchema),
-    defaultValues: {
-      email: "",
-      password: ""
-    },
-  })
+  
+  const { data } = useSession();
+  if (data?.user) {
+    return redirect('/');
+  }
 
   return (
     <div className="flex flex-col flex-1 items-center flex-shrink-0 md:grid lg:max-w-none lg:grid-cols-5 px-4 lg:min-h-[680px] lg:my-8 lg:mx-24 lg:px-0 lg:border rounded">
