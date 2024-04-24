@@ -12,7 +12,7 @@ export default withAuth(
       )
     }
 
-    if (request.nextUrl.pathname.includes("/sign-in" || "/sing-up")
+    if (request.nextUrl.pathname.includes("/sign-in" || "/sign-up")
       && request.nextauth.token) {
       return NextResponse.redirect(
         new URL("/", request.url)
