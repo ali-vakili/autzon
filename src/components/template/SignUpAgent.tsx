@@ -36,6 +36,8 @@ const SignUpAgent = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [togglePasswordType, setTogglePasswordType] = useState<boolean>(false);
 
+  const { status } = useSession();
+
   const { mutate: createAgent, isPending, isSuccess, isError, error } = useCreateAgent();
 
   useEffect(() => {
@@ -46,6 +48,12 @@ const SignUpAgent = () => {
       }
     }
   },[error])
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      redirect("/");
+    }
+  }, [status])
 
   const onSubmit = async (values: AccountCreateType) => {
     createAgent(values);
@@ -60,11 +68,6 @@ const SignUpAgent = () => {
     },
     mode: "onTouched"
   })
-
-  const { data } = useSession();
-  if (data?.user) {
-    return redirect('/');
-  }
 
   const { isDirty } = form.formState;
 

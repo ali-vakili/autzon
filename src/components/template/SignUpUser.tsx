@@ -36,6 +36,8 @@ const SignUpUser = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [togglePasswordType, setTogglePasswordType] = useState<boolean>(false);
 
+  const { status } = useSession();
+
   const { mutate: createUser, isPending, isSuccess, isError, error } = useCreateUser();
 
   useEffect(() => {
@@ -46,6 +48,12 @@ const SignUpUser = () => {
       }
     }
   },[error])
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      redirect("/");
+    }
+  }, [status])
 
   const onSubmit = async (values: AccountCreateType) => {
     createUser(values);
@@ -60,11 +68,6 @@ const SignUpUser = () => {
     },
     mode: "onTouched"
   })
-
-  const { data } = useSession();
-  if (data?.user) {
-    return redirect('/');
-  }
 
   const { isDirty } = form.formState;
 
