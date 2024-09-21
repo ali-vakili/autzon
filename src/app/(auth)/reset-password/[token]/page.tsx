@@ -1,6 +1,4 @@
 import ResetPassword from "@/template/ResetPassword";
-import { authOptions } from "@/lib/auth";
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib";
 import type { Metadata } from 'next'
@@ -18,8 +16,6 @@ type ResetPasswordPagePropsType = {
 
 const ResetPasswordPage = async ({ params }: ResetPasswordPagePropsType) => {
   const oneHoursAgo = new Date(Date.now() - 1 * 60 * 60 * 1000);
-  const session = await getServerSession(authOptions);
-  if (session) redirect("/");
 
   const passwordResetToken = await prisma.passwordResetToken.findUnique({
     where: { 
