@@ -2,6 +2,9 @@ import EditProfile from "@/components/template/account/EditProfile";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib";
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
+
 import type { Metadata } from 'next'
 
 
@@ -64,6 +67,8 @@ export default async function Profile() {
   })
 
   return (
-    <EditProfile provinces={provinces} cities={cities} user={agent}/>
+    <Suspense fallback={<div className="flex h-full w-full justify-center items-center"><Loader2 className="animate-spin"/></div>}>
+      <EditProfile provinces={provinces} cities={cities} user={agent}/>
+    </Suspense>
   )
 }

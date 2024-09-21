@@ -2,6 +2,9 @@ import Management from "@/components/template/account/Management";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib";
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
+
 import type { Metadata } from 'next'
 
 
@@ -27,6 +30,8 @@ export default async function Profile() {
   if (!agent) return;
 
   return (
-    <Management user={agent}/>
+    <Suspense fallback={<div className="flex h-full w-full justify-center items-center"><Loader2 className="animate-spin"/></div>}>
+      <Management user={agent}/>
+    </Suspense>
   )
 }

@@ -1,8 +1,10 @@
+"use client"
+
 import Link from "next/link";
-import { sessionUser } from "@/lib/types/sessionUserType";
-
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { FiCheckCircle, FiAlertCircle, FiEdit, FiUser } from "react-icons/fi";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator"
@@ -13,13 +15,34 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-
 import { avatarFallBackText } from "@/helper/fallBackText"
 import { getCreatedAndJoinDate, getUpdatedAtDate } from "@/helper/getDate";
 
+import { Loader2 } from "lucide-react";
 
-const Account = async ({ user } : { user: sessionUser }) => {
-  const { email, profile, firstName, lastName, role, is_verified, city, join_date, updatedAt } = user
+const Account = () => {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/sign-in");
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return (
+      <div className="flex h-full w-full justify-center items-center">
+        <Loader2 className="animate-spin"/>
+      </div>
+    );
+  }
+
+  if (!session || !session.user) {
+    return null;
+  }
+
+  const { email, profile, firstName, lastName, role, is_verified, city, join_date, updatedAt } = session.user;
   const joined_date = getCreatedAndJoinDate(join_date);
   const updatedAt_date = getUpdatedAtDate(updatedAt);
 

@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import {
   Command,
+  CommandList,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -93,55 +94,57 @@ const Model = ({ brandsAndModels, setFilterOptions, defaultValue } : modelPropTy
             )}
             <ScrollArea className="h-80">
               <CommandEmpty>No model or brand found.</CommandEmpty>
-              <CommandGroup>
-                <h4 className="text-xs text-gray-400 ms-3 my-3">{selectedBrand ? "Models" : "Brands"}</h4>
-                {selectedBrand ? 
-                  selectedBrand.models
-                  .map((model) => (
-                    <CommandItem
-                      value={model.name}
-                      key={model.id}
-                      className={cn("mb-0.5", `${model.id}` === selectedModelId && "bg-accent")}
-                      onSelect={() => {
-                        setSelectedModelId(`${model.id}`), handleModelChange(`${model.id}`)
-                      }}
-                    >
-                      <span className="flex items-center mr-2 h-4 w-4">
-                        {`${model.id}` === selectedModelId && (
-                          <FiCheck
-                            className={cn(
-                              `${model.id}` === selectedModelId ? "opacity-100" : "opacity-0"
-                            )}
-                          />
-                        )}
-                      </span>
-                      {model.name}
-                    </CommandItem>
-                  ))
-                :
-                  brandsAndModels.map((brand) => (
-                    <CommandItem
-                      value={brand.name}
-                      key={brand.id}
-                      className={cn("mb-0.5", brand.id === selectedBrand && "bg-accent")}
-                      onSelect={() => {
-                        setSelectedBrand({id: brand.id, name: brand.name, models: brand.models})
-                      }}
-                    >
-                      <span className="flex items-center mr-2 h-4 w-4">
-                        {brand.id === selectedBrand && (
-                          <FiCheck
-                            className={cn(
-                              brand.id === selectedBrand ? "opacity-100" : "opacity-0"
-                            )}
-                          />
-                        )}
-                      </span>
-                      {brand.name}
-                    </CommandItem>
-                  ))
-                }
-              </CommandGroup>
+              <CommandList>
+                <CommandGroup heading={selectedBrand ? "Models" : "Brands"}>
+                  {/* <h4 className="text-xs text-gray-400 ms-3 my-3">{selectedBrand ? "Models" : "Brands"}</h4> */}
+                  {selectedBrand ? 
+                    selectedBrand.models
+                    .map((model) => (
+                      <CommandItem
+                        value={model.name}
+                        key={model.id}
+                        className={cn("mb-0.5", `${model.id}` === selectedModelId && "bg-accent")}
+                        onSelect={() => {
+                          setSelectedModelId(`${model.id}`), handleModelChange(`${model.id}`)
+                        }}
+                      >
+                        <span className="flex items-center mr-2 h-4 w-4">
+                          {`${model.id}` === selectedModelId && (
+                            <FiCheck
+                              className={cn(
+                                `${model.id}` === selectedModelId ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                          )}
+                        </span>
+                        {model.name}
+                      </CommandItem>
+                    ))
+                  :
+                    brandsAndModels.map((brand) => (
+                      <CommandItem
+                        value={brand.name}
+                        key={brand.id}
+                        className={cn("mb-0.5", brand.id === selectedBrand && "bg-accent")}
+                        onSelect={() => {
+                          setSelectedBrand({id: brand.id, name: brand.name, models: brand.models})
+                        }}
+                      >
+                        <span className="flex items-center mr-2 h-4 w-4">
+                          {brand.id === selectedBrand && (
+                            <FiCheck
+                              className={cn(
+                                brand.id === selectedBrand ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                          )}
+                        </span>
+                        {brand.name}
+                      </CommandItem>
+                    ))
+                  }
+                </CommandGroup>
+              </CommandList>
             </ScrollArea>
           </Command>
           <DialogFooter>

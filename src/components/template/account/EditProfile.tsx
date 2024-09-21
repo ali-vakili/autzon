@@ -24,7 +24,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { FiCheck, FiChevronRight, FiX } from "react-icons/fi";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import { Command, CommandList, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
@@ -72,6 +72,9 @@ type editProfilePropType = {
 }
 
 const EditProfile = ({ user, cities, provinces }: editProfilePropType) => {
+  // console.log(user);
+  // console.log(cities);
+  // console.log(provinces);
   const [name, setName] = useState({ firstName: '', lastName: '' });
 
   const [selectedProvince, setSelectedProvince] = useState<{id:number, name_en: string, latitude: number, longitude: number}|null>(user.city !== null ? { id: user.city.province.id, name_en: user.city.province.name_en, latitude: user.city.province.latitude, longitude: user.city.province.longitude } : null);
@@ -266,57 +269,59 @@ const EditProfile = ({ user, cities, provinces }: editProfilePropType) => {
                         </Badge>
                       )}
                       <ScrollArea className="h-80">
-                        <CommandEmpty>No city or province found.</CommandEmpty>
-                        <CommandGroup>
-                          <h4 className="text-xs text-gray-400 ms-3 my-3">{selectedProvince ? "Cities" : "Provinces"}</h4>
-                          {selectedProvince ? 
-                            cities
-                            .filter((city) => city.province_id === selectedProvince.id)
-                            .map((city) => (
-                              <CommandItem
-                                value={city.name_en}
-                                key={city.id}
-                                className={cn("mb-0.5", `${city.id}` === field.value && "bg-accent")}
-                                onSelect={() => {
-                                  form.setValue("city", `${city.id}`), setSelectedCity({id: city.id, name_en: city.name_en, latitude: city.latitude, longitude: city.longitude});
-                                }}
-                              >
-                                <span className="flex items-center mr-2 h-4 w-4">
-                                  {`${city.id}` === field.value && (
-                                    <FiCheck
-                                      className={cn(
-                                        `${city.id}` === field.value ? "opacity-100" : "opacity-0"
-                                      )}
-                                    />
-                                  )}
-                                </span>
-                                {city.name_en}
-                              </CommandItem>
-                            ))
-                          :
-                            provinces.map((province) => (
-                              <CommandItem
-                                value={province.name_en}
-                                key={province.id}
-                                className={cn("mb-0.5", province.id === selectedProvince && "bg-accent")}
-                                onSelect={() => {
-                                  setSelectedProvince({id: province.id, name_en: province.name_en, latitude: province.latitude, longitude: province.longitude})
-                                }}
-                              >
-                                <span className="flex items-center mr-2 h-4 w-4">
-                                  {province.id === selectedProvince && (
-                                    <FiCheck
-                                      className={cn(
-                                        province.id === selectedProvince ? "opacity-100" : "opacity-0"
-                                      )}
-                                    />
-                                  )}
-                                </span>
-                                {province.name_en}
-                              </CommandItem>
-                            ))
-                          }
-                        </CommandGroup>
+                        <CommandList>
+                          <CommandEmpty>No city or province found.</CommandEmpty>
+                          <CommandGroup heading={selectedProvince ? "Cities" : "Provinces"}>
+                            {/* <h4 className="text-xs text-gray-400 ms-3 my-3">{selectedProvince ? "Cities" : "Provinces"}</h4> */}
+                            {selectedProvince ? 
+                              cities
+                              .filter((city) => city.province_id === selectedProvince.id)
+                              .map((city) => (
+                                <CommandItem
+                                  value={city.name_en}
+                                  key={city.id}
+                                  className={cn("mb-0.5", `${city.id}` === field.value && "bg-accent", "cursor-pointer")}
+                                  onSelect={() => {
+                                    form.setValue("city", `${city.id}`), setSelectedCity({id: city.id, name_en: city.name_en, latitude: city.latitude, longitude: city.longitude});
+                                  }}
+                                >
+                                  <span className="flex items-center mr-2 h-4 w-4">
+                                    {`${city.id}` === field.value && (
+                                      <FiCheck
+                                        className={cn(
+                                          `${city.id}` === field.value ? "opacity-100" : "opacity-0"
+                                        )}
+                                      />
+                                    )}
+                                  </span>
+                                  {city.name_en}
+                                </CommandItem>
+                              ))
+                            :
+                              provinces.map((province) => (
+                                <CommandItem
+                                  value={province.name_en}
+                                  key={province.id}
+                                  className={cn("mb-0.5", province.id === selectedProvince && "bg-accent", "cursor-pointer")}
+                                  onSelect={() => {
+                                    setSelectedProvince({id: province.id, name_en: province.name_en, latitude: province.latitude, longitude: province.longitude})
+                                  }}
+                                >
+                                  <span className="flex items-center mr-2 h-4 w-4">
+                                    {province.id === selectedProvince && (
+                                      <FiCheck
+                                        className={cn(
+                                          province.id === selectedProvince ? "opacity-100" : "opacity-0"
+                                        )}
+                                      />
+                                    )}
+                                  </span>
+                                  {province.name_en}
+                                </CommandItem>
+                              ))
+                            }
+                          </CommandGroup>
+                        </CommandList>
                       </ScrollArea>
                     </Command>
                     <DialogFooter>
